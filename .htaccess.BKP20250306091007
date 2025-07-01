@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:CDN-LOOP} !cloudflare
+RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
+RewriteCond %{HTTP_HOST} ^(www\.)?pielcanela\.com\.ve
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,QSA]
+
+# Redirigir las URL feas a las URLs bonitas
+RewriteCond %{THE_REQUEST} /routes/producto.php\?p=([^&\s]+) [NC]
+RewriteRule ^ /producto/%1? [R=301,L]
+
+RewriteCond %{THE_REQUEST} /routes/categories.php\?c=([^&\s]+) [NC]
+RewriteRule ^ /categoria/%1? [R=301,L]
+
+# Reescribir las URLs bonitas para que apunten a los archivos PHP
+RewriteRule ^producto/([^/]*)$ /routes/producto.php?p=$1 [L]
+RewriteRule ^categoria/([^/]*)$ /routes/categories.php?c=$1 [L]

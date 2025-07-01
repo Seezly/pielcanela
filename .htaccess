@@ -1,0 +1,21 @@
+RewriteEngine On
+
+RewriteCond %{THE_REQUEST} /routes/producto.php\?p=([^&\s]+) [NC]
+RewriteRule ^ /producto/%1? [R=301,L]
+
+RewriteCond %{THE_REQUEST} /routes/categorias.php\?c=([^&\s]+) [NC]
+RewriteRule ^ /categoria/%1? [R=301,L]
+
+RewriteCond %{THE_REQUEST} /routes/subcategorias.php\?c=([^&\s]+)&s=([^&\s]+) [NC]
+RewriteRule ^ /categoria/%1/%2? [R=301,L]
+
+RewriteCond %{THE_REQUEST} /routes/productos.php\?p=([^&\s]+) [NC]
+RewriteRule ^ /productos/%1? [R=301,L]
+
+RewriteRule ^producto/([^/]+)$ /routes/producto.php?p=$1 [L,QSA]
+
+RewriteRule ^categoria/([^/]+)/([^/]+)$ /routes/subcategorias.php?c=$1&s=$2 [L,QSA]
+
+RewriteRule ^categoria/([^/]+)$ /routes/categorias.php?c=$1 [L,QSA]
+
+RewriteRule ^productos/([^/]+)$ /routes/productos.php?p=$1 [L,QSA]
