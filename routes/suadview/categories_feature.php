@@ -564,14 +564,16 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                                 <tbody>
                                     <tr>
                                         <td class="text-center fs-sm">
-                                            <strong>ID.${category.id.toString().padStart(6, "0")}</strong>
+                                            <strong>ID.</strong>
                                         </td>
                                         <td class="d-none d-md-table-cell fs-sm">
-                                            <a class="fw-semibold" href="javascript:void(0)">${category.nombre}</a>
+                                            <a class="fw-semibold" href="javascript:void(0)"></a>
                                         </td>
                                         <td class="text-center fs-sm">
-                                            <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="${category.id}" data-name="${category.nombre}" href="javascript:void(0)">
-                                                <i class="fa fa-fw fa-eye"></i>
+                                            <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="" data-name="" href="javascript:void(0)">
+                                                <input class="form-check-input" type="checkbox" id="category-featured"
+                                                    name="category-featured" checked>
+                                                <label class="form-check-label" for="category-featured"></label>
                                             </a>
                                         </td>
                                     </tr>
@@ -652,69 +654,10 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
     <script src="/public/js/dashmix.app.min.js"></script>
 
     <script>
-        async function loadCategories() {
-            try {
-                const response = await fetch("/src/api/categories/read_categories.php");
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    const tableBody = document.querySelector("table tbody");
-                    tableBody.innerHTML = ""; // Limpiar contenido previo
-
-                    result.data.forEach(category => {
-                        const row = document.createElement("tr");
-
-                        row.innerHTML = `
-                    <td class="text-center fs-sm">
-                        <strong>ID.${category.id.toString().padStart(6, "0")}</strong>
-                    </td>
-                    <td class="d-none d-md-table-cell fs-sm">
-                        <a class="fw-semibold" href="javascript:void(0)">${category.nombre}</a>
-                    </td>
-                    <td class="text-center fs-sm">
-                        <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="${category.id}" data-name="${category.nombre}" href="javascript:void(0)">
-                            <i class="fa fa-fw fa-eye"></i>
-                        </a>
-                        <a class="btn btn-sm btn-alt-secondary delete-btn" data-id="${category.id}" href="javascript:void(0)">
-                            <i class="fa fa-fw fa-times text-danger"></i>
-                        </a>
-                    </td>
-                `;
-
-                        tableBody.appendChild(row);
-                    });
-                    showCategory();
-                    attachEventListeners();
-                } else {
-                    console.error("Error:", result.message);
-                }
-            } catch (error) {
-                console.error("Error en la solicitud:", error);
-            }
-        }
-
         // Agrega eventos a los botones de editar y eliminar
         function attachEventListeners() {
-            document.querySelectorAll(".edit-btn").forEach(button => {
-                button.addEventListener("click", function() {
-                    const id = this.getAttribute("data-id");
-                    if (confirm("¿Estás seguro de que deseas editar esta categoría?")) {
-                        window.location.href = `/routes/suadview/categories_edit.php?id=${id}`;
-                    }
-                });
-            });
-
-            document.querySelectorAll(".delete-btn").forEach(button => {
-                button.addEventListener("click", async function() {
-                    const id = this.getAttribute("data-id");
-                    if (confirm("¿Estás seguro de que deseas eliminar esta categoría?")) {
-                        await deleteCategory(id);
-                        loadCategories(); // Recargar categorías después de eliminar
-                    }
-                });
-            });
-
             const searchInput = document.getElementById("dm-ecom-products-search");
+            const featured = document.getElementById("categories-featured");
             const tableRows = document.querySelectorAll(".table tbody tr");
 
             searchInput.addEventListener("input", function() {
@@ -730,40 +673,18 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                     }
                 });
             });
-        }
 
-        // Elimina una categoría
-        async function deleteCategory(id) {
-            try {
-                const response = await fetch("/src/api/categories/delete_category.php", {
-                    method: "POST",
+            featured.addEventListener("change", function() {
+                fetch('/routes/suadview/categories_featured.php', {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json"
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        id
+                        featured: 0
                     })
-                });
-
-                const result = await response.json();
-                alert(result.message);
-            } catch (error) {
-                console.error("Error al eliminar la categoría:", error);
-            }
-        }
-
-        async function showCategory(id) {
-            const view = document.querySelector("#view");
-
-            try {
-                const response = await fetch("/src/api/categories/all_views_category.php");
-
-                const result = await response.json();
-                view.textContent = result.data[0]["COUNT(id)"] > 0 ? result.data[0]["COUNT(id)"] : 0;
-            } catch (error) {
-                console.error("Error al eliminar la categoría:", error);
-            }
-
+                })
+            });
         }
 
         // Cargar categorías al inicio
