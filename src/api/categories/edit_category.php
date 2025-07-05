@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
     $nombre = trim($data["nombre"] ?? "");
     $id = trim($data["id"] ?? "");
+    $destacado = trim($data["destacado"] ?? "");
 
     // Validación básica
     if (empty($nombre)) {
@@ -16,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Prepara la consulta para evitar inyecciones SQL
-        $stmt = $pdo->prepare("UPDATE categorias SET nombre=:nombre WHERE id=:id");
-        $stmt->execute(["nombre" => $nombre, "id" => $id]);
+        $stmt = $pdo->prepare("UPDATE categorias SET nombre=:nombre, destacado=:destacado WHERE id=:id");
+        $stmt->execute(["nombre" => $nombre, "id" => $id, "destacado" => $destacado]);
 
         echo json_encode(["status" => "success", "message" => "Categoría editada correctamente."]);
     } catch (PDOException $e) {

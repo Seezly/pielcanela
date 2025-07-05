@@ -29,14 +29,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Obtiene y limpia los datos enviados
     $id = trim($_POST["id"] ?? "");
-    $id2 = trim($_POST["id2"] ?? "");
     $url = trim($_POST["url"] ?? "");
-    $url2 = trim($_POST["url2"] ?? "");
     $imagen = explode(",", $rutasImagenes)[0];
-    $imagen2 = explode(",", $rutasImagenes)[1];
+    if (!isset($rutasImagenes) || empty($rutasImagenes)) {
+        // No se subió ninguna imagen, obtener ambas rutas actuales
+        $stmt = $pdo->prepare("SELECT imagen FROM ads WHERE id = :id");
+        $stmt->execute(["id" => $id]);
+        $imagen = $stmt->fetchColumn();
+    } else {
+        // Si se subieron imágenes, asignar según corresponda
+        $imagenes = explode(",", $rutasImagenes);
+        $imagen = $imagenes[0] ?? null;
+    }
 
     // Validación básica
-    if (empty($id) || empty($url) || empty($id2) || empty($url2)) {
+    if (empty($id) || empty($url)) {
         echo json_encode(["status" => "error", "message" => "Todos los campos son obligatorios."]);
         exit;
     }
@@ -45,10 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Prepara la primera consulta para evitar inyecciones SQL
         $stmt1 = $pdo->prepare("UPDATE ads SET url = :url, imagen = :imagen WHERE id = :id");
         $stmt1->execute(["url" => $url, "imagen" => $imagen, "id" => $id]);
-
-        // Prepara la segunda consulta para evitar inyecciones SQL
-        $stmt2 = $pdo->prepare("UPDATE ads SET url = :url, imagen = :imagen WHERE id = :id");
-        $stmt2->execute(["url" => $url2, "imagen" => $imagen2, "id" => $id2]);
 
         echo json_encode(["status" => "success", "message" => "Ad actualizada correctamente."]);
     } catch (PDOException $e) {

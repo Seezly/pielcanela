@@ -6,6 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Obtiene y limpia los datos enviados
     $data = json_decode(file_get_contents("php://input"), true);
     $nombre = trim($data["nombre"] ?? "");
+    $destacado = trim($data["destacado"] ?? "");
 
     // Validación básica
     if (empty($nombre)) {
@@ -15,8 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Prepara la consulta para evitar inyecciones SQL
-        $stmt = $pdo->prepare("INSERT INTO categorias (nombre) VALUES (:nombre)");
-        $stmt->execute(["nombre" => $nombre]);
+        $stmt = $pdo->prepare("INSERT INTO categorias (nombre, destacado) VALUES (:nombre, :destacado)");
+        $stmt->execute(["nombre" => $nombre, "destacado" => $destacado]);
 
         echo json_encode(["status" => "success", "message" => "Categoría agregada correctamente."]);
     } catch (PDOException $e) {

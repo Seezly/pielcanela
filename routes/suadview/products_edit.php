@@ -36,6 +36,7 @@ if (!empty($id)) {
     $porcentajeD = $product['porcentajeD'];
     $sku = $product['sku'];
     $imagen = $product['imagen'];
+    $featured = $product['destacado'];
 }
 ?>
 
@@ -556,7 +557,7 @@ if (!empty($id)) {
                                         </select>
                                     </div>
                                     <div class="mb-4">
-                                        <label class="form-label" for="dm-ecom-product-category-type">Categorías</label>
+                                        <label class="form-label" for="dm-ecom-product-category-type">Subcategorías</label>
                                         <select class="form-select" id="dm-ecom-product-category-type" name="dm-ecom-product-category-type"
                                             style="width: 100%;" data-placeholder="Escoge una subcategoría.." required>
                                             <option>Selecciona una subcategoría</option>
@@ -589,6 +590,14 @@ if (!empty($id)) {
                                             <input class="form-check-input" type="checkbox" id="dm-ecom-product-published"
                                                 name="dm-ecom-product-published" <? if (!empty($id) && $descuento > 0) echo "checked"; ?>>
                                             <label class="form-check-label" for="dm-ecom-product-published"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="form-label">Destacar producto</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="product-featured"
+                                                name="product-featured" <? if (!empty($id) && $featured > 0) echo "checked"; ?>>
+                                            <label class="form-check-label" for="product-featured"></label>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
@@ -679,6 +688,7 @@ if (!empty($id)) {
             const subInput = document.getElementById("dm-ecom-product-category-type");
             const formAction = form.getAttribute("data-action");
             const id = document.querySelector("input[name='id']");
+            const destacado = document.querySelector("#product-featured");
 
             Dropzone.autoDiscover = false;
 
@@ -754,6 +764,7 @@ if (!empty($id)) {
                 formData.append("porcentajeD", descuentoCheckbox.checked ? porcentajeDescuentoInput.value : "0");
                 formData.append("precioD", precioFinalInput.value || precioInput.value);
                 formData.append("id", id.value);
+                formData.append("destacado", destacado.checked);
 
                 if (document.getElementById("dm-ecom-product-category").value != "Selecciona una categoría") {
                     formData.append("categoria", document.getElementById("dm-ecom-product-category").value);

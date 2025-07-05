@@ -52,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $descuento = trim($_POST["descuento"] ?? 0);
     $precioD = trim($_POST["precioD"] ?? 0);
     $porcentajeD = trim($_POST["porcentajeD"] ?? 0);
+    $destacado = trim($_POST["destacado"] ?? "") == "true" ? 1 : 0;
 
     if (empty($nombre) || empty($precio) || empty($sku) || empty($descripcion) || empty($categoria) || empty($rutasImagenes) || empty($atributo)) {
         echo json_encode(["status" => "error", "message" => "Todos los campos son obligatorios."]);
@@ -59,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO productos (nombre, precio, descripcion, descuento, precioD, porcentajeD, sku, categoria, imagen, atributo_id, opciones) VALUES (:nombre, :precio, :descripcion, :descuento, :precioD, :porcentajeD, :sku, :categoria, :imagen, :atributo_id, :opciones)");
+        $stmt = $pdo->prepare("INSERT INTO productos (nombre, precio, descripcion, descuento, precioD, porcentajeD, sku, categoria, imagen, atributo_id, opciones, destacado) VALUES (:nombre, :precio, :descripcion, :descuento, :precioD, :porcentajeD, :sku, :categoria, :imagen, :atributo_id, :opciones, :destacado)");
         $stmt->execute([
             "nombre" => $nombre,
             "precio" => $precio,
@@ -72,9 +73,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "imagen" => $rutasImagenes,
             "atributo_id" => $atributo,
             "opciones" => $opciones,
+            "destacado" => $destacado,
         ]);
         header('Content-Type: application/json');
-        echo json_encode(["status" => "success", "message" => "Producto agregado correctamente."]);
+        echo json_encode(["status" => "success", "message" => "Producto agregado correctamente.", "destacado" => $destacado]);
     } catch (PDOException $e) {
         header('Content-Type: application/json');
         echo json_encode(["status" => "error", "message" => "Error al agregar el producto: " . $e->getMessage()]);

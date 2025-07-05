@@ -25,6 +25,7 @@ if (!empty($id)) {
     $category = $stmt->fetch();
 
     $nombre = $category['nombre'];
+    $destacado = $category['destacado'];
 }
 ?>
 
@@ -528,6 +529,14 @@ if (!empty($id)) {
                                             value="<? if (!empty($id)) echo $nombre; ?>" required>
                                         <input type="hidden" id="id" value="<? if (!empty($id)) echo $id; ?>">
                                     </div>
+                                    <div class="row mb-4">
+                                        <label class="form-label">Destacar categoría</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="category-featured"
+                                                name="category-featured" <? if (!empty($id) && $destacado > 0) echo "checked"; ?>>
+                                            <label class="form-check-label" for="category-featured"></label>
+                                        </div>
+                                    </div>
                                     <div class="mb-4">
                                         <button type="submit" class="btn btn-alt-primary"><? if (!empty($id)) echo "Editar";
                                                                                             else echo "Añadir"; ?></button>
@@ -583,6 +592,7 @@ if (!empty($id)) {
             const action = this.getAttribute("data-action"); // Obtiene el data-action (add o edit)
             const nombre = document.getElementById("dm-ecom-product-name").value.trim();
             const id = document.getElementById("id") ? document.getElementById("id").value.trim() : null;
+            const destacado = document.getElementById("category-featured").checked;
 
             if (!nombre || (action === "edit" && !id)) {
                 document.getElementById("message").textContent = "El nombre es obligatorio y el ID si estás editando.";
@@ -595,9 +605,11 @@ if (!empty($id)) {
 
             const body = action === "edit" ? JSON.stringify({
                 nombre,
-                id
+                id,
+                destacado
             }) : JSON.stringify({
-                nombre
+                nombre,
+                destacado
             });
 
             try {

@@ -609,7 +609,8 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <button type="submit" class="btn btn-alt-primary">Actualizar</button>
+                                <button type="submit" id="adSubmit1" class="btn btn-alt-primary">Actualizar Ad #1</button>
+                                <button type="submit" id="adSubmit2" class="btn btn-alt-primary">Actualizar Ad #2</button>
                             </div>
                         </div>
                         <!-- END All Products Table -->
@@ -688,28 +689,50 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             const ad1Form = document.getElementById("ad1Form");
             const ad2Form = document.getElementById("ad2Form");
-            const submitButton = document.querySelector("button[type='submit']");
+            const submitButton1 = document.querySelector("#adSubmit1");
+            const submitButton2 = document.querySelector("#adSubmit2");
 
-            submitButton.addEventListener("click", async (e) => {
+            submitButton1.addEventListener("click", async (e) => {
                 e.preventDefault();
 
                 const urlAd1 = document.getElementById("dm-ecom-ad-1").value;
-                const urlAd2 = document.getElementById("dm-ecom-ad-2").value;
                 const idAd1 = document.querySelector("input[name=idAd1]").value;
-                const idAd2 = document.querySelector("input[name=idAd2]").value;
 
                 let formData = new FormData();
                 formData.append("id", idAd1);
-                formData.append("id2", idAd2);
                 formData.append("url", urlAd1);
-                formData.append("url2", urlAd2);
 
-                if (Dropzone.instances[0].files.length > 0 || Dropzone.instances[1].files.length > 0) {
-                    const allFiles = [...Dropzone.instances[0].files, ...Dropzone.instances[1].files];
-                    allFiles.forEach((file, index) => {
-                        formData.append("image[]", file);
+                formData.append("image[]", Dropzone.instances[0].files);
+
+                try {
+                    let response = await fetch("/src/scripts/ad_logic.php", {
+                        method: "POST",
+                        body: formData
                     });
+
+                    let result = await response.json();
+                    alert(result.message);
+
+                    if (result.status === "success") {
+                        form.reset();
+                        Dropzone.instances[0].removeAllFiles(); // Eliminar imagen subida después de éxito
+                        Dropzone.instances[1].removeAllFiles(); // Eliminar imagen subida después de éxito
+                    }
+                } catch (error) {
+                    alert("Error al enviar la solicitud.");
                 }
+            });
+            submitButton2.addEventListener("click", async (e) => {
+                e.preventDefault();
+
+                const urlAd2 = document.getElementById("dm-ecom-ad-2").value;
+                const idAd2 = document.querySelector("input[name=idAd2]").value;
+
+                let formData = new FormData();
+                formData.append("id", idAd2);
+                formData.append("url", urlAd2);
+
+                formData.append("image[]", Dropzone.instances[1].files);
 
                 try {
                     let response = await fetch("/src/scripts/ad_logic.php", {

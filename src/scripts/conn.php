@@ -1,9 +1,9 @@
 <?php
 // Configuración de conexión
 $host = "localhost";
-$dbname = "c2780502_pcdb";
-$username = "c2780502_pcdb";
-$password = "ru03radoBE";
+$dbname = "pc_ecom";
+$username = "root";
+$password = "";
 
 try {
     // Crear una nueva conexión PDO

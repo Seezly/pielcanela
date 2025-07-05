@@ -50,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $precioD = trim($_POST["precioD"] ?? "");
     $porcentajeD = trim($_POST["porcentajeD"] ?? "");
     $id = trim($_POST["id"] ?? "");
+    $destacado = trim($_POST["destacado"] ?? "") == "true" ? 1 : 0;
 
     if (
         empty($id) ||
@@ -69,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $pdo->prepare("UPDATE productos SET nombre=:nombre, precio=:precio, descripcion=:descripcion, descuento=:descuento, precioD=:precioD, porcentajeD=:porcentajeD, sku=:sku, imagen=:imagen WHERE id=:id");
+        $stmt = $pdo->prepare("UPDATE productos SET nombre=:nombre, precio=:precio, descripcion=:descripcion, descuento=:descuento, precioD=:precioD, porcentajeD=:porcentajeD, sku=:sku, imagen=:imagen, destacado=:destacado WHERE id=:id");
         $stmt->execute([
             "nombre" => $nombre,
             "precio" => $precio,
@@ -79,10 +80,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "porcentajeD" => $porcentajeD,
             "sku" => $sku,
             "imagen" => $rutasImagenes,
-            "id" => $id
+            "id" => $id,
+            "destacado" => $destacado
         ]);
 
-        echo json_encode(["status" => "success", "message" => "Producto editado correctamente."]);
+        echo json_encode(["status" => "success", "message" => "Producto editado correctamente.", "destacado" => $destacado]);
     } catch (PDOException $e) {
         echo json_encode(["status" => "error", "message" => "Error al editar el producto: " . $e->getMessage()]);
     }
