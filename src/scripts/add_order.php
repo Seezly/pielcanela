@@ -1,7 +1,14 @@
 <?php
 header('Content-Type: application/json');
+session_start();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require("conn.php");
+    require("csrf.php");
+    $token = $_POST["csrf_token"] ?? "";
+    if (!validate_csrf_token($token)) {
+        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
+        exit;
+    }
     $producto_ids = $_POST["id"] ?? [];
     $carrito_id = uniqid();
 

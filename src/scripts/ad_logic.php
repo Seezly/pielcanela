@@ -4,6 +4,11 @@ session_start();
 require 'conn.php';
 require 'csrf.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $token = $_POST["csrf_token"] ?? "";
+    if (!validate_csrf_token($token)) {
+        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
+        exit;
+    }
 
     if (isset($_FILES['image']) && !empty($_FILES['image']['name'][0])) {
         require 'imgOpt.php'; // Script de conversión
@@ -33,12 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Obtiene y limpia los datos enviados
     $id = trim($_POST["id"] ?? "");
     $url = trim($_POST["url"] ?? "");
-    $token = $_POST["csrf_token"] ?? "";
-    $imagen = explode(",", $rutasImagenes)[0];
-    if (!validate_csrf_token($token)) {
-        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
-        exit;
-    }
+    $imagen = isset($rutasImagenes) ? explode(",", $rutasImagenes)[0] : null;
     if (!isset($rutasImagenes) || empty($rutasImagenes)) {
         // No se subió ninguna imagen, obtener ambas rutas actuales
         $stmt = $pdo->prepare("SELECT imagen FROM ads WHERE id = :id");

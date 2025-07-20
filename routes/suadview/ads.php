@@ -16,6 +16,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 $stmt = $pdo->prepare("SELECT * FROM ads");
 $stmt->execute();
@@ -591,6 +593,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <input type="text" class="form-control" id="dm-ecom-ad-1" name="dm-ecom-ad-1"
                                                     value="<?= $ads[0]["url"]; ?>" placeholder="https:/.com/categoria/producto">
                                                 <input type="hidden" name="idAd1" value="1">
+                                                <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                             </div>
                                         </form>
                                     </div>
@@ -697,10 +700,12 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 const urlAd1 = document.getElementById("dm-ecom-ad-1").value;
                 const idAd1 = document.querySelector("input[name=idAd1]").value;
+                const csrfToken = document.getElementById("csrf_token").value;
 
                 let formData = new FormData();
                 formData.append("id", idAd1);
                 formData.append("url", urlAd1);
+                formData.append("csrf_token", csrfToken);
 
                 formData.append("image[]", Dropzone.instances[0].files);
 
@@ -727,10 +732,12 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 const urlAd2 = document.getElementById("dm-ecom-ad-2").value;
                 const idAd2 = document.querySelector("input[name=idAd2]").value;
+                const csrfToken2 = document.getElementById("csrf_token").value;
 
                 let formData = new FormData();
                 formData.append("id", idAd2);
                 formData.append("url", urlAd2);
+                formData.append("csrf_token", csrfToken2);
 
                 formData.append("image[]", Dropzone.instances[1].files);
 
