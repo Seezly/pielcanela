@@ -15,6 +15,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 $id = $_GET['id'];
 
@@ -524,6 +526,7 @@ if (!empty($id)) {
                             <div class="col-md-10 col-lg-8">
                                 <form action="be_pages_ecom_product_edit.html" method="POST" data-action="<?php if (!empty($id)) echo "edit";
                                                                                                             else echo "add"; ?>" onsubmit="return false;">
+                                    <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-id">Nombre</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-id" name="dm-ecom-product-id"
@@ -608,6 +611,7 @@ if (!empty($id)) {
             const user = document.getElementById("dm-ecom-product-price");
             const formAction = form.getAttribute("data-action");
             const id = document.querySelector("input[name='id']");
+            const csrfToken = document.getElementById("csrf_token").value;
 
 
             form.addEventListener("submit", async function(event) {
@@ -619,6 +623,7 @@ if (!empty($id)) {
                 formData.append("pass", pass.value == "" ? <?php if (!empty($pass)) echo "$pass";
                                                             else echo "'default'" ?> : pass.value);
                 formData.append("id", id.value);
+                formData.append("csrf_token", csrfToken);
 
                 if (document.getElementById("dm-ecom-product-category").value != "Selecciona un privilegio") {
                     formData.append("privilegios", document.getElementById("dm-ecom-product-category").value);
