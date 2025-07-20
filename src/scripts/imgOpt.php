@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 // Directorio de destino
 $destino = __DIR__ . '/../../public/img/';
 

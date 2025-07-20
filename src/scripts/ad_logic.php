@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_FILES['image']) && !empty($_FILES['image']['name'][0])) {

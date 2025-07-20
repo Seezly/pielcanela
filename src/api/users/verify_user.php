@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 session_start();
 require '../../scripts/conn.php'; // Conexión a la base de datos
 
