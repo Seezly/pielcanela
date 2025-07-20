@@ -468,7 +468,7 @@ if (!empty($id)) {
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -522,32 +522,32 @@ if (!empty($id)) {
                 <!-- Quick Overview -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <? if (empty($id)) { ?>
+                        <?php if (empty($id)) { ?>
                             <h3 class="block-title">Añadir producto</h3>
-                        <? } else { ?>
+                        <?php } else { ?>
                             <h3 class="block-title">Editar producto</h3>
-                        <? } ?>
+                        <?php } ?>
                     </div>
                     <div class="block-content">
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8">
-                                <form action="be_pages_ecom_product_edit.html" method="POST" data-action="<? if (!empty($id)) echo "edit";
+                                <form action="be_pages_ecom_product_edit.html" method="POST" data-action="<?php if (!empty($id)) echo "edit";
                                                                                                             else echo "add"; ?>" onsubmit="return false;">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-id">Código</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-id" name="dm-ecom-product-id"
-                                            value="<? if (!empty($id)) echo $sku; ?>" required>
-                                        <input type="hidden" name="id" value="<? if (!empty($id)) echo $id; ?>">
+                                            value="<?php if (!empty($id)) echo $sku; ?>" required>
+                                        <input type="hidden" name="id" value="<?php if (!empty($id)) echo $id; ?>">
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-name">Nombre</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-name" name="dm-ecom-product-name"
-                                            value="<? if (!empty($id)) echo $nombre; ?>" required>
+                                            value="<?php if (!empty($id)) echo $nombre; ?>" required>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-description-short">Descripción</label>
                                         <textarea class="form-control" id="dm-ecom-product-description-short"
-                                            name="dm-ecom-product-description-short" rows="4" required><? if (!empty($id)) echo $descripcion; ?></textarea>
+                                            name="dm-ecom-product-description-short" rows="4" required><?php if (!empty($id)) echo $descripcion; ?></textarea>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-category">Categorías</label>
@@ -574,21 +574,21 @@ if (!empty($id)) {
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-options">Opciones</label>
                                             <input type="text" class="form-control" id="dm-ecom-product-options" name="dm-ecom-product-options"
-                                                value="<? if (!empty($id)) echo $options; ?>" placeholder="Ej: S,M,L,XL - rojo,azul,verde" pattern="^[a-zA-Z0-9,]+$" required>
+                                                value="<?php if (!empty($id)) echo $options; ?>" placeholder="Ej: S,M,L,XL - rojo,azul,verde" pattern="^[a-zA-Z0-9,]+$" required>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-price">Precio en USD ($)</label>
                                             <input type="text" class="form-control" id="dm-ecom-product-price" name="dm-ecom-product-price"
-                                                value="<? if (!empty($id)) echo $precio; ?>" required>
+                                                value="<?php if (!empty($id)) echo $precio; ?>" required>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
                                         <label class="form-label">¿Tiene descuento?</label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="dm-ecom-product-published"
-                                                name="dm-ecom-product-published" <? if (!empty($id) && $descuento > 0) echo "checked"; ?>>
+                                                name="dm-ecom-product-published" <?php if (!empty($id) && $descuento > 0) echo "checked"; ?>>
                                             <label class="form-check-label" for="dm-ecom-product-published"></label>
                                         </div>
                                     </div>
@@ -596,7 +596,7 @@ if (!empty($id)) {
                                         <label class="form-label">Destacar producto</label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="product-featured"
-                                                name="product-featured" <? if (!empty($id) && $featured > 0) echo "checked"; ?>>
+                                                name="product-featured" <?php if (!empty($id) && $featured > 0) echo "checked"; ?>>
                                             <label class="form-check-label" for="product-featured"></label>
                                         </div>
                                     </div>
@@ -604,7 +604,7 @@ if (!empty($id)) {
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-price">Porcentaje de descuento</label>
                                             <input type="number" class="form-control" id="dm-ecom-product-price" name="dm-ecom-product-price"
-                                                value="<? if (!empty($id)) echo $porcentajeD; ?>" placeholder="%" min="0" max="100" required>
+                                                value="<?php if (!empty($id)) echo $porcentajeD; ?>" placeholder="%" min="0" max="100" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-price">Precio final ($)</label>
@@ -613,7 +613,7 @@ if (!empty($id)) {
                                         </div>
                                     </div>
                                     <div class="mb-4">
-                                        <button type="submit" class="btn btn-alt-primary"><? if (!empty($id)) echo "Editar";
+                                        <button type="submit" class="btn btn-alt-primary"><?php if (!empty($id)) echo "Editar";
                                                                                             else echo "Añadir"; ?></button>
                                     </div>
                                 </form>

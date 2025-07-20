@@ -6,8 +6,8 @@ $description = isset($description) ? $description : "Descubre Piel Canela, tu ti
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Sergio Gutierrez - +58 (424) 541-2882">
-<meta name="description" content="<? echo $description; ?>">
-<title><? echo $title; ?></title>
+<meta name="description" content="<?= $description; ?>">
+<title><?= $title; ?></title>
 <link rel="stylesheet" href="/public/css/reset.css" />
 <link rel="stylesheet" href="/public/css/styles.css" />
 <link rel="stylesheet" href="/public/css/keen-slider.min.css" />

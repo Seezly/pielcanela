@@ -21,27 +21,27 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
 <html lang="es">
 
 <head>
-    <? include_once('../src/components/head.php'); ?>
+    <?php include_once('../src/components/head.php'); ?>
 </head>
 
 <body>
-    <? include_once('../src/components/header.php'); ?>
-    <? include_once('../src/components/nav.php'); ?>
+    <?php include_once('../src/components/header.php'); ?>
+    <?php include_once('../src/components/nav.php'); ?>
 
     <main>
         <section class="categoria-list">
-            <?
+            <?php
             $sql = $pdo->prepare("SELECT * FROM categorias WHERE id = ?");
             $sql->execute([$id]);
             $categoria = $sql->fetch(PDO::FETCH_ASSOC);
             ?>
-            <h2><? echo $categoria["nombre"] ?? "No existe la categoría que estás buscando"; ?></h2>
+            <h2><?= $categoria["nombre"] ?? "No existe la categoría que estás buscando"; ?></h2>
             <div class="filter-icon">
                 <div class="filters">
-                    <a href="/categoria/<? echo strtolower($categoria["nombre"]); ?>?id=<? echo $id; ?>&price=asc" class="filter <? if ($price === "asc") echo "active"; ?>">Menor precio</a>
-                    <a href="/categoria/<? echo strtolower($categoria["nombre"]); ?>?id=<? echo $id; ?>&price=desc" class="filter <? if ($price === "desc") echo "active"; ?>">Mayor precio</a>
-                    <a href="/categoria/<? echo strtolower($categoria["nombre"]); ?>?id=<? echo $id; ?>&featured=1" class="filter <? if ($featured === "1") echo "active"; ?>">Destacados</a>
-                    <a href="/categoria/<? echo strtolower($categoria["nombre"]); ?>?id=<? echo $id; ?>&discount=1" class="filter <? if ($discount === "1") echo "active"; ?>">Descuento</a>
+                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=asc" class="filter <?php if ($price === "asc") echo "active"; ?>">Menor precio</a>
+                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=desc" class="filter <?php if ($price === "desc") echo "active"; ?>">Mayor precio</a>
+                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&featured=1" class="filter <?php if ($featured === "1") echo "active"; ?>">Destacados</a>
+                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&discount=1" class="filter <?php if ($discount === "1") echo "active"; ?>">Descuento</a>
                 </div>
                 <span class="icon-filter">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -51,7 +51,7 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
             </div>
 
             <div class="productos">
-                <div id="productos" data-category="<? echo $categoria["id"]; ?>" class="productos-list">
+                <div id="productos" data-category="<?= $categoria["id"]; ?>" class="productos-list">
                     <?php
                     // Construcción del query SQL
                     if ($price === "asc") {
@@ -74,10 +74,10 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                         $hayProductos = true;
                         $producto["imagen"] = explode(',', $producto["imagen"]);
                     ?>
-                        <a href="/producto/<?php echo preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<? echo $producto["id"]; ?>" id="<? echo $producto["id"]; ?>" class="producto">
+                        <a href="/producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
                             <div class="box-img">
                                 <div class="icons">
-                                    <span class="icon" data-product="see" data-id="<? echo $producto["id"]; ?>">
+                                    <span class="icon" data-product="see" data-id="<?= $producto["id"]; ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined">
                                             <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" />
                                         </svg>
@@ -103,7 +103,7 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                             </div>
                             <div class="producto-precio">
                                 <p class="<?= ($producto["descuento"] > 0) ? "midline" : ""; ?>">$ <?= $producto["precio"]; ?></p>
-                                <? if ($producto["descuento"] > 0) echo "<p>$ {$producto['precioD']}</p>"; ?>
+                                <?php if ($producto["descuento"] > 0) echo "<p>$ {$producto['precioD']}</p>"; ?>
                             </div>
                         </a>
                     <?php
@@ -118,8 +118,8 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
         </section>
     </main>
 
-    <? include_once('../src/components/footer.php'); ?>
-    <? include_once('../src/components/modals.php'); ?>
+    <?php include_once('../src/components/footer.php'); ?>
+    <?php include_once('../src/components/modals.php'); ?>
 </body>
 
 </html>

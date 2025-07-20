@@ -458,7 +458,7 @@ if (!empty($id)) {
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -513,22 +513,22 @@ if (!empty($id)) {
                 <!-- Quick Overview -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <? if (empty($id)) { ?>
+                        <?php if (empty($id)) { ?>
                             <h3 class="block-title">Añadir usuario</h3>
-                        <? } else { ?>
+                        <?php } else { ?>
                             <h3 class="block-title">Editar usuario</h3>
-                        <? } ?>
+                        <?php } ?>
                     </div>
                     <div class="block-content">
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8">
-                                <form action="be_pages_ecom_product_edit.html" method="POST" data-action="<? if (!empty($id)) echo "edit";
+                                <form action="be_pages_ecom_product_edit.html" method="POST" data-action="<?php if (!empty($id)) echo "edit";
                                                                                                             else echo "add"; ?>" onsubmit="return false;">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-id">Nombre</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-id" name="dm-ecom-product-id"
-                                            value="<? if (!empty($id)) echo $nombre; ?>">
-                                        <input type="hidden" name="id" value="<? if (!empty($id)) echo $id; ?>">
+                                            value="<?php if (!empty($id)) echo $nombre; ?>">
+                                        <input type="hidden" name="id" value="<?php if (!empty($id)) echo $id; ?>">
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-category">Privilegios</label>
@@ -543,7 +543,7 @@ if (!empty($id)) {
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-price">Usuario</label>
                                             <input type="text" class="form-control" id="dm-ecom-product-price" name="dm-ecom-product-price"
-                                                value="<? if (!empty($id)) echo $user; ?>">
+                                                value="<?php if (!empty($id)) echo $user; ?>">
                                         </div>
                                     </div>
                                     <div class="row mb-4">
@@ -616,7 +616,7 @@ if (!empty($id)) {
                 let formData = new FormData();
                 formData.append("nombre", document.getElementById("dm-ecom-product-id").value);
                 formData.append("user", user.value);
-                formData.append("pass", pass.value == "" ? <? if (!empty($pass)) echo "$pass";
+                formData.append("pass", pass.value == "" ? <?php if (!empty($pass)) echo "$pass";
                                                             else echo "'default'" ?> : pass.value);
                 formData.append("id", id.value);
 
