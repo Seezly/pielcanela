@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: application/json');
+session_start();
 require '../../scripts/conn.php'; // Conexión a la base de datos
+require '../../scripts/csrf.php';
 
 // Verifica si la solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -52,6 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $porcentajeD = trim($_POST["porcentajeD"] ?? "");
     $id = trim($_POST["id"] ?? "");
     $destacado = trim($_POST["destacado"] ?? "") == "true" ? 1 : 0;
+    $token = $_POST["csrf_token"] ?? "";
+
+    if (!validate_csrf_token($token)) {
+        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
+        exit;
+    }
 
     if (
         empty($id) ||
