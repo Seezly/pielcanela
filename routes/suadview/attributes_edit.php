@@ -16,6 +16,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 $id = $_GET['id'];
 
@@ -522,6 +524,7 @@ if (!empty($id)) {
                             <div class="col-md-10 col-lg-8">
                                 <form id="category" method="POST" data-action="<?php if (!empty($id)) echo "edit";
                                                                                 else echo "add"; ?>" onsubmit="return false;">
+                                    <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-name">Nombre</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-name" name="dm-ecom-product-name"
@@ -593,11 +596,14 @@ if (!empty($id)) {
                 "/src/api/attributes/edit_attribute.php" :
                 "/src/api/attributes/add_attribute.php";
 
+            const csrfToken = document.getElementById("csrf_token").value;
             const body = action === "edit" ? JSON.stringify({
                 atributo,
-                id
+                id,
+                csrf_token: csrfToken
             }) : JSON.stringify({
-                atributo
+                atributo,
+                csrf_token: csrfToken
             });
 
             try {
