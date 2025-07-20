@@ -115,14 +115,14 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
                         </div>
                         <div class="producto-info">
                             <p><? echo $producto["nombre"]; ?></p>
-                            <div class="producto-precio">
-                                <p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
-                                <?
-                                if ($producto["descuento"] > 0) {
-                                    echo "<p>$ {$producto['precioD']}</p>";
-                                }
-                                ?>
-                            </div>
+                        </div>
+                        <div class="producto-precio">
+                            <p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
+                            <?
+                            if ($producto["descuento"] > 0) {
+                                echo "<p>$ {$producto['precioD']}</p>";
+                            }
+                            ?>
                         </div>
                     </a>
                 <?

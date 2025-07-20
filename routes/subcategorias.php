@@ -63,25 +63,25 @@ $description = "Explora nuestras subcategorías en SK. Encuentra una amplia sele
                 </span>
             </div>
             <div class="productos">
-                <div id="productos" data-category="<? echo $categoria[0]["id"]; ?>" class="productos-list">
+                <div id="productos" data-category="<? echo $categoria[0]["id"]; ?>" data-subcategory="<? echo $id_s; ?>" class="productos-list">
                     <?
 
                     $statement = "";
 
                     if (!empty($price) && $price === "asc") {
-                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.categoria = s.id_categoria WHERE s.id_categoria = ? ORDER BY precio ASC LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.subcategoria = s.id AND p.categoria = s.id_categoria WHERE s.id = ? ORDER BY precio ASC LIMIT 16";
                     } elseif (!empty($price) && $price === "desc") {
-                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.categoria = s.id_categoria WHERE s.id_categoria = ? ORDER BY precio DESC LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.subcategoria = s.id AND p.categoria = s.id_categoria WHERE s.id = ? ORDER BY precio DESC LIMIT 16";
                     } elseif (!empty($featured) && $featured === "1") {
-                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.categoria = s.id_categoria WHERE s.id_categoria = ? ORDER BY visitas DESC LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.subcategoria = s.id AND p.categoria = s.id_categoria WHERE s.id = ? ORDER BY visitas DESC LIMIT 16";
                     } elseif (!empty($discount) && $discount === "1") {
-                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.categoria = s.id_categoria WHERE s.id_categoria = ? AND descuento = 1 ORDER BY precioD ASC LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.subcategoria = s.id AND p.categoria = s.id_categoria WHERE s.id = ? AND descuento = 1 ORDER BY precioD ASC LIMIT 16";
                     } else {
-                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.categoria = s.id_categoria WHERE s.id_categoria = ? LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id JOIN subcategorias AS s ON p.subcategoria = s.id AND p.categoria = s.id_categoria WHERE s.id = ? LIMIT 16";
                     }
 
                     $sqlProd = $pdo->prepare($statement);
-                    $sqlProd->execute([$id]);
+                    $sqlProd->execute([$id_s]);
 
                     $productos = $sqlProd->fetchAll(PDO::FETCH_ASSOC);
 
@@ -112,14 +112,14 @@ $description = "Explora nuestras subcategorías en SK. Encuentra una amplia sele
                                 </div>
                                 <div class="producto-info">
                                     <p><? echo $producto["nombre"]; ?></p>
-                                    <div class="producto-precio">
-                                        <p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
-                                        <?
-                                        if ($producto["descuento"] > 0) {
-                                            echo "<p>$ {$producto['precioD']}</p>";
-                                        }
-                                        ?>
-                                    </div>
+                                </div>
+                                <div class="producto-precio">
+                                    <p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
+                                    <?
+                                    if ($producto["descuento"] > 0) {
+                                        echo "<p>$ {$producto['precioD']}</p>";
+                                    }
+                                    ?>
                                 </div>
                             </a>
                     <?

@@ -17,6 +17,26 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    # code...
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = trim($data["id"] ?? "");
+
+    if (isset($id)) {
+        // Actualiza el producto destacado en la base de datos
+        $stmt = $pdo->prepare("UPDATE categorias SET destacado = 0 WHERE id = ?");
+        $stmt->execute([$id]);
+        // Redirige a la misma página para evitar reenvío del formulario
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    }
+}
+
+# code...
+$stmt1 = $pdo->prepare("SELECT COUNT(*) FROM categorias WHERE destacado = 1");
+$stmt1->execute();
+$count = $stmt1->fetch();
+
 ?>
 
 <!DOCTYPE html>
@@ -501,23 +521,9 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                     <div class="col-6 col-lg-3">
                         <a
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
-                            href="categories_edit.php">
-                            <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-success mb-1">
-                                    <i class="fa fa-plus"></i>
-                                </div>
-                                <p class="fw-semibold fs-sm text-success text-uppercase mb-0">
-                                    Añadir
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <a
-                            class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><? echo $count["COUNT(*)"]; ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
                                     Categorías
                                 </p>
@@ -562,21 +568,29 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center fs-sm">
-                                            <strong>ID.</strong>
-                                        </td>
-                                        <td class="d-none d-md-table-cell fs-sm">
-                                            <a class="fw-semibold" href="javascript:void(0)"></a>
-                                        </td>
-                                        <td class="text-center fs-sm">
-                                            <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="" data-name="" href="javascript:void(0)">
-                                                <input class="form-check-input" type="checkbox" id="category-featured"
-                                                    name="category-featured" checked>
-                                                <label class="form-check-label" for="category-featured"></label>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $stmt = $pdo->prepare("SELECT * FROM categorias WHERE destacado = 1");
+                                    $stmt->execute();
+                                    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($categories as $category) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center fs-sm">
+                                                <strong>ID.<? echo $category["id"] ?></strong>
+                                            </td>
+                                            <td class="d-none d-md-table-cell fs-sm">
+                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $category["nombre"] ?></a>
+                                            </td>
+                                            <td class="text-center fs-sm">
+                                                <input class="form-check-input" type="checkbox" id="categories-featured"
+                                                    name="categories-featured" checked data-id="<? echo $category["id"] ?>" data-name="<? echo $category["nombre"] ?>">
+                                                <label class="form-check-label" for="categories-featured"></label>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -657,7 +671,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
         // Agrega eventos a los botones de editar y eliminar
         function attachEventListeners() {
             const searchInput = document.getElementById("dm-ecom-products-search");
-            const featured = document.getElementById("categories-featured");
+            const featured = document.querySelectorAll("#categories-featured");
             const tableRows = document.querySelectorAll(".table tbody tr");
 
             searchInput.addEventListener("input", function() {
@@ -674,21 +688,26 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                 });
             });
 
-            featured.addEventListener("change", function() {
-                fetch('/routes/suadview/categories_featured.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        featured: 0
+            featured.forEach((feature) => {
+
+                feature.addEventListener("change", function() {
+                    const id = feature.dataset.id;
+                    fetch('/routes/suadview/categories_feature.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: id
+                        })
                     })
-                })
-            });
+                });
+            })
+
         }
 
         // Cargar categorías al inicio
-        document.addEventListener("DOMContentLoaded", loadCategories);
+        document.addEventListener("DOMContentLoaded", attachEventListeners);
     </script>
 </body>
 

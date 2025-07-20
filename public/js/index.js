@@ -266,22 +266,40 @@ document.addEventListener("DOMContentLoaded", async function () {
 		isLoading = true; // Evita llamadas múltiples mientras se carga
 		page++;
 
-		try {
-			const response = await fetch(
-				`/src/scripts/load_more_products.php?id=${document
-					.getElementById("productos")
-					.getAttribute("data-category")}&page=${page}`
-			);
+		if (window.location.search.includes("id_s")) {
+			try {
+				const response = await fetch(
+					`/src/scripts/load_more_products_specific.php?id=${document
+						.getElementById("productos")
+						.getAttribute("data-subcategory")}&page=${page}`
+				);
 
-			if (response.ok) {
-				const newProductsHTML = await response.text();
-				document.getElementById("productos").innerHTML += newProductsHTML;
+				if (response.ok) {
+					const newProductsHTML = await response.text();
+					document.getElementById("productos").innerHTML += newProductsHTML;
+				}
+			} catch (error) {
+				console.error("Error loading more products:", error);
 			}
-		} catch (error) {
-			console.error("Error loading more products:", error);
-		}
+			isLoading = false; // Permite nuevas llamadas después de la carga
+		} else {
+			try {
+				const response = await fetch(
+					`/src/scripts/load_more_products.php?id=${document
+						.getElementById("productos")
+						.getAttribute("data-category")}&page=${page}`
+				);
 
-		isLoading = false; // Permite nuevas llamadas después de la carga
+				if (response.ok) {
+					const newProductsHTML = await response.text();
+					document.getElementById("productos").innerHTML += newProductsHTML;
+				}
+			} catch (error) {
+				console.error("Error loading more products:", error);
+			}
+
+			isLoading = false; // Permite nuevas llamadas después de la carga
+		}
 	}
 
 	// Debounce para limitar la frecuencia de ejecución del evento scroll

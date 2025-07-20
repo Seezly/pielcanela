@@ -17,6 +17,26 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    # code...
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = trim($data["id"] ?? "");
+
+    if (isset($id)) {
+        // Actualiza el producto destacado en la base de datos
+        $stmt = $pdo->prepare("UPDATE productos SET destacado = 0 WHERE id = ?");
+        $stmt->execute([$id]);
+
+        // Redirige a la misma página para evitar reenvío del formulario
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    }
+}
+
+$stmt1 = $pdo->prepare("SELECT COUNT(*) FROM productos WHERE destacado = 1");
+$stmt1->execute();
+$count = $stmt1->fetch();
+
 ?>
 
 <!DOCTYPE html>
@@ -501,25 +521,11 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                     <div class="col-6 col-lg-3">
                         <a
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
-                            href="categories_edit.php">
-                            <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-success mb-1">
-                                    <i class="fa fa-plus"></i>
-                                </div>
-                                <p class="fw-semibold fs-sm text-success text-uppercase mb-0">
-                                    Añadir
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <a
-                            class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><? echo $count["COUNT(*)"]; ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
-                                    Categorías
+                                    Productos destacados
                                 </p>
                             </div>
                         </a>
@@ -530,7 +536,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                 <!-- All Products -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Todas las categorías</h3>
+                        <h3 class="block-title">Todos los productos</h3>
                     </div>
                     <div class="block-content bg-body-dark">
                         <!-- Search Form -->
@@ -571,17 +577,15 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                                     ?>
                                         <tr>
                                             <td class="text-center fs-sm">
-                                                <strong>ID.<? $product["id"] ?></strong>
+                                                <strong>ID.<? echo $product["id"] ?></strong>
                                             </td>
                                             <td class="d-none d-md-table-cell fs-sm">
-                                                <a class="fw-semibold" href="javascript:void(0)"><? $product["nombre"] ?></a>
+                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["nombre"] ?></a>
                                             </td>
                                             <td class="text-center fs-sm">
-                                                <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="" data-name="" href="javascript:void(0)">
-                                                    <input class="form-check-input" type="checkbox" id="products-featured"
-                                                        name="products-featured" checked>
-                                                    <label class="form-check-label" for="products-featured"></label>
-                                                </a>
+                                                <input class="form-check-input" type="checkbox" id="products-featured"
+                                                    name="products-featured" checked data-id="<? echo $product["id"] ?>" data-name="<? echo $product["nombre"] ?>">
+                                                <label class="form-check-label" for="products-featured"></label>
                                             </td>
                                         </tr>
                                     <?php
@@ -656,10 +660,10 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
     <!-- END Page Container -->
 
     <!--
-      Dashmix JS
+    Dashmix JS
 
-      Core libraries and functionality
-      webpack is putting everything together at /public/_js/main/app.js
+    Core libraries and functionality
+    webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="/public/js/dashmix.app.min.js"></script>
 
@@ -667,7 +671,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
         // Agrega eventos a los botones de editar y eliminar
         function attachEventListeners() {
             const searchInput = document.getElementById("dm-ecom-products-search");
-            const featured = document.getElementById("products-featured");
+            const featured = document.querySelectorAll("#products-featured");
             const tableRows = document.querySelectorAll(".table tbody tr");
 
             searchInput.addEventListener("input", function() {
@@ -684,21 +688,26 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                 });
             });
 
-            featured.addEventListener("change", function() {
-                fetch('/routes/suadview/products_featured.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        featured: 0
+            featured.forEach((feature) => {
+
+                feature.addEventListener("change", function() {
+                    const id = feature.dataset.id;
+                    fetch('/routes/suadview/products_featured.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: id
+                        })
                     })
-                })
-            });
+                });
+            })
+
         }
 
         // Cargar categorías al inicio
-        document.addEventListener("DOMContentLoaded", loadCategories);
+        document.addEventListener("DOMContentLoaded", attachEventListeners);
     </script>
 </body>
 

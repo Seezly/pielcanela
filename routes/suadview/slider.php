@@ -26,7 +26,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-    <title>Piel Canela | Categorias</title>
+    <title>Piel Canela | Slider</title>
 
     <meta name="robots" content="noindex, nofollow" />
 
@@ -501,25 +501,11 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                     <div class="col-6 col-lg-3">
                         <a
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
-                            href="categories_edit.php">
-                            <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-success mb-1">
-                                    <i class="fa fa-plus"></i>
-                                </div>
-                                <p class="fw-semibold fs-sm text-success text-uppercase mb-0">
-                                    Añadir
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <a
-                            class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
                                 <div class="fs-3 fw-semibold text-danger mb-1" id="view"></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
-                                    Categorías
+                                    Slides
                                 </p>
                             </div>
                         </a>
@@ -530,7 +516,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                 <!-- All Products -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Todas las categorías</h3>
+                        <h3 class="block-title">Todos los slides</h3>
                     </div>
                     <div class="block-content bg-body-dark">
                         <!-- Search Form -->
@@ -557,26 +543,45 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                                 <thead>
                                     <tr>
                                         <th class="text-center" style="width: 100px">ID</th>
-                                        <th class="d-none d-md-table-cell">Nombre</th>
-                                        <th class="text-center">Destacar</th>
+                                        <th class="d-none d-md-table-cell">Titulo</th>
+                                        <th class="text-center">Descripción</th>
+                                        <th class="text-center">Enlace</th>
+                                        <th class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center fs-sm">
-                                            <strong>ID.</strong>
-                                        </td>
-                                        <td class="d-none d-md-table-cell fs-sm">
-                                            <a class="fw-semibold" href="javascript:void(0)"></a>
-                                        </td>
-                                        <td class="text-center fs-sm">
-                                            <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="" data-name="" href="javascript:void(0)">
-                                                <input class="form-check-input" type="checkbox" id="slider-featured"
-                                                    name="slider-featured" checked>
-                                                <label class="form-check-label" for="slider-featured"></label>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $stmt = $pdo->prepare("SELECT * FROM slides ORDER BY id DESC");
+                                    $stmt->execute();
+                                    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($products as $product) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center fs-sm">
+                                                <strong>ID.<? echo $product["id"] ?></strong>
+                                            </td>
+                                            <td class="d-none d-md-table-cell fs-sm">
+                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["titulo"] ?></a>
+                                            </td>
+                                            <td class="d-none d-md-table-cell fs-sm">
+                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["descripcion"] ?></a>
+                                            </td>
+                                            <td class="d-none d-md-table-cell fs-sm">
+                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["enlace"] ?></a>
+                                            </td>
+                                            <td class="text-center fs-sm">
+                                                <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="<? echo $product["id"] ?>" data-title="<? echo $product["titulo"] ?>" data-desc="<? echo $product["descripcion"] ?>" data-enlace="<? echo $product["enlace"] ?>" href="javascript:void(0)">
+                                                    <i class="fa fa-fw fa-eye"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-alt-secondary delete-btn" data-id="<? echo $product["id"] ?>" href="javascript:void(0)">
+                                                    <i class="fa fa-fw fa-times text-danger"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -655,9 +660,10 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
 
     <script>
         // Agrega eventos a los botones de editar y eliminar
+
         function attachEventListeners() {
             const searchInput = document.getElementById("dm-ecom-products-search");
-            const featured = document.getElementById("slider-featured");
+            const featured = document.querySelectorAll("#slider-featured");
             const tableRows = document.querySelectorAll(".table tbody tr");
 
             searchInput.addEventListener("input", function() {
@@ -674,21 +680,26 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                 });
             });
 
-            featured.addEventListener("change", function() {
-                fetch('/routes/suadview/slider_featured.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        featured: 0
+            featured.forEach((feature) => {
+
+                feature.addEventListener("change", function() {
+                    const id = feature.dataset.id; // Asegúrate de que $product["id"] esté definido
+                    fetch('/routes/suadview/slider.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: id
+                        })
                     })
-                })
-            });
+                });
+            })
+
         }
 
         // Cargar categorías al inicio
-        document.addEventListener("DOMContentLoaded", loadCategories);
+        document.addEventListener("DOMContentLoaded", attachEventListeners);
     </script>
 </body>
 

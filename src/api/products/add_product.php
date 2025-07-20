@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sku = trim($_POST["sku"] ?? "");
     $descripcion = trim($_POST["descripcion"] ?? "");
     $categoria = $_POST["categoria"] ?? "";
+    $subcategoria = $_POST["subcategoria"] ?? "";
     $atributo = $_POST["atributo"] ?? "";
     $opciones = $_POST["atributo"] == 4 ? "" : strtolower($_POST["opciones"]);
     $descuento = trim($_POST["descuento"] ?? 0);
@@ -54,13 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $porcentajeD = trim($_POST["porcentajeD"] ?? 0);
     $destacado = trim($_POST["destacado"] ?? "") == "true" ? 1 : 0;
 
-    if (empty($nombre) || empty($precio) || empty($sku) || empty($descripcion) || empty($categoria) || empty($rutasImagenes) || empty($atributo)) {
+    if (empty($nombre) || empty($precio) || empty($sku) || empty($descripcion) || empty($categoria) || empty($subcategoria) || empty($rutasImagenes) || empty($atributo)) {
         echo json_encode(["status" => "error", "message" => "Todos los campos son obligatorios."]);
         exit;
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO productos (nombre, precio, descripcion, descuento, precioD, porcentajeD, sku, categoria, imagen, atributo_id, opciones, destacado) VALUES (:nombre, :precio, :descripcion, :descuento, :precioD, :porcentajeD, :sku, :categoria, :imagen, :atributo_id, :opciones, :destacado)");
+        $stmt = $pdo->prepare("INSERT INTO productos (nombre, precio, descripcion, descuento, precioD, porcentajeD, sku, categoria, imagen, atributo_id, opciones, destacado, subcategoria) VALUES (:nombre, :precio, :descripcion, :descuento, :precioD, :porcentajeD, :sku, :categoria, :imagen, :atributo_id, :opciones, :destacado)");
         $stmt->execute([
             "nombre" => $nombre,
             "precio" => $precio,
@@ -74,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "atributo_id" => $atributo,
             "opciones" => $opciones,
             "destacado" => $destacado,
+            "subcategoria" => $subcategoria,
         ]);
         header('Content-Type: application/json');
         echo json_encode(["status" => "success", "message" => "Producto agregado correctamente.", "destacado" => $destacado]);

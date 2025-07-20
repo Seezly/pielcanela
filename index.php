@@ -25,7 +25,7 @@ require 'src/scripts/allVisits.php';
 
 		<section class="categorias">
 			<?
-			$sql = $pdo->prepare("SELECT * FROM categorias LIMIT 4");
+			$sql = $pdo->prepare("SELECT * FROM categorias WHERE destacado = 1 LIMIT 4");
 			$sql->execute();
 
 			$categorias = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -91,14 +91,14 @@ require 'src/scripts/allVisits.php';
 						</div>
 						<div class="producto-info">
 							<p><? echo $producto["nombre"]; ?></p>
-							<div class="producto-precio">
-								<p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
-								<?
-								if ($producto["descuento"] > 0) {
-									echo "<p>$ {$producto['precioD']}</p>";
-								}
-								?>
-							</div>
+						</div>
+						<div class="producto-precio">
+							<p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
+							<?
+							if ($producto["descuento"] > 0) {
+								echo "<p>$ {$producto['precioD']}</p>";
+							}
+							?>
 						</div>
 					</a>
 				<?
@@ -151,14 +151,14 @@ require 'src/scripts/allVisits.php';
 						</div>
 						<div class="producto-info">
 							<p><? echo $producto["nombre"]; ?></p>
-							<div class="producto-precio">
-								<p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
-								<?
-								if ($producto["descuento"] > 0) {
-									echo "<p>$ {$producto['precioD']}</p>";
-								}
-								?>
-							</div>
+						</div>
+						<div class="producto-precio">
+							<p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
+							<?
+							if ($producto["descuento"] > 0) {
+								echo "<p>$ {$producto['precioD']}</p>";
+							}
+							?>
 						</div>
 					</a>
 				<?

@@ -100,10 +100,10 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                             </div>
                             <div class="producto-info">
                                 <p><?= $producto["nombre"]; ?></p>
-                                <div class="producto-precio">
-                                    <p class="<?= ($producto["descuento"] > 0) ? "midline" : ""; ?>">$ <?= $producto["precio"]; ?></p>
-                                    <? if ($producto["descuento"] > 0) echo "<p>$ {$producto['precioD']}</p>"; ?>
-                                </div>
+                            </div>
+                            <div class="producto-precio">
+                                <p class="<?= ($producto["descuento"] > 0) ? "midline" : ""; ?>">$ <?= $producto["precio"]; ?></p>
+                                <? if ($producto["descuento"] > 0) echo "<p>$ {$producto['precioD']}</p>"; ?>
                             </div>
                         </a>
                     <?php

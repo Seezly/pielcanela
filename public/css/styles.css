@@ -794,9 +794,12 @@ nav ul a li {
 	margin-bottom: 2em;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
 	border-radius: 4px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	height: 25em;
+	padding: 0.5em;
 	overflow: hidden;
 	transition: all 0.2s;
 }
@@ -846,6 +849,11 @@ nav ul a li {
 	width: 100%;
 	padding: 0.5em 1em;
 	text-align: center;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	overflow: hidden;
+	font-size: 0.95em;
 }
 
 .productos .producto .producto-precio {
@@ -1151,5 +1159,9 @@ PRODUCTO
 
 	.arrow {
 		display: none;
+	}
+
+	#wabutton a {
+		bottom: 100px !important;
 	}
 }
