@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 require '../../scripts/conn.php'; // Conexión a la base de datos
 
 // Verifica si la solicitud es POST
