@@ -595,79 +595,89 @@ if (!empty($id)) {
     <script src="/public/js/dropzone.min.js"></script>
 
     <script>
-        document.getElementById("category").addEventListener("submit", async function(event) {
-            event.preventDefault(); // Evita el envío tradicional del formulario
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("category");
+            const submitButton = form.querySelector("button[type='submit']");
 
-            const action = this.getAttribute("data-action"); // Obtiene el data-action (add o edit)
-            const nombre = document.getElementById("dm-ecom-product-name").value.trim();
-            const descripcion = document.getElementById("dm-ecom-product-desc").value.trim();
-            const link = document.getElementById("dm-ecom-product-link").value.trim();
-            const id = document.getElementById("id") ? document.getElementById("id").value.trim() : null;
-            const csrfToken = document.getElementById("csrf_token").value;
-
-            const adsDropzone = document.querySelector(".dropzone");
             Dropzone.autoDiscover = false;
 
-            // Inicializa nuevas instancias
-            if (!adsDropzone.dropzone) {
-                new Dropzone(dropzone, {
-                    url: "#",
-                    autoProcessQueue: false,
-                    addRemoveLinks: true,
-                    uploadMultiple: false,
-                    parallelUploads: 1,
-                    maxFiles: 1,
-                    removedfile: function(file) {
-                        var _ref;
-                        return (_ref = file.previewElement) != null ?
-                            _ref.parentNode.removeChild(file.previewElement) :
-                            void 0;
-                    },
-                });
+            if (Dropzone.instances.length > 0) {
+                Dropzone.instances.forEach(dz => dz.destroy());
             }
 
-            if (!nombre || (action === "edit" && !id)) {
-                document.getElementById("message").textContent = "El nombre es obligatorio y el ID si estás editando.";
-                return;
-            }
-
-            const endpoint = action === "edit" ?
-                "/src/api/categories/edit_slide.php" :
-                "/src/api/categories/add_slide.php";
-
-            const body = action === "edit" ? JSON.stringify({
-                nombre,
-                descripcion,
-                link,
-                imagen: `${Dropzone.instances[0].files}`,
-                id,
-                csrf_token: csrfToken
-            }) : JSON.stringify({
-                nombre,
-                descripcion,
-                imagen: `${Dropzone.instances[0].files}`,
-                link,
-                csrf_token: csrfToken
+            let myDropzone = new Dropzone(".dropzone", {
+                url: "#",
+                autoProcessQueue: false,
+                addRemoveLinks: true,
+                uploadMultiple: false,
+                parallelUploads: 1,
+                maxFiles: 1,
+                removedfile: function (file) {
+                    var _ref;
+                    return (_ref = file.previewElement) != null ?
+                        _ref.parentNode.removeChild(file.previewElement) :
+                        void 0;
+                }
             });
 
-            try {
-                const response = await fetch(endpoint, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: body
-                });
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault();
 
-                const result = await response.json();
-                document.getElementById("message").textContent = result.message;
+                const action = form.getAttribute("data-action");
+                const nombre = document.getElementById("dm-ecom-product-name").value.trim();
+                const descripcion = document.getElementById("dm-ecom-product-desc").value.trim();
+                const link = document.getElementById("dm-ecom-product-link").value.trim();
+                const id = document.getElementById("id") ? document.getElementById("id").value.trim() : "";
+                const csrfToken = document.getElementById("csrf_token").value;
 
-                if (result.status === "success") {
-                    this.reset();
+                if (!nombre || (action === "edit" && !id)) {
+                    document.getElementById("message").textContent = "El título es obligatorio y el ID si estás editando.";
+                    return;
                 }
-            } catch (error) {
-                document.getElementById("message").textContent = "Error al enviar la solicitud.";
-            }
+
+                let formData = new FormData();
+                formData.append("titulo", nombre);
+                formData.append("descripcion", descripcion);
+                formData.append("enlace", link);
+                if (action === "edit") {
+                    formData.append("id", id);
+                }
+
+                if (myDropzone.files.length > 0) {
+                    myDropzone.files.forEach(file => {
+                        formData.append("image[]", file);
+                    });
+                }
+
+                formData.append("csrf_token", csrfToken);
+
+                const endpoint = action === "edit" ?
+                    "/src/api/slides/edit_slide.php" :
+                    "/src/api/slides/add_slide.php";
+
+                submitButton.disabled = true;
+                submitButton.textContent = action === "edit" ? "Editando..." : "Enviando...";
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response.json();
+                    document.getElementById("message").textContent = result.message;
+
+                    if (result.status === "success") {
+                        form.reset();
+                        myDropzone.removeAllFiles();
+                    }
+                } catch (error) {
+                    document.getElementById("message").textContent = "Error al enviar la solicitud.";
+                }
+
+                submitButton.disabled = false;
+                submitButton.textContent = action === "edit" ? "Editar" : "Añadir";
+            });
         });
     </script>
 
