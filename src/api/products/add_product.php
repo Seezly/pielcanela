@@ -1,5 +1,8 @@
 <?php
+header('Content-Type: application/json');
+session_start();
 require '../../scripts/conn.php'; // Conexión a la base de datos
+require '../../scripts/csrf.php';
 
 // Verifica si la solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -54,6 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $precioD = trim($_POST["precioD"] ?? 0);
     $porcentajeD = trim($_POST["porcentajeD"] ?? 0);
     $destacado = trim($_POST["destacado"] ?? "") == "true" ? 1 : 0;
+    $token = $_POST["csrf_token"] ?? "";
+
+    if (!validate_csrf_token($token)) {
+        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
+        exit;
+    }
 
     if (empty($nombre) || empty($precio) || empty($sku) || empty($descripcion) || empty($categoria) || empty($subcategoria) || empty($rutasImagenes) || empty($atributo)) {
         echo json_encode(["status" => "error", "message" => "Todos los campos son obligatorios."]);
