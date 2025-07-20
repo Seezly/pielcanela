@@ -16,6 +16,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 ?>
 
@@ -532,6 +534,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                                     name="dm-ecom-products-search"
                                     placeholder="Buscar slides..." />
                             </div>
+                            <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         </form>
                         <!-- END Search Form -->
                     </div>
@@ -695,6 +698,33 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                     })
                 });
             })
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', async function () {
+                    const id = this.getAttribute('data-id');
+                    const csrfToken = document.getElementById('csrf_token').value;
+                    if (confirm('¿Estás seguro de que deseas eliminar este slide?')) {
+                        try {
+                            const response = await fetch('/src/api/slides/delete_slide.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ id: id, csrf_token: csrfToken })
+                            });
+
+                            const result = await response.json();
+                            alert(result.message);
+
+                            if (result.status === 'success') {
+                                this.closest('tr').remove();
+                            }
+                        } catch (error) {
+                            console.error('Error al eliminar el slide:', error);
+                        }
+                    }
+                });
+            });
 
         }
 
