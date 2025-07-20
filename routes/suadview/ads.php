@@ -451,7 +451,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -510,7 +510,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><? echo $ads[0]["visitas"] ?></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><?= $ads[0]["visitas"] ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
                                     Clics en ad #1
                                 </p>
@@ -522,7 +522,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><? echo $ads[1]["visitas"] ?></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><?= $ads[1]["visitas"] ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
                                     Clics en ad #2
                                 </p>
@@ -589,7 +589,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-4">
                                                 <label class="form-label" for="dm-ecom-ad-1">URL AD #1</label>
                                                 <input type="text" class="form-control" id="dm-ecom-ad-1" name="dm-ecom-ad-1"
-                                                    value="<? echo $ads[0]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                    value="<?= $ads[0]["url"]; ?>" placeholder="https:/.com/categoria/producto">
                                                 <input type="hidden" name="idAd1" value="1">
                                             </div>
                                         </form>
@@ -601,7 +601,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-4">
                                                 <label class="form-label" for="dm-ecom-ad-2">URL AD #2</label>
                                                 <input type="text" class="form-control" id="dm-ecom-ad-2" name="dm-ecom-ad-2"
-                                                    value="<? echo $ads[1]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                    value="<?= $ads[1]["url"]; ?>" placeholder="https:/.com/categoria/producto">
                                                 <input type="hidden" name="idAd2" value="2">
                                             </div>
                                         </form>

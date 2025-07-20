@@ -447,7 +447,7 @@ $sql = $stmtP->fetch();
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -502,7 +502,7 @@ $sql = $stmtP->fetch();
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="products.php">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-primary mb-1"><? echo $sql["cantidad_p"]; ?></div>
+                                <div class="fs-3 fw-semibold text-primary mb-1"><?= $sql["cantidad_p"]; ?></div>
                                 <p class="fw-semibold fs-sm text-muted text-uppercase mb-0">
                                     Productos
                                 </p>
@@ -514,7 +514,7 @@ $sql = $stmtP->fetch();
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-success mb-1"><? echo $sql["cantidad_u"]; ?></div>
+                                <div class="fs-3 fw-semibold text-success mb-1"><?= $sql["cantidad_u"]; ?></div>
                                 <p class="fw-semibold fs-sm text-muted text-uppercase mb-0">
                                     Usuarios online
                                 </p>
@@ -526,7 +526,7 @@ $sql = $stmtP->fetch();
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold mb-1"><? echo $sql["cantidad_v"]; ?></div>
+                                <div class="fs-3 fw-semibold mb-1"><?= $sql["cantidad_v"]; ?></div>
                                 <p class="fw-semibold fs-sm text-muted text-uppercase mb-0">
                                     Usuarios últ. 30 días
                                 </p>
@@ -538,7 +538,7 @@ $sql = $stmtP->fetch();
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold mb-1"><? echo $sql["pedidos"]; ?></div>
+                                <div class="fs-3 fw-semibold mb-1"><?= $sql["pedidos"]; ?></div>
                                 <p class="fw-semibold fs-sm text-muted text-uppercase mb-0">
                                     Pedidos enviados a WhatsApp (últ. 30 días)
                                 </p>
@@ -600,7 +600,7 @@ $sql = $stmtP->fetch();
                                         <td>Visitas</td>
                                     </thead>
                                     <tbody>
-                                        <?
+                                        <?php
 
                                         $stmt = $pdo->prepare("SELECT sku, nombre, visitas FROM productos ORDER BY visitas DESC LIMIT 10");
                                         $stmt->execute();
@@ -612,22 +612,22 @@ $sql = $stmtP->fetch();
                                                 <td class="text-center" style="width: 100px">
                                                     <a
                                                         class="fw-semibold"
-                                                        href="#"><? echo $producto["sku"]; ?></a>
+                                                        href="#"><?= $producto["sku"]; ?></a>
                                                 </td>
                                                 <td>
                                                     <a
                                                         class="fw-medium"
-                                                        href="#"><? echo $producto["nombre"]; ?></a>
+                                                        href="#"><?= $producto["nombre"]; ?></a>
                                                 </td>
                                                 <td class="d-none d-sm-table-cell text-end text-nowrap">
                                                     <div class="text-warning">
                                                         <a
                                                             class="fw-medium"
-                                                            href="#"><? echo $producto["visitas"]; ?> Visitas</a>
+                                                            href="#"><?= $producto["visitas"]; ?> Visitas</a>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        <?
+                                        <?php
                                         }
                                         ?>
                                     </tbody>

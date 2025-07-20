@@ -2,14 +2,14 @@
 <html lang="es">
 
 <head>
-    <? include_once('../src/components/head.php'); ?>
+    <?php include_once('../src/components/head.php'); ?>
 </head>
 
 <body>
     <!-- Header -->
-    <? include_once('../src/components/header.php'); ?>
+    <?php include_once('../src/components/header.php'); ?>
     <!-- Nav -->
-    <? include_once('../src/components/nav.php'); ?>
+    <?php include_once('../src/components/nav.php'); ?>
 
     <!--  Principal   -->
 
@@ -36,10 +36,10 @@
     </main>
 
     <!-- Footer -->
-    <? include_once('../src/components/footer.php'); ?>
+    <?php include_once('../src/components/footer.php'); ?>
 
     <!-- Modales -->
-    <? include_once('../src/components/modals.php'); ?>
+    <?php include_once('../src/components/modals.php'); ?>
 </body>
 
 </html>

@@ -456,7 +456,7 @@ if (!empty($id)) {
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -511,25 +511,25 @@ if (!empty($id)) {
                 <!-- Quick Overview -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <? if (empty($id)) { ?>
+                        <?php if (empty($id)) { ?>
                             <h3 class="block-title">Añadir atributo</h3>
-                        <? } else { ?>
+                        <?php } else { ?>
                             <h3 class="block-title">Editar atributo</h3>
-                        <? } ?>
+                        <?php } ?>
                     </div>
                     <div class="block-content">
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8">
-                                <form id="category" method="POST" data-action="<? if (!empty($id)) echo "edit";
+                                <form id="category" method="POST" data-action="<?php if (!empty($id)) echo "edit";
                                                                                 else echo "add"; ?>" onsubmit="return false;">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-name">Nombre</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-name" name="dm-ecom-product-name"
-                                            value="<? if (!empty($id)) echo $nombre; ?>" required>
-                                        <input type="hidden" id="id" value="<? if (!empty($id)) echo $id; ?>">
+                                            value="<?php if (!empty($id)) echo $nombre; ?>" required>
+                                        <input type="hidden" id="id" value="<?php if (!empty($id)) echo $id; ?>">
                                     </div>
                                     <div class="mb-4">
-                                        <button type="submit" class="btn btn-alt-primary"><? if (!empty($id)) echo "Editar";
+                                        <button type="submit" class="btn btn-alt-primary"><?php if (!empty($id)) echo "Editar";
                                                                                             else echo "Añadir"; ?></button>
                                     </div>
                                 </form>

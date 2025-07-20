@@ -464,7 +464,7 @@ $count = $stmt1->fetch();
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -523,7 +523,7 @@ $count = $stmt1->fetch();
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><? echo $count["COUNT(*)"]; ?></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><?= $count["COUNT(*)"]; ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
                                     Productos destacados
                                 </p>
@@ -577,14 +577,14 @@ $count = $stmt1->fetch();
                                     ?>
                                         <tr>
                                             <td class="text-center fs-sm">
-                                                <strong>ID.<? echo $product["id"] ?></strong>
+                                                <strong>ID.<?= $product["id"] ?></strong>
                                             </td>
                                             <td class="d-none d-md-table-cell fs-sm">
-                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["nombre"] ?></a>
+                                                <a class="fw-semibold" href="javascript:void(0)"><?= $product["nombre"] ?></a>
                                             </td>
                                             <td class="text-center fs-sm">
                                                 <input class="form-check-input" type="checkbox" id="products-featured"
-                                                    name="products-featured" checked data-id="<? echo $product["id"] ?>" data-name="<? echo $product["nombre"] ?>">
+                                                    name="products-featured" checked data-id="<?= $product["id"] ?>" data-name="<?= $product["nombre"] ?>">
                                                 <label class="form-check-label" for="products-featured"></label>
                                             </td>
                                         </tr>

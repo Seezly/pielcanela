@@ -25,16 +25,16 @@ $productos = $sqlProd->fetchAll(PDO::FETCH_ASSOC);
 foreach ($productos as $producto) {
     $producto["imagen"] = explode(',', $producto["imagen"]);
 ?>
-    <a href="/producto/<?php echo preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<? echo $producto["id"]; ?>" id="<? echo $producto["id"]; ?>" class="producto">
+    <a href="/producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
         <div class="box-img">
-            <img src="<? if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-                        else echo $producto["imagen"]; ?>" loading="lazy" alt="<? echo $producto["nombre"]; ?>">
+            <img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
+                        else echo $producto["imagen"]; ?>" loading="lazy" alt="<?= $producto["nombre"]; ?>">
         </div>
         <div class="producto-info">
-            <p><? echo $producto["nombre"]; ?></p>
+            <p><?= $producto["nombre"]; ?></p>
             <div class="producto-precio">
-                <p class="<? if ($producto["descuento"] > 0) echo "midline"; ?>">$ <? echo $producto["precio"]; ?></p>
-                <? if ($producto["descuento"] > 0) {
+                <p class="<?php if ($producto["descuento"] > 0) echo "midline"; ?>">$ <?= $producto["precio"]; ?></p>
+                <?php if ($producto["descuento"] > 0) {
                     echo "<p>$ {$producto['precioD']}</p>";
                 } ?>
             </div>

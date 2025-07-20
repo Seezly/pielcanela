@@ -444,7 +444,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                             aria-haspopup="true"
                             aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block"><? echo $_SESSION["username"]; ?></span>
+                            <span class="d-none d-sm-inline-block"><?= $_SESSION["username"]; ?></span>
                             <i
                                 class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
@@ -559,22 +559,22 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                                     ?>
                                         <tr>
                                             <td class="text-center fs-sm">
-                                                <strong>ID.<? echo $product["id"] ?></strong>
+                                                <strong>ID.<?= $product["id"] ?></strong>
                                             </td>
                                             <td class="d-none d-md-table-cell fs-sm">
-                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["titulo"] ?></a>
+                                                <a class="fw-semibold" href="javascript:void(0)"><?= $product["titulo"] ?></a>
                                             </td>
                                             <td class="d-none d-md-table-cell fs-sm">
-                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["descripcion"] ?></a>
+                                                <a class="fw-semibold" href="javascript:void(0)"><?= $product["descripcion"] ?></a>
                                             </td>
                                             <td class="d-none d-md-table-cell fs-sm">
-                                                <a class="fw-semibold" href="javascript:void(0)"><? echo $product["enlace"] ?></a>
+                                                <a class="fw-semibold" href="javascript:void(0)"><?= $product["enlace"] ?></a>
                                             </td>
                                             <td class="text-center fs-sm">
-                                                <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="<? echo $product["id"] ?>" data-title="<? echo $product["titulo"] ?>" data-desc="<? echo $product["descripcion"] ?>" data-enlace="<? echo $product["enlace"] ?>" href="javascript:void(0)">
+                                                <a class="btn btn-sm btn-alt-secondary edit-btn" data-id="<?= $product["id"] ?>" data-title="<?= $product["titulo"] ?>" data-desc="<?= $product["descripcion"] ?>" data-enlace="<?= $product["enlace"] ?>" href="javascript:void(0)">
                                                     <i class="fa fa-fw fa-eye"></i>
                                                 </a>
-                                                <a class="btn btn-sm btn-alt-secondary delete-btn" data-id="<? echo $product["id"] ?>" href="javascript:void(0)">
+                                                <a class="btn btn-sm btn-alt-secondary delete-btn" data-id="<?= $product["id"] ?>" href="javascript:void(0)">
                                                     <i class="fa fa-fw fa-times text-danger"></i>
                                                 </a>
                                             </td>
