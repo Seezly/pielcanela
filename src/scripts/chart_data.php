@@ -27,10 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
         // Obtener los últimos 7 días agrupados por día
         $stmtv7 = $pdo->prepare("
-            SELECT DATE(visit_date) as fecha, COUNT(*) as total 
-            FROM visitas 
-            WHERE visit_date >= NOW() - INTERVAL 7 DAY 
-            GROUP BY DATE(fecha) 
+            SELECT DATE(visit_date) as fecha, COUNT(*) as total
+            FROM visitas
+            WHERE visit_date >= NOW() - INTERVAL 7 DAY
+            GROUP BY DATE(visit_date)
             ORDER BY fecha ASC
         ");
         $stmtv7->execute();
@@ -38,10 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
         // Obtener los últimos 14 días antes de los últimos 7 días agrupados por día
         $stmtv14 = $pdo->prepare("
-            SELECT DATE(visit_date) as fecha, COUNT(*) as total 
-            FROM visitas 
-            WHERE visit_date >= NOW() - INTERVAL 14 DAY AND visit_date < NOW() - INTERVAL 7 DAY 
-            GROUP BY DATE(fecha) 
+            SELECT DATE(visit_date) as fecha, COUNT(*) as total
+            FROM visitas
+            WHERE visit_date >= NOW() - INTERVAL 14 DAY AND visit_date < NOW() - INTERVAL 7 DAY
+            GROUP BY DATE(visit_date)
             ORDER BY fecha ASC
         ");
         $stmtv14->execute();
