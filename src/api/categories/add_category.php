@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: application/json');
+session_start();
 require '../../scripts/conn.php'; // Conexión a la base de datos
+require '../../scripts/csrf.php';
 
 // Verifica si la solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -8,6 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
     $nombre = trim($data["nombre"] ?? "");
     $destacado = trim($data["destacado"] ?? "");
+    $token = $data["csrf_token"] ?? "";
+
+    if (!validate_csrf_token($token)) {
+        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
+        exit;
+    }
 
     // Validación básica
     if (empty($nombre)) {

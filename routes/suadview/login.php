@@ -6,6 +6,11 @@ $_SESSION = array();
 
 // Finally, destroy the session
 session_destroy();
+
+// Start a fresh session to handle CSRF tokens
+session_start();
+require_once __DIR__ . '/../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 ?>
 
 <!doctype html>
@@ -122,6 +127,7 @@ session_destroy();
                             <div class="row g-0 justify-content-center">
                                 <div class="col-sm-8 col-xl-6">
                                     <form class="js-validation-signin" method="POST">
+                                        <input type="hidden" id="csrf_token" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                         <div class="py-3">
                                             <div class="mb-4">
                                                 <input type="text" class="form-control form-control-lg form-control-alt" id="login-username" name="login-username" placeholder="Usuario">
@@ -181,6 +187,7 @@ session_destroy();
                 let formData = new FormData();
                 formData.append("user", user.value);
                 formData.append("pass", pass.value);
+                formData.append("csrf_token", document.getElementById("csrf_token").value);
 
                 try {
                     let response = await fetch("/src/api/users/verify_user.php", {
