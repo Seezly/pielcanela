@@ -16,6 +16,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 $id = $_GET['id'];
 
@@ -533,6 +535,7 @@ if (!empty($id)) {
                             <div class="col-md-10 col-lg-8">
                                 <form action="be_pages_ecom_product_edit.html" method="POST" data-action="<?php if (!empty($id)) echo "edit";
                                                                                                             else echo "add"; ?>" onsubmit="return false;">
+                                    <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-id">Código</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-id" name="dm-ecom-product-id"
@@ -799,6 +802,8 @@ if (!empty($id)) {
                         formData.append("image[]", file);
                     });
                 }
+
+                formData.append("csrf_token", document.getElementById("csrf_token").value);
 
                 // Verifica si es una edición o una adición
                 let apiUrl = formAction === "edit" ? "/src/api/products/edit_product.php" : "/src/api/products/add_product.php";
