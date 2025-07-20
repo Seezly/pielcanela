@@ -16,6 +16,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 $id = $_GET['id'];
 
@@ -521,7 +523,8 @@ if (!empty($id)) {
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8">
                                 <form id="category" method="POST" data-action="<?php if (!empty($id)) echo "edit";
-                                                                                else echo "add"; ?>" onsubmit="return false;">
+else echo "add"; ?>" onsubmit="return false;">
+                                    <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-name">Nombre</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-name" name="dm-ecom-product-name"
@@ -604,6 +607,7 @@ if (!empty($id)) {
             const nombre = document.getElementById("dm-ecom-product-name").value.trim();
             const categoria = document.getElementById("dm-ecom-category-type").value.trim();
             const id = document.getElementById("id") ? document.getElementById("id").value.trim() : null;
+            const csrfToken = document.getElementById("csrf_token").value;
 
             if (!nombre || (action === "edit" && !id)) {
                 document.getElementById("message").textContent = "El nombre es obligatorio y el ID si estás editando.";
@@ -617,10 +621,12 @@ if (!empty($id)) {
             const body = action === "edit" ? JSON.stringify({
                 nombre,
                 categoria,
-                id
+                id,
+                csrf_token: csrfToken
             }) : JSON.stringify({
                 nombre,
-                categoria
+                categoria,
+                csrf_token: csrfToken
             });
 
             try {
