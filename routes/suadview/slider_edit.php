@@ -16,6 +16,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '../../src/scripts/csrf.php';
+$csrf_token = generate_csrf_token();
 
 $id = $_GET['id'];
 
@@ -523,7 +525,8 @@ if (!empty($id)) {
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8">
                                 <form id="category" method="POST" data-action="<?php if (!empty($id)) echo "edit";
-                                                                                else echo "add"; ?>" onsubmit="return false;">
+        else echo "add"; ?>" onsubmit="return false;">
+                                    <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                     <div class="mb-4">
                                         <label class="form-label" for="dm-ecom-product-name">Título</label>
                                         <input type="text" class="form-control" id="dm-ecom-product-name" name="dm-ecom-product-name"
@@ -600,6 +603,7 @@ if (!empty($id)) {
             const descripcion = document.getElementById("dm-ecom-product-desc").value.trim();
             const link = document.getElementById("dm-ecom-product-link").value.trim();
             const id = document.getElementById("id") ? document.getElementById("id").value.trim() : null;
+            const csrfToken = document.getElementById("csrf_token").value;
 
             const adsDropzone = document.querySelector(".dropzone");
             Dropzone.autoDiscover = false;
@@ -637,11 +641,13 @@ if (!empty($id)) {
                 link,
                 imagen: `${Dropzone.instances[0].files}`,
                 id,
+                csrf_token: csrfToken
             }) : JSON.stringify({
                 nombre,
                 descripcion,
                 imagen: `${Dropzone.instances[0].files}`,
                 link,
+                csrf_token: csrfToken
             });
 
             try {
