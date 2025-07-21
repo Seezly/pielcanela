@@ -25,7 +25,7 @@ $productos = $sqlProd->fetchAll(PDO::FETCH_ASSOC);
 foreach ($productos as $producto) {
     $producto["imagen"] = explode(',', $producto["imagen"]);
 ?>
-    <a href="/producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
+    <a href="<?= BASE_URL ?>producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
         <div class="box-img">
             <img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
                         else echo $producto["imagen"]; ?>" loading="lazy" alt="<?= $producto["nombre"]; ?>">

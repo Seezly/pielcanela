@@ -109,7 +109,7 @@
 <div class="overlay"></div>
 
 <div id="loader" class="loader">
-    <div class="opacinner"><img src="/public/img/logo.webp" alt="logo"></div>
+    <div class="opacinner"><img src="<?= BASE_URL ?>public/img/logo.webp" alt="logo"></div>
 </div>
 
 <div class="wabtn" id="wabutton">
@@ -130,4 +130,4 @@
     </a>
 </div>
 
-<script type="module" src="/public/js/index.js"></script>
+<script type="module" src="<?= BASE_URL ?>public/js/index.js"></script>

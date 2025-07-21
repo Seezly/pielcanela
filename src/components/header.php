@@ -6,8 +6,8 @@
             </svg>
         </span>
     </div>
-    <a href="/" class="header-section logo">
-        <div class="box-img"><img src="/public/img/logo.webp" alt="logo"></div>
+    <a href="<?= BASE_URL ?>" class="header-section logo">
+        <div class="box-img"><img src="<?= BASE_URL ?>public/img/logo.webp" alt="logo"></div>
     </a>
     <div class="header-section">
         <span class="icon modal-icon" data-modal="search-bar">

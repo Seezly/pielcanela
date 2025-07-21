@@ -65,7 +65,7 @@ $sql = $stmtP->fetch();
     <link
         rel="stylesheet"
         id="css-main"
-        href="/public/css/dashmix.min.css" />
+        href="<?= BASE_URL ?>public/css/dashmix.min.css" />
 
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/xwork.min.css"> -->
@@ -459,7 +459,7 @@ $sql = $stmtP->fetch();
                                 Opciones
                             </div>
                             <div class="p-2">
-                                <a class="dropdown-item" href="/routes/suadview/login.php">
+                                <a class="dropdown-item" href="<?= BASE_URL ?>routes/suadview/login.php">
                                     <i class="far fa-fw fa-arrow-alt-circle-left me-1"></i> Sign
                                     Out
                                 </a>
@@ -669,13 +669,13 @@ $sql = $stmtP->fetch();
       Core libraries and functionality
       webpack is putting everything together at assets/_js/main/app.js
     -->
-    <script src="/public/js/dashmix.app.min.js"></script>
+    <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
 
     <!-- Page JS Plugins -->
-    <script src="/public/js/chart.min.js"></script>
+    <script src="<?= BASE_URL ?>public/js/chart.min.js"></script>
 
     <!-- Page JS Code -->
-    <script src="/public/js/be_pages_ecom_dashboard.min.js"></script>
+    <script src="<?= BASE_URL ?>public/js/be_pages_ecom_dashboard.min.js"></script>
 </body>
 
 </html>

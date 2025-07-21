@@ -38,10 +38,10 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
             <h2><?= htmlspecialchars($categoria["nombre"] ?? "No existe la categoría que estás buscando", ENT_QUOTES, 'UTF-8'); ?></h2>
             <div class="filter-icon">
                 <div class="filters">
-                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=asc" class="filter <?php if ($price === "asc") echo "active"; ?>">Menor precio</a>
-                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=desc" class="filter <?php if ($price === "desc") echo "active"; ?>">Mayor precio</a>
-                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&featured=1" class="filter <?php if ($featured === "1") echo "active"; ?>">Destacados</a>
-                    <a href="/categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&discount=1" class="filter <?php if ($discount === "1") echo "active"; ?>">Descuento</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=asc" class="filter <?php if ($price === "asc") echo "active"; ?>">Menor precio</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=desc" class="filter <?php if ($price === "desc") echo "active"; ?>">Mayor precio</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&featured=1" class="filter <?php if ($featured === "1") echo "active"; ?>">Destacados</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&discount=1" class="filter <?php if ($discount === "1") echo "active"; ?>">Descuento</a>
                 </div>
                 <span class="icon-filter">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -74,7 +74,7 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                         $hayProductos = true;
                         $producto["imagen"] = explode(',', $producto["imagen"]);
                     ?>
-                        <a href="/producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
+                        <a href="<?= BASE_URL ?>producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])); ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
                             <div class="box-img">
                                 <div class="icons">
                                     <span class="icon" data-product="see" data-id="<?= $producto["id"]; ?>">

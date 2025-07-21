@@ -31,14 +31,14 @@ $csrf_token = generate_csrf_token();
 
     <!-- Icons -->
     <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-    <link rel="shortcut icon" href="/public/img/favicon.ico">
-    <link rel="icon" type="image/png" sizes="192x192" href="/public/img/android-chrome-192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/public/img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>public/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?= BASE_URL ?>public/img/android-chrome-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>public/img/apple-touch-icon.png">
     <!-- END Icons -->
 
     <!-- Stylesheets -->
     <!-- Dashmix framework -->
-    <link rel="stylesheet" id="css-main" href="/public/css/dashmix.min.css">
+    <link rel="stylesheet" id="css-main" href="<?= BASE_URL ?>public/css/dashmix.min.css">
 
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/xwork.min.css"> -->
@@ -172,7 +172,7 @@ $csrf_token = generate_csrf_token();
       Core libraries and functionality
       webpack is putting everything together at assets/_js/main/app.js
     -->
-    <script src="/public/js/dashmix.app.min.js"></script>
+    <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

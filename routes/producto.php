@@ -95,7 +95,7 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
                 foreach ($productos as $producto) {
                     $producto["imagen"] = explode(',', $producto["imagen"]);
                 ?>
-                    <a href="/producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])) ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
+                    <a href="<?= BASE_URL ?>producto/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($producto["nombre"])) ?>?id=<?= $producto["id"]; ?>" id="<?= $producto["id"]; ?>" class="producto">
                         <div class="box-img">
                             <div class="icons">
                                 <span class="icon" data-product="see" data-id="<?= $producto["id"]; ?>">
@@ -104,7 +104,7 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
                                     </svg>
                                 </span>
                                 <span class="icon" data-product="cart" data-id="<?= htmlspecialchars($producto["id"], ENT_QUOTES, 'UTF-8'); ?>" data-sku="<?= htmlspecialchars($producto["sku"], ENT_QUOTES, 'UTF-8'); ?>" data-name="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>" data-price="<?= htmlspecialchars($producto["precio"], ENT_QUOTES, 'UTF-8'); ?>" data-priceD="<?= htmlspecialchars($producto["precioD"], ENT_QUOTES, 'UTF-8'); ?>" data-image="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-                                                else echo $producto["imagen"]; ?>" data-attribute="<?= htmlspecialchars($producto["atributo"], ENT_QUOTES, 'UTF-8'); ?>" data-option="<?= htmlspecialchars(explode(',', $producto["opciones"])[0], ENT_QUOTES, 'UTF-8'); ?>">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else echo $producto["imagen"]; ?>" data-attribute="<?= htmlspecialchars($producto["atributo"], ENT_QUOTES, 'UTF-8'); ?>" data-option="<?= htmlspecialchars(explode(',', $producto["opciones"])[0], ENT_QUOTES, 'UTF-8'); ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined">
                                         <path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z" />
                                     </svg>

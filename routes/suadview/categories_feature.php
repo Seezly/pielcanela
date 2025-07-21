@@ -59,16 +59,16 @@ $count = $stmt1->fetch();
     <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
     <link
         rel="shortcut icon"
-        href="/public/img/favicon.ico" />
+        href="<?= BASE_URL ?>public/img/favicon.ico" />
     <link
         rel="icon"
         type="image/png"
         sizes="192x192"
-        href="/public/img/android-chrome-192x192.png" />
+        href="<?= BASE_URL ?>public/img/android-chrome-192x192.png" />
     <link
         rel="apple-touch-icon"
         sizes="180x180"
-        href="/public/img/apple-touch-icon.png" />
+        href="<?= BASE_URL ?>public/img/apple-touch-icon.png" />
     <!-- END Icons -->
 
     <!-- Stylesheets -->
@@ -76,10 +76,10 @@ $count = $stmt1->fetch();
     <link
         rel="stylesheet"
         id="css-main"
-        href="/public/css/dashmix.min.css" />
+        href="<?= BASE_URL ?>public/css/dashmix.min.css" />
 
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
-    <!-- <link rel="stylesheet" id="css-theme" href="/public/css/themes/xwork.min.css"> -->
+    <!-- <link rel="stylesheet" id="css-theme" href="<?= BASE_URL ?>public/css/themes/xwork.min.css"> -->
     <!-- END Stylesheets -->
 </head>
 
@@ -477,7 +477,7 @@ $count = $stmt1->fetch();
                             </div>
                             <div class="p-2">
 
-                                <a class="dropdown-item" href="/routes/suadview/login.php">
+                                <a class="dropdown-item" href="<?= BASE_URL ?>routes/suadview/login.php">
                                     <i class="far fa-fw fa-arrow-alt-circle-left me-1"></i> Salir
                                 </a>
                             </div>
@@ -665,7 +665,7 @@ $count = $stmt1->fetch();
       Core libraries and functionality
       webpack is putting everything together at /public/_js/main/app.js
     -->
-    <script src="/public/js/dashmix.app.min.js"></script>
+    <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
 
     <script>
         // Agrega eventos a los botones de editar y eliminar
