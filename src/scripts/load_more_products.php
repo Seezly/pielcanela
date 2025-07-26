@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/config.php';
 require 'conn.php'; // Conexión a la base de datos
 
 $id = $_GET['id'] ?? "";

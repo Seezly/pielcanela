@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/config.php';
 $ip = $_SERVER['REMOTE_ADDR']; // Obtiene la IP del usuario
 
 // Intenta insertar la visita única
