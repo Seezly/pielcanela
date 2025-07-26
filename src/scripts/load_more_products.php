@@ -4,6 +4,7 @@ require 'conn.php'; // Conexión a la base de datos
 $id = $_GET['id'] ?? "";
 $price = $_GET['price'] ?? "";
 $featured = $_GET['featured'] ?? "";
+$discount = $_GET['discount'] ?? "";
 $page = $_GET['page'] ?? 1;
 $limit = 16;
 $offset = ($page - 1) * $limit;
@@ -14,6 +15,8 @@ if (!empty($price) && $price === "asc") {
     $statement = "SELECT * FROM productos WHERE categoria = ? ORDER BY price DESC LIMIT ? OFFSET ?";
 } else if (!empty($featured) && $featured === "1") {
     $statement = "SELECT * FROM productos WHERE categoria = ? ORDER BY visitas DESC LIMIT ? OFFSET ?";
+} else if (!empty($discount) && $discount === "1") {
+    $statement = "SELECT * FROM productos WHERE categoria = ? AND descuento = 1 ORDER BY precioD ASC LIMIT ? OFFSET ?";
 } else {
     $statement = "SELECT * FROM productos WHERE categoria = ? LIMIT ? OFFSET ?";
 }
