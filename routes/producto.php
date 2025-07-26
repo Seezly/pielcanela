@@ -1,11 +1,17 @@
 <?php
 require '../src/scripts/conn.php'; // Conexión a la base de datos
 
+$id = $_GET['id'] ?? "";
+if (!is_numeric($id)) {
+    header('Location: /');
+    exit();
+}
+
 require '../src/scripts/allVisits.php';
 
 // Incrementar el contador de visitas
 $visitasP = $pdo->prepare("UPDATE productos SET visitas = visitas + 1 WHERE id = ?");
-$visitasP->execute([$_GET['id']]);
+$visitasP->execute([$id]);
 
 $title = "Piel Canela | Producto";
 $description = "Transforma tu rutina de belleza con SK. Este producto ofrece resultados visibles y de alta calidad. ¡Compra ahora y experimenta la diferencia!";
@@ -33,7 +39,7 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
         <?php
 
         $sql = $pdo->prepare("SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id WHERE p.id = ?");
-        $sql->execute([$_GET['id']]);
+        $sql->execute([$id]);
 
         $producto = $sql->fetchAll(PDO::FETCH_ASSOC);
 
