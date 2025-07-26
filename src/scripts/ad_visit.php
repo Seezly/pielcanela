@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
         echo json_encode(["status" => "success", "message" => "Visita aumentada en la ad."]);
     } catch (PDOException $e) {
-        $pdo->rollBack();
         echo json_encode(["status" => "error", "message" => "Error al contar la visita: " . $e->getMessage()]);
     }
 } else {
