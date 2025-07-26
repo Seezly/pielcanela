@@ -12,6 +12,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
         $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        foreach ($productos as &$producto) {
+            if (isset($producto['descripcion'])) {
+                $producto['descripcion'] = htmlspecialchars($producto['descripcion'], ENT_QUOTES, 'UTF-8');
+            }
+        }
+        unset($producto);
+
         echo json_encode(["status" => "success", "message" => "Productos listados correctamente.", "data" => $productos]);
     } catch (PDOException $e) {
         echo json_encode(["status" => "error", "message" => "Error al listar los productos: " . $e->getMessage()]);
