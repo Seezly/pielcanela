@@ -21,9 +21,9 @@ export default function searchProducts() {
                                                 const productItem = document.createElement("a");
                                                 const safeName = escapeHtml(product.nombre);
                                                 const safeDesc = escapeHtml(product.descripcion);
-                                                productItem.href = `/producto/${product.nombre
-                                                        .replaceAll(" ", "-")
-                                                        .toLowerCase()}?id=${product.id}`;
+            productItem.href = `${BASE_URL}producto/${product.nombre
+                    .replaceAll(" ", "-")
+                    .toLowerCase()}?id=${product.id}`;
                                                 productItem.innerHTML = `
                             <div class="box-img">
                                 <img src="${product.imagen.split(",")[0]}" alt="${safeName}">
@@ -50,8 +50,8 @@ export default function searchProducts() {
 	searchForm.addEventListener("submit", function (e) {
 		e.preventDefault();
 		const query = searchInput.value;
-		if (query.length > 0) {
-			window.location.href = `/productos/${query}?name=${query}`;
-		}
+        if (query.length > 0) {
+                window.location.href = `${BASE_URL}productos/${query}?name=${query}`;
+        }
 	});
 }

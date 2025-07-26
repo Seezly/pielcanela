@@ -90,7 +90,7 @@ export async function addOrder(cartItems) {
 		formData.append(`id[]`, item);
 	});
 
-	let response = await fetch("/src/scripts/add_order.php", {
+        let response = await fetch(`${BASE_URL}src/scripts/add_order.php`, {
 		method: "POST",
 		body: formData,
 	});
