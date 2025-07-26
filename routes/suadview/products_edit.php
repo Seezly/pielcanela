@@ -677,6 +677,7 @@ if (!empty($id)) {
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
@@ -807,7 +808,7 @@ if (!empty($id)) {
                 formData.append("csrf_token", document.getElementById("csrf_token").value);
 
                 // Verifica si es una edición o una adición
-                let apiUrl = formAction === "edit" ? "/src/api/products/edit_product.php" : "/src/api/products/add_product.php";
+                let apiUrl = formAction === "edit" ? "${BASE_URL}src/api/products/edit_product.php" : "${BASE_URL}src/api/products/add_product.php";
 
                 // Deshabilitar botón mientras se envía
                 submitButton.disabled = true;
@@ -837,7 +838,7 @@ if (!empty($id)) {
 
             //Cargar las categorías
 
-            fetch("/src/api/categories/read_categories.php")
+            fetch(`${BASE_URL}src/api/categories/read_categories.php")
                 .then(response => response.json())
                 .then(data => {
                     let select = document.getElementById("dm-ecom-product-category");
@@ -851,7 +852,7 @@ if (!empty($id)) {
 
                 });
 
-            fetch("/src/api/attributes/read_attributes.php")
+            fetch(`${BASE_URL}src/api/attributes/read_attributes.php")
                 .then(response => response.json())
                 .then(data => {
                     let select = document.getElementById("dm-ecom-product-attribute");
@@ -873,7 +874,7 @@ if (!empty($id)) {
 
                 // Obtener las subcategorías de la API
 
-                fetch(`/src/api/subcategories/read_subcategories_specific.php?id_categoria=${document.getElementById("dm-ecom-product-category").value}`)
+                fetch(`${BASE_URL}src/api/subcategories/read_subcategories_specific.php?id_categoria=${document.getElementById("dm-ecom-product-category").value}`)
                     .then(response => response.json())
                     .then(data => {
 

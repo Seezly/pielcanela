@@ -671,6 +671,7 @@ $sql = $stmtP->fetch();
       webpack is putting everything together at assets/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <!-- Page JS Plugins -->
     <script src="<?= BASE_URL ?>public/js/chart.min.js"></script>

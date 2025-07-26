@@ -703,11 +703,12 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script>
         async function loadUsers() {
             try {
-                const response = await fetch("/src/api/users/read_users.php");
+                const response = await fetch(`${BASE_URL}src/api/users/read_users.php");
                 const result = await response.json();
 
                 if (result.status === "success") {
@@ -765,7 +766,7 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
                 button.addEventListener("click", function() {
                     const id = this.getAttribute("data-id");
                     if (confirm("¿Estás seguro de que deseas editar este usuario?")) {
-                        window.location.href = `/routes/suadview/users_edit.php?id=${id}`;
+                        window.location.href = `${BASE_URL}routes/suadview/users_edit.php?id=${id}`;
                     }
                 });
             });
@@ -802,7 +803,7 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
         // Elimina una categoría
         async function deleteUser(id) {
             try {
-                const response = await fetch("/src/api/users/delete_user.php", {
+                const response = await fetch(`${BASE_URL}src/api/users/delete_user.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -823,7 +824,7 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
             const view = document.querySelector("#view");
 
             try {
-                const response = await fetch("/src/api/users/all_views_user.php");
+                const response = await fetch(`${BASE_URL}src/api/users/all_views_user.php");
 
                 const result = await response.json();
                 view.textContent = result.data[0]["COUNT(id)"] > 0 ? result.data[0]["COUNT(id)"] : 0;

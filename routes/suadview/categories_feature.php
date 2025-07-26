@@ -667,6 +667,7 @@ $count = $stmt1->fetch();
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script>
         // Agrega eventos a los botones de editar y eliminar
@@ -693,7 +694,7 @@ $count = $stmt1->fetch();
 
                 feature.addEventListener("change", function() {
                     const id = feature.dataset.id;
-                    fetch('/routes/suadview/categories_feature.php', {
+                    fetch(`${BASE_URL}routes/suadview/categories_feature.php`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

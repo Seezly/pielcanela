@@ -690,11 +690,12 @@ require '/../../src/config/config.php';
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script>
         async function loadAttributes() {
             try {
-                const response = await fetch("/src/api/attributes/read_attributes.php");
+                const response = await fetch(`${BASE_URL}src/api/attributes/read_attributes.php");
                 const result = await response.json();
 
                 if (result.status === "success") {
@@ -740,7 +741,7 @@ require '/../../src/config/config.php';
                 button.addEventListener("click", function() {
                     const id = this.getAttribute("data-id");
                     if (confirm("¿Estás seguro de que deseas editar este atributo?")) {
-                        window.location.href = `/routes/suadview/attributes_edit.php?id=${id}`;
+                        window.location.href = `${BASE_URL}routes/suadview/attributes_edit.php?id=${id}`;
                     }
                 });
             });
@@ -776,7 +777,7 @@ require '/../../src/config/config.php';
         // Elimina una categoría
         async function deleteAttribute(id) {
             try {
-                const response = await fetch("/src/api/attributes/delete_attribute.php", {
+                const response = await fetch(`${BASE_URL}src/api/attributes/delete_attribute.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -797,7 +798,7 @@ require '/../../src/config/config.php';
             const view = document.querySelector("#view");
 
             try {
-                const response = await fetch("/src/api/attributes/all_views_attribute.php");
+                const response = await fetch(`${BASE_URL}src/api/attributes/all_views_attribute.php");
 
                 const result = await response.json();
                 view.textContent = result.data[0]["COUNT(id)"] > 0 ? result.data[0]["COUNT(id)"] : 0;
