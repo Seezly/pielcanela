@@ -583,12 +583,13 @@ if (!empty($id)) {
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const categories = document.getElementById("dm-ecom-category-type");
 
-            fetch("/src/api/categories/read_categories.php")
+            fetch(`${BASE_URL}src/api/categories/read_categories.php")
                 .then(response => response.json())
                 .then(data => {
                     data.data.forEach(category => {
@@ -616,8 +617,8 @@ if (!empty($id)) {
             }
 
             const endpoint = action === "edit" ?
-                "/src/api/subcategories/edit_subcategory.php" :
-                "/src/api/subcategories/add_subcategory.php";
+                "${BASE_URL}src/api/subcategories/edit_subcategory.php" :
+                "${BASE_URL}src/api/subcategories/add_subcategory.php";
 
             const body = action === "edit" ? JSON.stringify({
                 nombre,

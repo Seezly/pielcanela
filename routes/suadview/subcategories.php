@@ -640,11 +640,12 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script>
         async function loadCategories() {
             try {
-                const response = await fetch("/src/api/subcategories/read_subcategories.php");
+                const response = await fetch(`${BASE_URL}src/api/subcategories/read_subcategories.php");
                 const result = await response.json();
 
                 if (result.status === "success") {
@@ -692,7 +693,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                 button.addEventListener("click", function() {
                     const id = this.getAttribute("data-id");
                     if (confirm("¿Estás seguro de que deseas editar esta categoría?")) {
-                        window.location.href = `/routes/suadview/subcategories_edit.php?id=${id}`;
+                        window.location.href = `${BASE_URL}routes/suadview/subcategories_edit.php?id=${id}`;
                     }
                 });
             });
@@ -728,7 +729,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
         // Elimina una categoría
         async function deleteCategory(id) {
             try {
-                const response = await fetch("/src/api/subcategories/delete_subcategory.php", {
+                const response = await fetch(`${BASE_URL}src/api/subcategories/delete_subcategory.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -749,7 +750,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
             const view = document.querySelector("#view");
 
             try {
-                const response = await fetch("/src/api/subcategories/all_views_subcategory.php");
+                const response = await fetch(`${BASE_URL}src/api/subcategories/all_views_subcategory.php");
 
                 const result = await response.json();
                 view.textContent = result.data[0]["COUNT(id)"] > 0 ? result.data[0]["COUNT(id)"] : 0;

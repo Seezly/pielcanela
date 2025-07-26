@@ -49,16 +49,16 @@ $sql = $stmtP->fetch();
 
     <!-- Icons -->
     <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-    <link rel="shortcut icon" href="assets/media/favicons/favicon.png" />
+    <link rel="shortcut icon" href="<?= BASE_URL ?>assets/media/favicons/favicon.png" />
     <link
         rel="icon"
         type="image/png"
         sizes="192x192"
-        href="assets/media/favicons/favicon-192x192.png" />
+        href="<?= BASE_URL ?>assets/media/favicons/favicon-192x192.png" />
     <link
         rel="apple-touch-icon"
         sizes="180x180"
-        href="assets/media/favicons/apple-touch-icon-180x180.png" />
+        href="<?= BASE_URL ?>assets/media/favicons/apple-touch-icon-180x180.png" />
     <!-- END Icons -->
 
     <!-- Stylesheets -->
@@ -671,6 +671,7 @@ $sql = $stmtP->fetch();
       webpack is putting everything together at assets/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <!-- Page JS Plugins -->
     <script src="<?= BASE_URL ?>public/js/chart.min.js"></script>

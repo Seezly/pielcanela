@@ -578,6 +578,7 @@ if (!empty($id)) {
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
+    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
@@ -595,8 +596,8 @@ if (!empty($id)) {
             }
 
             const endpoint = action === "edit" ?
-                "/src/api/attributes/edit_attribute.php" :
-                "/src/api/attributes/add_attribute.php";
+                "${BASE_URL}src/api/attributes/edit_attribute.php" :
+                "${BASE_URL}src/api/attributes/add_attribute.php";
 
             const csrfToken = document.getElementById("csrf_token").value;
             const body = action === "edit" ? JSON.stringify({
