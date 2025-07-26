@@ -166,6 +166,7 @@ ul.subcategory-list {
 .subcategory-list li a {
 	text-decoration: none;
 	color: #555;
+	font-weight: bold;
 }
 
 .subcategory-list li a:hover {
@@ -678,48 +679,51 @@ nav ul a li {
 }
 
 .slider .box-img {
-        width: 50%;
-        height: 100%;
-        position: relative;
+	width: 100%;
+	height: 100%;
+	position: relative;
 }
 
 .slider .box-img::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1;
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1;
 }
 
 .slider .box-img img {
-        object-fit: contain;
-        position: relative;
-        z-index: 0;
+	object-fit: contain;
+	position: relative;
+	z-index: 0;
 }
 
 .slider .slide-content {
-	width: 90%;
+	width: 100%;
 	height: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	position: relative;
 	margin: 0 auto;
 }
 
 .slider .slide-content .product-info {
-        width: 50%;
-        height: 100%;
-        padding: 2em 3em;
-        display: flex;
-        justify-content: center;
-        gap: 3em;
-        align-items: center;
-        flex-direction: column;
-        position: relative;
-        z-index: 2;
+	width: 100%;
+	height: 100%;
+	padding: 2em 3em;
+	display: flex;
+	color: #fffffa;
+	text-align: center;
+	justify-content: center;
+	gap: 3em;
+	align-items: center;
+	flex-direction: column;
+	position: absolute;
+	z-index: 2;
 }
 
 .slider .slide-content .product-info .product-title {
@@ -1014,7 +1018,7 @@ CATEGORIA
 .categoria-list {
 	width: 100%;
 	padding: 2em 3em;
-	margin: auto auto 2em auto;
+	margin-bottom: 2em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1121,6 +1125,10 @@ PRODUCTO
 		display: block;
 	}
 
+	main {
+		margin-top: 6.5em;
+	}
+
 	section {
 		width: 100%;
 	}
@@ -1131,6 +1139,10 @@ PRODUCTO
 
 	.slider {
 		height: auto;
+	}
+
+	.productos {
+		width: 90%;
 	}
 
 	.categorias .categoria {
@@ -1144,8 +1156,19 @@ PRODUCTO
 		left: 0;
 	}
 
+	.modal.active {
+		margin-top: 6em;
+	}
+
 	.modal.search-bar {
 		height: auto;
+		transform: translateY(0);
+		padding: 1em 2em;
+		box-shadow: 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.1);
+	}
+
+	.modal.search-bar .toggle {
+		display: none;
 	}
 
 	.productos .producto {

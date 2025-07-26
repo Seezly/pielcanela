@@ -661,7 +661,9 @@ $csrf_token = generate_csrf_token();
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
-    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
 
     <script>
         // Agrega eventos a los botones de editar y eliminar
@@ -681,6 +683,15 @@ $csrf_token = generate_csrf_token();
                         row.style.display = "";
                     } else {
                         row.style.display = "none";
+                    }
+                });
+            });
+
+            document.querySelectorAll(".edit-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    const id = this.getAttribute("data-id");
+                    if (confirm("¿Estás seguro de que deseas editar esta slide?")) {
+                        window.location.href = `${BASE_URL}routes/suadview/slider_edit.php?id=${id}`;
                     }
                 });
             });
@@ -707,7 +718,7 @@ $csrf_token = generate_csrf_token();
                     const csrfToken = document.getElementById('csrf_token').value;
                     if (confirm('¿Estás seguro de que deseas eliminar este slide?')) {
                         try {
-                            const response = await fetch(`${BASE_URL}src/api/slides/delete_slide.php', {
+                            const response = await fetch(`${BASE_URL}src/api/slides/delete_slide.php`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -730,6 +741,21 @@ $csrf_token = generate_csrf_token();
                     }
                 });
             });
+
+            showCategory();
+        }
+
+        async function showCategory() {
+            const view = document.querySelector("#view");
+
+            try {
+                const response = await fetch(`${BASE_URL}src/api/slides/all_views_slides.php`);
+
+                const result = await response.json();
+                view.textContent = result.data[0]["COUNT(id)"] > 0 ? result.data[0]["COUNT(id)"] : 0;
+            } catch (error) {
+                console.error("Error al mostrar la slide:", error);
+            }
 
         }
 

@@ -17,7 +17,7 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
 require '../../src/scripts/csrf.php';
-require '/../../src/config/config.php';
+require __DIR__ . '/../../src/config/config.php';
 
 $csrf_token = generate_csrf_token();
 
@@ -578,7 +578,9 @@ if (!empty($id)) {
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
-    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
 
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
@@ -596,8 +598,8 @@ if (!empty($id)) {
             }
 
             const endpoint = action === "edit" ?
-                "${BASE_URL}src/api/attributes/edit_attribute.php" :
-                "${BASE_URL}src/api/attributes/add_attribute.php";
+                `${BASE_URL}src/api/attributes/edit_attribute.php` :
+                `${BASE_URL}src/api/attributes/add_attribute.php`;
 
             const csrfToken = document.getElementById("csrf_token").value;
             const body = action === "edit" ? JSON.stringify({

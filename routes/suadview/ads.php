@@ -17,7 +17,7 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
 require '../../src/scripts/csrf.php';
-require '/../../src/config/config.php';
+require __DIR__ . '/../../src/config/config.php';
 
 $csrf_token = generate_csrf_token();
 
@@ -656,7 +656,9 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
-    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
 
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
@@ -713,7 +715,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 formData.append("image[]", Dropzone.instances[0].files);
 
                 try {
-                    let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php", {
+                    let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php`, {
                         method: "POST",
                         body: formData
                     });
@@ -745,7 +747,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 formData.append("image[]", Dropzone.instances[1].files);
 
                 try {
-                    let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php", {
+                    let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php`, {
                         method: "POST",
                         body: formData
                     });

@@ -628,7 +628,9 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
-    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
 
     <script>
         // Función para actualizar la paginación
@@ -776,7 +778,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
         // Elimina una categoría
         async function deleteProduct(id) {
             try {
-                const response = await fetch(`${BASE_URL}src/api/products/delete_product.php", {
+                const response = await fetch(`${BASE_URL}src/api/products/delete_product.php`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -798,7 +800,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
             const allProd = document.querySelector("#allProd");
 
             try {
-                const response = await fetch(`${BASE_URL}src/api/products/all_views_product.php");
+                const response = await fetch(`${BASE_URL}src/api/products/all_views_product.php`);
 
                 const result = await response.json();
                 visits.textContent = result.data[0]["SUM(visitas)"] > 0 ? result.data[0]["SUM(visitas)"] : 0;

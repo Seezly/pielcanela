@@ -601,7 +601,9 @@ if (!empty($id)) {
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
-    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
 
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
@@ -635,7 +637,7 @@ if (!empty($id)) {
                 }
 
                 // Verifica si es una edición o una adición
-                let apiUrl = formAction === "edit" ? "${BASE_URL}src/api/users/edit_user.php" : "${BASE_URL}src/api/users/add_user.php";
+                let apiUrl = formAction === "edit" ? `${BASE_URL}src/api/users/edit_user.php` : `${BASE_URL}src/api/users/add_user.php`;
 
                 // Deshabilitar botón mientras se envía
                 submitButton.disabled = true;

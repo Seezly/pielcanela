@@ -592,7 +592,9 @@ if (!empty($id)) {
       webpack is putting everything together at /public/_js/main/app.js
     -->
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
-    <script>const BASE_URL = '<?= BASE_URL ?>';</script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
 
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
@@ -654,8 +656,8 @@ if (!empty($id)) {
                 formData.append("csrf_token", csrfToken);
 
                 const endpoint = action === "edit" ?
-                    "${BASE_URL}src/api/slides/edit_slide.php" :
-                    "${BASE_URL}src/api/slides/add_slide.php";
+                    `${BASE_URL}src/api/slides/edit_slide.php` :
+                    `${BASE_URL}src/api/slides/add_slide.php`;
 
                 submitButton.disabled = true;
                 submitButton.textContent = action === "edit" ? "Editando..." : "Enviando...";
