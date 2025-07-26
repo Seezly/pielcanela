@@ -16,6 +16,7 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 }
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
+require '/../../src/config/config.php';
 
 ?>
 

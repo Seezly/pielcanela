@@ -130,4 +130,8 @@
     </a>
 </div>
 
+<script>
+    const BASE_URL = '<?= BASE_URL ?>';
+</script>
+
 <script type="module" src="<?= BASE_URL ?>public/js/index.js"></script>

@@ -10,6 +10,7 @@ session_destroy();
 // Start a fresh session to handle CSRF tokens
 session_start();
 require_once __DIR__ . '/../../src/scripts/csrf.php';
+require_once __DIR__ . '/../../src/config/config.php';
 $csrf_token = generate_csrf_token();
 ?>
 
@@ -175,6 +176,10 @@ $csrf_token = generate_csrf_token();
     <script src="<?= BASE_URL ?>public/js/dashmix.app.min.js"></script>
 
     <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             const form = document.querySelector("form");
             const submitButton = form.querySelector("button[type='submit']");
@@ -190,7 +195,7 @@ $csrf_token = generate_csrf_token();
                 formData.append("csrf_token", document.getElementById("csrf_token").value);
 
                 try {
-                    let response = await fetch("/src/api/users/verify_user.php", {
+                    let response = await fetch(`${BASE_URL}src/api/users/verify_user.php`, {
                         method: "POST",
                         body: formData
                     });
@@ -199,7 +204,7 @@ $csrf_token = generate_csrf_token();
 
                     if (result.status === "success") {
                         form.reset();
-                        window.location.href = "/routes/suadview/suadview.php";
+                        window.location.href = `${BASE_URL}routes/suadview/suadview.php`;
                     }
                 } catch (error) {
                     alert("Error al enviar la solicitud.");

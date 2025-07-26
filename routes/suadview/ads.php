@@ -17,6 +17,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
 
 require '../../src/scripts/conn.php'; // Conexión a la base de datos
 require '../../src/scripts/csrf.php';
+require '/../../src/config/config.php';
+
 $csrf_token = generate_csrf_token();
 
 $stmt = $pdo->prepare("SELECT * FROM ads");

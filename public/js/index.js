@@ -20,7 +20,9 @@ import { addQuantity, deleteQuantity } from "./quantity.js";
 
 const readCategories = async () => {
 	try {
-		const response = await fetch("/src/api/categories/read_all_categories.php");
+		const response = await fetch(
+			`${BASE_URL}src/api/categories/read_all_categories.php`
+		);
 		const result = await response.json();
 
 		if (result.status === "success") {
@@ -108,7 +110,9 @@ const readCategories = async () => {
 
 const getProductById = async (id, opcion, name, address, parcel) => {
 	try {
-		const response = await fetch(`/src/api/products/id_product.php?id=${id}`);
+		const response = await fetch(
+			`${BASE_URL}src/api/products/id_product.php?id=${id}`
+		);
 		const result = await response.json();
 
 		if (result.status === "success") {
@@ -229,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	}
 
 	function updateUserActivity() {
-		fetch("/src/scripts/onUser.php")
+		fetch(`${BASE_URL}src/scripts/onUser.php`)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error("Error al actualizar la actividad del usuario.");
@@ -269,7 +273,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		if (window.location.search.includes("id_s")) {
 			try {
 				const response = await fetch(
-					`/src/scripts/load_more_products_specific.php?id=${document
+					`${BASE_URL}src/scripts/load_more_products_specific.php?id=${document
 						.getElementById("productos")
 						.getAttribute("data-subcategory")}&page=${page}`
 				);
@@ -285,7 +289,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		} else {
 			try {
 				const response = await fetch(
-					`/src/scripts/load_more_products.php?id=${document
+					`${BASE_URL}src/scripts/load_more_products.php?id=${document
 						.getElementById("productos")
 						.getAttribute("data-category")}&page=${page}`
 				);
@@ -442,7 +446,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 					});
 			} else if (productId === "see") {
 				fetch(
-					`/src/api/products/id_product.php?id=${icon.getAttribute("data-id")}`
+					`${BASE_URL}src/api/products/id_product.php?id=${icon.getAttribute(
+						"data-id"
+					)}`
 				)
 					.then((response) => response.json())
 					.then((data) => {
@@ -739,7 +745,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		ad.addEventListener("click", (e) => {
 			e.stopPropagation();
 			fetch(
-				`/src/scripts/ad_visit.php?id=${e.target
+				`${BASE_URL}src/scripts/ad_visit.php?id=${e.target
 					.closest(".ad a")
 					.getAttribute("data-id")}`
 			);
