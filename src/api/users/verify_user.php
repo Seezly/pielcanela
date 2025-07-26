@@ -33,6 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['username'] = $user['user'];
             $_SESSION['privilegios'] = $user['privilegios'];
             echo json_encode(["status" => "success", "message" => "Usuario autentificado con éxito."]);
+        } else {
+            http_response_code(401);
+            echo json_encode(["status" => "error", "message" => "Credenciales inválidas"]);
         }
     } catch (PDOException $e) {
         echo json_encode(["status" => "error", "message" => "Usuario o contraseña inválida: " . $e->getMessage()]);
