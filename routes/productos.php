@@ -64,7 +64,7 @@ $description = "Explora nuestros productos en SK. Encuentra una amplia selecció
                     } elseif (!empty($price) && $price === "desc") {
                         $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id WHERE p.nombre LIKE ? ORDER BY precio DESC LIMIT 16";
                     } elseif (!empty($featured) && $featured === "1") {
-                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id WHERE p.nombre LIKE ? ORDER BY visitas DESC LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id WHERE p.nombre LIKE ? ORDER BY p.destacado DESC, p.visitas DESC LIMIT 16";
                     } elseif (!empty($discount) && $discount === "1") {
                         $statement = "SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id WHERE p.nombre LIKE ? AND descuento = 1 ORDER BY precioD ASC LIMIT 16";
                     } else {
