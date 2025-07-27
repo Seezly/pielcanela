@@ -15,7 +15,7 @@ if (!empty($price) && $price === "asc") {
 } else if (!empty($price) && $price === "desc") {
     $statement = "SELECT * FROM productos WHERE categoria = ? ORDER BY price DESC LIMIT ? OFFSET ?";
 } else if (!empty($featured) && $featured === "1") {
-    $statement = "SELECT * FROM productos WHERE categoria = ? ORDER BY visitas DESC LIMIT ? OFFSET ?";
+    $statement = "SELECT * FROM productos WHERE categoria = ? ORDER BY destacado DESC, visitas DESC LIMIT ? OFFSET ?";
 } else if (!empty($discount) && $discount === "1") {
     $statement = "SELECT * FROM productos WHERE categoria = ? AND descuento = 1 ORDER BY precioD ASC LIMIT ? OFFSET ?";
 } else {

@@ -60,7 +60,7 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                     } elseif ($price === "desc") {
                         $statement = "SELECT p.*, a.atributo FROM productos p JOIN atributos a ON p.atributo_id = a.id WHERE categoria = ? ORDER BY precio DESC LIMIT 16";
                     } elseif ($featured === "1") {
-                        $statement = "SELECT p.*, a.atributo FROM productos p JOIN atributos a ON p.atributo_id = a.id WHERE categoria = ? ORDER BY visitas DESC LIMIT 16";
+                        $statement = "SELECT p.*, a.atributo FROM productos p JOIN atributos a ON p.atributo_id = a.id WHERE categoria = ? ORDER BY p.destacado DESC, p.visitas DESC LIMIT 16";
                     } elseif ($discount === "1") {
                         $statement = "SELECT p.*, a.atributo FROM productos p JOIN atributos a ON p.atributo_id = a.id WHERE categoria = ? AND descuento = 1 ORDER BY precioD ASC LIMIT 16";
                     } else {

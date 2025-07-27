@@ -62,7 +62,7 @@ require 'src/scripts/allVisits.php';
 			</div>
 			<div class="productos-list">
 				<?php
-				$sql = $pdo->prepare("SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id ORDER BY visitas DESC LIMIT 8");
+                                $sql = $pdo->prepare("SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id ORDER BY p.destacado DESC, p.visitas DESC LIMIT 8");
 				$sql->execute();
 
 				$productos = $sql->fetchAll(PDO::FETCH_ASSOC);
