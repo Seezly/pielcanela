@@ -11,11 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         $stmt->execute();
 
         $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($categorias as &$cat) {
+            if (!empty($cat['imagen'])) {
+                $cat['imagen'] = BASE_URL . ltrim($cat['imagen'], '/');
+            }
+        }
+        unset($cat);
 
         echo json_encode(["status" => "success", "message" => "Categorías listadas correctamente.", "data" => $categorias]);
     } catch (PDOException $e) {
         echo json_encode(["status" => "error", "message" => "Error al listar las categorías: " . $e->getMessage()]);
     }
 } else {
-    echo json_encode(["status" => "error", "message" => "Método no permitido."]);
+    echo json_encode(["status" => "error", "message" => "Método no permitido."]); 
 }
