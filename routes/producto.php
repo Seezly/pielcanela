@@ -49,9 +49,17 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
         ?>
 
         <section class="product">
-            <div class="product-img box-img">
-                <img src="<?php if (is_array($producto[0]["imagen"])) echo $producto[0]["imagen"][0];
-                            else echo $producto[0]["imagen"]; ?>" alt="<?= htmlspecialchars($producto[0]["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+            <div class="product-gallery">
+                <div class="product-main box-img">
+                    <img id="product-main" src="<?= $producto[0]['imagen'][0]; ?>" alt="<?= htmlspecialchars($producto[0]['nombre']); ?>">
+                </div>
+                <div class="product-thumbnails keen-slider">
+                    <?php foreach ($producto[0]['imagen'] as $img): ?>
+                        <div class="keen-slider__slide thumbnail">
+                            <img src="<?= $img; ?>" alt="<?= htmlspecialchars($producto[0]['nombre']); ?>">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
             <div class="product-details">
                 <h2><?= htmlspecialchars($producto[0]["nombre"], ENT_QUOTES, 'UTF-8'); ?></h2>
@@ -68,7 +76,7 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
                         <div class="size-options" data-attribute="<?= $producto[0]["atributo"]; ?>">
                             <?php
                             foreach (explode(',', $producto[0]["opciones"]) as $opcion) { ?>
-                                <input type="radio" id="size-<?= $opcion; ?>" name="size" value="<?= $opcion; ?>" data-image="<?= $producto[0]["imagen"][array_search($opcion, explode(',', $producto[0]["opciones"]))]; ?>">
+                                <input type="radio" id="size-<?= $opcion; ?>" name="size" value="<?= $opcion; ?>">
                                 <label for="size-<?= $opcion; ?>"><?= ucfirst($opcion); ?></label>
                             <?php
                             } ?>
@@ -145,6 +153,8 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
 
     <!-- Modales -->
     <?php include_once('../src/components/modals.php'); ?>
+    <script src="<?= BASE_URL ?>public/js/keen-slider.js"></script>
 </body>
 
 </html>
+
