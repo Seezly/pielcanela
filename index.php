@@ -21,31 +21,23 @@ require 'src/scripts/allVisits.php';
 		<!-- Hero -->
 		<?php include_once('./src/components/slider.php'); ?>
 
-		<!-- Categorías -->
+                <!-- Categorías -->
 
-		<section class="categorias">
-			<?php
-			$sql = $pdo->prepare("SELECT * FROM categorias WHERE destacado = 1 LIMIT 4");
-			$sql->execute();
-
-			$categorias = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-			foreach ($categorias as $categoria) {
-			?>
-				<a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])) ?>?id=<?= $categoria["id"]; ?>" id="<?= $categoria["id"]; ?>" class="categoria">
-					<div class="categoria-icon">
-						<span class="icon">
-							<svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 -960 960 960" width="36px" fill="undefined">
-								<path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z" />
-							</svg>
-						</span>
-					</div>
-					<p class="categoria-titulo"><?= htmlspecialchars($categoria["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>
-				</a>
-			<?php
-			}
-			?>
-		</section>
+                <section class="categorias">
+                        <?php
+                        $sql = $pdo->prepare("SELECT * FROM categorias ORDER BY destacado DESC, visitas DESC LIMIT 8");
+                        $sql->execute();
+                        $categorias = $sql->fetchAll(PDO::FETCH_ASSOC);
+                        ?>
+                        <div class="categorias-slider keen-slider">
+                                <?php foreach ($categorias as $categoria) { ?>
+                                        <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])) ?>?id=<?= $categoria["id"]; ?>" class="keen-slider__slide categoria-slide" style="background-image: url('<?= htmlspecialchars($categoria["imagen"], ENT_QUOTES, 'UTF-8'); ?>');">
+                                                <span class="overlay"></span>
+                                                <span class="categoria-nombre"><?= htmlspecialchars($categoria["nombre"], ENT_QUOTES, 'UTF-8'); ?></span>
+                                        </a>
+                                <?php } ?>
+                        </div>
+                </section>
 
 		<!-- AD -->
 

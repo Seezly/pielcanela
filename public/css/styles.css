@@ -770,22 +770,36 @@ nav ul a li {
 /* Categorías */
 
 .categorias {
-	width: 70%;
-	margin: auto auto 2em auto;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 2em;
-	padding: 2em 0;
+        width: 70%;
+        margin: auto auto 2em auto;
+        padding: 2em 0;
 }
 
-.categoria {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	gap: 0.5em;
+.categorias-slider .keen-slider__slide {
+        position: relative;
+        display: block;
+        height: 150px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 4px;
+        overflow: hidden;
+}
+
+.categorias-slider .overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+}
+
+.categorias-slider .categoria-nombre {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        z-index: 1;
 }
 
 /* Productos */
@@ -1145,9 +1159,9 @@ PRODUCTO
 		width: 90%;
 	}
 
-	.categorias .categoria {
-		width: 45%;
-	}
+        .categorias-slider .keen-slider__slide {
+                width: 100%;
+        }
 
 	.modal {
 		width: 100%;

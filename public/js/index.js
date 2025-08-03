@@ -148,6 +148,7 @@ const getProductById = async (id, opcion, name, address, parcel) => {
 document.addEventListener("DOMContentLoaded", async function () {
 	const overlay = document.querySelector(".overlay");
 	const sliderElement = document.querySelector(".keen-slider");
+	const categoriesSlider = document.querySelector(".categorias-slider");
 	const loader = document.getElementById("loader");
 
 	if (document.querySelector("input[type=radio")) {
@@ -155,69 +156,87 @@ document.addEventListener("DOMContentLoaded", async function () {
 	}
 
 	if (sliderElement) {
-		new KeenSlider(
-			sliderElement,
-			{
-				loop: true,
-				created: function (instance) {
-					// Crear flechas
-					const arrowLeft = document.createElement("div");
-					const arrowRight = document.createElement("div");
+	        new KeenSlider(
+	                sliderElement,
+	                {
+	                        loop: true,
+	                        created: function (instance) {
+	                                // Crear flechas
+	                                const arrowLeft = document.createElement("div");
+	                                const arrowRight = document.createElement("div");
 
-					arrowLeft.classList.add("arrow", "arrow-left");
-					arrowRight.classList.add("arrow", "arrow-right");
+	                                arrowLeft.classList.add("arrow", "arrow-left");
+	                                arrowRight.classList.add("arrow", "arrow-right");
 
-					arrowLeft.innerHTML = "❮";
-					arrowRight.innerHTML = "❯";
+	                                arrowLeft.innerHTML = "❮";
+	                                arrowRight.innerHTML = "❯";
 
-					sliderElement.appendChild(arrowLeft);
-					sliderElement.appendChild(arrowRight);
+	                                sliderElement.appendChild(arrowLeft);
+	                                sliderElement.appendChild(arrowRight);
 
-					arrowLeft.addEventListener("click", () => instance.prev());
-					arrowRight.addEventListener("click", () => instance.next());
-				},
-			},
-			[
-				(slider) => {
-					let timeout;
-					let mouseOver = false;
+	                                arrowLeft.addEventListener("click", () => instance.prev());
+	                                arrowRight.addEventListener("click", () => instance.next());
+	                        },
+	                },
+	                [
+	                        (slider) => {
+	                                let timeout;
+	                                let mouseOver = false;
 
-					function clearNextTimeout() {
-						clearTimeout(timeout);
-					}
+	                                function clearNextTimeout() {
+	                                        clearTimeout(timeout);
+	                                }
 
-					function nextTimeout() {
-						clearTimeout(timeout);
-						if (mouseOver) return;
-						timeout = setTimeout(() => {
-							slider.next();
-						}, 3000);
-					}
+	                                function nextTimeout() {
+	                                        clearTimeout(timeout);
+	                                        if (mouseOver) return;
+	                                        timeout = setTimeout(() => {
+	                                                slider.next();
+	                                        }, 3000);
+	                                }
 
-					slider.on("created", () => {
-						slider.container.addEventListener("mouseover", () => {
-							mouseOver = true;
-							clearNextTimeout();
-						});
-						slider.container.addEventListener("mouseout", () => {
-							mouseOver = false;
-							nextTimeout();
-						});
-						nextTimeout();
-					});
+	                                slider.on("created", () => {
+	                                        slider.container.addEventListener("mouseover", () => {
+	                                                mouseOver = true;
+	                                                clearNextTimeout();
+	                                        });
+	                                        slider.container.addEventListener("mouseout", () => {
+	                                                mouseOver = false;
+	                                                nextTimeout();
+	                                        });
+	                                        nextTimeout();
+	                                });
 
-					slider.on("dragStarted", clearNextTimeout);
-					slider.on("animationEnded", nextTimeout);
-					slider.on("updated", nextTimeout);
-				},
-			]
-		);
+	                                slider.on("dragStarted", clearNextTimeout);
+	                                slider.on("animationEnded", nextTimeout);
+	                                slider.on("updated", nextTimeout);
+	                        },
+	                ]
+	        );
+	}
+
+	if (categoriesSlider) {
+	        new KeenSlider(categoriesSlider, {
+	                loop: true,
+	                slides: {
+	                        perView: 2,
+	                        spacing: 10,
+	                },
+	                breakpoints: {
+	                        "(min-width: 768px)": {
+	                                slides: { perView: 4, spacing: 15 },
+	                        },
+	                        "(min-width: 1024px)": {
+	                                slides: { perView: 6, spacing: 20 },
+	                        },
+	                },
+	        });
 	}
 
 	try {
-		await readCategories();
-		await searchProducts();
-		await openDatabase()
+	        await readCategories();
+	        await searchProducts();
+	        await openDatabase()
 			.then(() => {
 				getItems((items, total) => {
 					displayCartItems(items, total);
