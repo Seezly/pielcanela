@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 c.id AS categoria_id,
                 c.nombre AS categoria_nombre,
                 c.imagen AS categoria_imagen,
+                c.visitas AS categoria_visitas,
                 s.id AS subcategoria_id,
                 s.nombre AS subcategoria_nombre
             FROM categorias AS c
@@ -33,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                     'id' => $catId,
                     'nombre' => $row['categoria_nombre'],
                     'imagen' => !empty($row['categoria_imagen']) ? BASE_URL . ltrim($row['categoria_imagen'], '/') : null,
+                    'visitas' => (int) $row['categoria_visitas'],
                     'subcategorias' => []
                 ];
             }
