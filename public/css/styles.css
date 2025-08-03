@@ -1094,7 +1094,40 @@ PRODUCTO
 }
 
 .product-img {
-	width: 50%;
+        width: 50%;
+}
+
+.product-gallery {
+        display: flex;
+        flex-direction: column;
+}
+
+.product-main {
+        width: 100%;
+        margin-bottom: 1rem;
+}
+
+.product-thumbnails {
+        position: relative;
+        width: 100%;
+}
+
+.product-thumbnails .thumbnail {
+        width: 80px;
+        cursor: pointer;
+}
+
+.product-thumbnails .thumbnail img {
+        width: 100%;
+        height: auto;
+}
+
+.product-thumbnails .arrow {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        top: 50%;
+        transform: translateY(-50%);
 }
 
 .product-details {
