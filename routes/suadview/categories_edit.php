@@ -21,6 +21,7 @@ require '../../src/scripts/csrf.php';
 $csrf_token = generate_csrf_token();
 
 $id = $_GET['id'];
+$imagen = '';
 
 if (!empty($id)) {
     $stmt = $pdo->prepare("SELECT * FROM categorias WHERE id = :id");
@@ -29,6 +30,7 @@ if (!empty($id)) {
 
     $nombre = $category['nombre'];
     $destacado = $category['destacado'];
+    $imagen = $category['imagen'];
 }
 ?>
 
@@ -542,6 +544,12 @@ if (!empty($id)) {
                                         </div>
                                     </div>
                                     <div class="mb-4">
+                                        <label class="form-label">Imagen</label>
+                                        <div class="dropzone" id="my-dropzone" data-existing-image="<?php if (!empty($id)) echo BASE_URL . ltrim($imagen, '/'); ?>">
+                                            <p class="dz-message">Arrastra la imagen o haz click</p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
                                         <button type="submit" class="btn btn-alt-primary"><?php if (!empty($id)) echo "Editar";
                                                                                             else echo "Añadir"; ?></button>
                                     </div>
@@ -593,53 +601,110 @@ if (!empty($id)) {
     <script src="<?= BASE_URL ?>public/js/dropzone.min.js"></script>
 
     <script>
-        document.getElementById("category").addEventListener("submit", async function(event) {
-            event.preventDefault(); // Evita el envío tradicional del formulario
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("category");
+            const submitButton = form.querySelector("button[type='submit']");
+            const dropzoneElement = document.getElementById("my-dropzone");
 
-            const action = this.getAttribute("data-action"); // Obtiene el data-action (add o edit)
-            const nombre = document.getElementById("dm-ecom-product-name").value.trim();
-            const id = document.getElementById("id") ? document.getElementById("id").value.trim() : null;
-            const destacado = document.getElementById("category-featured").checked;
-
-            if (!nombre || (action === "edit" && !id)) {
-                document.getElementById("message").textContent = "El nombre es obligatorio y el ID si estás editando.";
-                return;
+            Dropzone.autoDiscover = false;
+            if (Dropzone.instances.length > 0) {
+                Dropzone.instances.forEach(dz => dz.destroy());
             }
 
-            const endpoint = action === "edit" ?
-                `${BASE_URL}src/api/categories/edit_category.php` :
-                `${BASE_URL}src/api/categories/add_category.php`;
-
-            const csrfToken = document.getElementById("csrf_token").value;
-            const body = action === "edit" ? JSON.stringify({
-                nombre,
-                id,
-                destacado,
-                csrf_token: csrfToken
-            }) : JSON.stringify({
-                nombre,
-                destacado,
-                csrf_token: csrfToken
+            let myDropzone = new Dropzone("#my-dropzone", {
+                url: "#",
+                autoProcessQueue: false,
+                addRemoveLinks: true,
+                uploadMultiple: false,
+                parallelUploads: 1,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png,image/webp",
+                maxFilesize: 2,
+                removedfile: function(file) {
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                }
             });
 
-            try {
-                const response = await fetch(endpoint, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: body
-                });
-
-                const result = await response.json();
-                document.getElementById("message").textContent = result.message;
-
-                if (result.status === "success") {
-                    this.reset();
-                }
-            } catch (error) {
-                document.getElementById("message").textContent = "Error al enviar la solicitud.";
+            const existingImage = dropzoneElement.getAttribute("data-existing-image");
+            if (existingImage) {
+                const mockFile = { name: existingImage.substring(existingImage.lastIndexOf('/') + 1), size: 12345 };
+                myDropzone.emit("addedfile", mockFile);
+                myDropzone.emit("thumbnail", mockFile, existingImage);
+                myDropzone.emit("complete", mockFile);
+                myDropzone.files.push(mockFile);
             }
+
+            myDropzone.on("maxfilesexceeded", function(file) {
+                myDropzone.removeAllFiles();
+                myDropzone.addFile(file);
+            });
+
+            form.addEventListener("submit", async function(event) {
+                event.preventDefault();
+
+                const action = form.getAttribute("data-action");
+                const nombre = document.getElementById("dm-ecom-product-name").value.trim();
+                const id = document.getElementById("id") ? document.getElementById("id").value.trim() : "";
+                const destacado = document.getElementById("category-featured").checked;
+                const csrfToken = document.getElementById("csrf_token").value;
+
+                if (!nombre || (action === "edit" && !id)) {
+                    document.getElementById("message").textContent = "El nombre es obligatorio y el ID si estás editando.";
+                    return;
+                }
+
+                if (action === "add" && myDropzone.files.length === 0) {
+                    document.getElementById("message").textContent = "La imagen es obligatoria.";
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("nombre", nombre);
+                formData.append("destacado", destacado ? "1" : "0");
+                if (action === "edit") {
+                    formData.append("id", id);
+                }
+                if (myDropzone.files.length > 0 && myDropzone.files[0].accepted) {
+                    const file = myDropzone.files[0];
+                    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+                    if (!allowedTypes.includes(file.type)) {
+                        document.getElementById("message").textContent = "Formato de imagen no permitido.";
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) {
+                        document.getElementById("message").textContent = "La imagen supera el tamaño máximo de 2MB.";
+                        return;
+                    }
+                    formData.append("imagen", file);
+                }
+                formData.append("csrf_token", csrfToken);
+
+                const endpoint = action === "edit" ? `${BASE_URL}src/api/categories/edit_category.php` : `${BASE_URL}src/api/categories/add_category.php`;
+
+                submitButton.disabled = true;
+                submitButton.textContent = action === "edit" ? "Editando..." : "Enviando...";
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response.json();
+                    document.getElementById("message").textContent = result.message;
+
+                    if (result.status === "success" && action === "add") {
+                        form.reset();
+                        myDropzone.removeAllFiles();
+                    }
+                } catch (error) {
+                    document.getElementById("message").textContent = "Error al enviar la solicitud.";
+                }
+
+                submitButton.disabled = false;
+                submitButton.textContent = action === "edit" ? "Editar" : "Añadir";
+            });
         });
     </script>
 
