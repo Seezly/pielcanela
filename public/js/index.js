@@ -215,23 +215,42 @@ document.addEventListener("DOMContentLoaded", async function () {
 	        );
 	}
 
-	if (categoriesSlider) {
-	        new KeenSlider(categoriesSlider, {
-	                loop: true,
-	                slides: {
-	                        perView: 2,
-	                        spacing: 10,
-	                },
-	                breakpoints: {
-	                        "(min-width: 768px)": {
-	                                slides: { perView: 4, spacing: 15 },
-	                        },
-	                        "(min-width: 1024px)": {
-	                                slides: { perView: 6, spacing: 20 },
-	                        },
-	                },
-	        });
-	}
+        if (categoriesSlider) {
+                new KeenSlider(categoriesSlider, {
+                        loop: true,
+                        slides: {
+                                perView: 2,
+                                spacing: 10,
+                        },
+                        breakpoints: {
+                                "(min-width: 768px)": {
+                                        slides: { perView: 4, spacing: 15 },
+                                },
+                                "(min-width: 1024px)": {
+                                        slides: { perView: 6, spacing: 20 },
+                                },
+                        },
+                });
+        }
+
+        const thumbs = document.querySelector(".product-thumbnails");
+        if (thumbs) {
+                const slider = new KeenSlider(thumbs, { loop: false });
+                const left = document.createElement("div");
+                const right = document.createElement("div");
+                left.classList.add("arrow", "arrow-left");
+                right.classList.add("arrow", "arrow-right");
+                left.innerHTML = "❮";
+                right.innerHTML = "❯";
+                thumbs.append(left, right);
+                left.addEventListener("click", () => slider.prev());
+                right.addEventListener("click", () => slider.next());
+                thumbs.querySelectorAll(".thumbnail img").forEach((img) => {
+                        img.addEventListener("click", () => {
+                                document.getElementById("product-main").src = img.src;
+                        });
+                });
+        }
 
 	try {
 	        await readCategories();
@@ -661,33 +680,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	});
 
-	document.querySelectorAll("input[type=radio]").forEach((input) => {
-		input.addEventListener("click", (e) => {
-			const image = input.getAttribute("data-image");
-			const productImage =
-				input.getAttribute("data-location") === "modal"
-					? document.querySelector(".product-modal img")
-					: document.querySelector(".product img");
-
-			console.log(input);
-
-			if (!image) {
-				console.error(
-					"No se encontró la imagen del producto para comprar.",
-					image
-				);
-				return;
-			}
-
-			productImage.src = image;
-		});
-	});
-
-	// Manejo de compra de todo el carrito
-	const comprarCarritoBtn = document.querySelector("#comprarCarrito");
-	if (comprarCarritoBtn) {
-		comprarCarritoBtn.addEventListener("click", () => {
-			getCartItems()
+        // Manejo de compra de todo el carrito
+        const comprarCarritoBtn = document.querySelector("#comprarCarrito");
+        if (comprarCarritoBtn) {
+                comprarCarritoBtn.addEventListener("click", () => {
+                        getCartItems()
 				.then((cartItems) => {
 					if (cartItems.length === 0) {
 						alert("Tu carrito está vacío. Agrega productos antes de comprar.");
