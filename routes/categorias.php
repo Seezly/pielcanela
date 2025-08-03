@@ -12,6 +12,7 @@ if (empty($id)) {
     exit();
 }
 
+require '../src/scripts/categoryVisits.php';
 require '../src/scripts/allVisits.php';
 
 $title = "Piel Canela | Categorías";
