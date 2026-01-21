@@ -9,7 +9,7 @@ $slides = $slider->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <section class="slider">
-    <div class="keen-slider">
+    <div class="hero-slider keen-slider">
         <?php
         foreach ($slides as $slide) {
         ?>
@@ -20,7 +20,7 @@ $slides = $slider->fetchAll(PDO::FETCH_ASSOC);
                         <p class="product-description"><?= htmlspecialchars($slide['descripcion'], ENT_QUOTES, 'UTF-8'); ?></p>
                     </div>
                     <div class="product-image box-img">
-                        <img src="<?= htmlspecialchars($slide['imagen'], ENT_QUOTES, 'UTF-8'); ?>" loading="lazy" alt="<?= htmlspecialchars($slide['titulo'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <img src="<?= BASE_URL . htmlspecialchars($slide['imagen'], ENT_QUOTES, 'UTF-8'); ?>" loading="lazy" alt="<?= htmlspecialchars($slide['titulo'], ENT_QUOTES, 'UTF-8'); ?>">
                     </div>
                 </div>
             </a>

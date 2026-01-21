@@ -44,13 +44,17 @@ function convertirImagenAWebP($imagenRuta, $destinoRuta)
     $rutaCompleta = realpath($destinoRuta) . DIRECTORY_SEPARATOR . $nuevoNombre;
 
     // Guardar la imagen en formato WebP
-    if (!imagewebp($imagen, $rutaCompleta)) {
-        die(json_encode(["status" => "error", "message" => "No se pudo guardar la imagen en formato WebP."]));
+    try {
+        if (!imagewebp($imagen, $rutaCompleta)) {
+            throw new Exception("No se pudo guardar la imagen en formato WebP.");
+        }
+    } catch (Exception $e) {
+        die(json_encode(["status" => "error", "message" => $e->getMessage()]));
     }
 
     // Liberar memoria
     imagedestroy($imagen);
 
     // Devolver la ruta relativa de la imagen para la base de datos
-    return "/public/img/" . $nuevoNombre;
+    return "public/img/" . $nuevoNombre;
 }

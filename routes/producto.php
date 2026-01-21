@@ -51,12 +51,12 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
         <section class="product">
             <div class="product-gallery">
                 <div class="product-main box-img">
-                    <img id="product-main" src="<?= $producto[0]['imagen'][0]; ?>" alt="<?= htmlspecialchars($producto[0]['nombre']); ?>">
+                    <img id="product-main" src="<?= BASE_URL . $producto[0]['imagen'][0]; ?>" alt="<?= htmlspecialchars($producto[0]['nombre']); ?>">
                 </div>
                 <div class="product-thumbnails keen-slider">
                     <?php foreach ($producto[0]['imagen'] as $img): ?>
                         <div class="keen-slider__slide thumbnail">
-                            <img src="<?= $img; ?>" alt="<?= htmlspecialchars($producto[0]['nombre']); ?>">
+                            <img src="<?= BASE_URL . $img; ?>" alt="<?= htmlspecialchars($producto[0]['nombre']); ?>">
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -125,8 +125,8 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
                                     </svg>
                                 </span>
                             </div>
-                            <img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-                                        else echo $producto["imagen"]; ?>" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+                            <img src="<?php if (is_array($producto["imagen"])) echo BASE_URL . $producto["imagen"][0];
+                                        else echo BASE_URL . $producto["imagen"]; ?>" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
                         <div class="producto-info">
                             <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>
@@ -157,4 +157,3 @@ $description = "Transforma tu rutina de belleza con SK. Este producto ofrece res
 </body>
 
 </html>
-

@@ -40,10 +40,10 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
             <h2><?= htmlspecialchars($categoria["nombre"] ?? "No existe la categoría que estás buscando", ENT_QUOTES, 'UTF-8'); ?></h2>
             <div class="filter-icon">
                 <div class="filters">
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=asc" class="filter <?php if ($price === "asc") echo "active"; ?>">Menor precio</a>
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&price=desc" class="filter <?php if ($price === "desc") echo "active"; ?>">Mayor precio</a>
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&featured=1" class="filter <?php if ($featured === "1") echo "active"; ?>">Destacados</a>
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria["nombre"]); ?>?id=<?= $id; ?>&discount=1" class="filter <?php if ($discount === "1") echo "active"; ?>">Descuento</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])); ?>?id=<?= $id; ?>&price=asc" class="filter <?php if ($price === "asc") echo "active"; ?>">Menor precio</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])); ?>?id=<?= $id; ?>&price=desc" class="filter <?php if ($price === "desc") echo "active"; ?>">Mayor precio</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])); ?>?id=<?= $id; ?>&featured=1" class="filter <?php if ($featured === "1") echo "active"; ?>">Destacados</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])); ?>?id=<?= $id; ?>&discount=1" class="filter <?php if ($discount === "1") echo "active"; ?>">Descuento</a>
                 </div>
                 <span class="icon-filter">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -90,7 +90,7 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                                         data-name="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>"
                                         data-price="<?= htmlspecialchars($producto["precio"], ENT_QUOTES, 'UTF-8'); ?>"
                                         data-priceD="<?= htmlspecialchars($producto["precioD"], ENT_QUOTES, 'UTF-8'); ?>"
-                                        data-image="<?= $producto["imagen"][0] ?? ""; ?>"
+                                        data-image="<?= BASE_URL . $producto["imagen"][0] ?? ""; ?>"
                                         data-attribute="<?= htmlspecialchars($producto["atributo"], ENT_QUOTES, 'UTF-8'); ?>"
                                         data-option="<?= htmlspecialchars(explode(',', $producto["opciones"])[0] ?? "", ENT_QUOTES, 'UTF-8'); ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined">
@@ -98,7 +98,7 @@ $description = "Explora nuestras categorías en SK. Encuentra una amplia selecci
                                         </svg>
                                     </span>
                                 </div>
-                                <img src="<?= $producto["imagen"][0]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+                                <img src="<?= BASE_URL . $producto["imagen"][0]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
                             </div>
                             <div class="producto-info">
                                 <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>

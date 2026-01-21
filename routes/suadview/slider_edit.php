@@ -40,7 +40,7 @@ if (!empty($id)) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-    <title>Piel Canela | Categorias</title>
+    <title>Piel Canela | Slider</title>
 
     <meta name="robots" content="noindex, nofollow" />
 

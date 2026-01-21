@@ -52,10 +52,10 @@ $description = "Explora nuestras subcategorías en SK. Encuentra una amplia sele
             <h2><?= htmlspecialchars($categoria[0]["c_nom"] . " > " . $categoria[0]["s_nom"] ?? "No existe la subcategoría que estás buscando", ENT_QUOTES, 'UTF-8'); ?></h2>
             <div class="filter-icon">
                 <div class="filters">
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria[0]["c_nom"]); ?>/<?= strtolower($categoria[0]["s_nom"]); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&price=asc" class="filter <?php if (!empty($price) && $price === "asc") echo "active"; ?>">Menor precio</a>
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria[0]["c_nom"]); ?>/<?= strtolower($categoria[0]["s_nom"]); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&price=desc" class="filter <?php if (!empty($price) && $price === "desc") echo "active"; ?>">Mayor precio</a>
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria[0]["c_nom"]); ?>/<?= strtolower($categoria[0]["s_nom"]); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&featured=1" class="filter <?php if (!empty($featured) && $featured === "1") echo "active"; ?>">Destacados</a>
-                    <a href="<?= BASE_URL ?>categoria/<?= strtolower($categoria[0]["c_nom"]); ?>/<?= strtolower($categoria[0]["s_nom"]); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&discount=1" class="filter <?php if (!empty($discount) && $discount === "1") echo "active"; ?>">Descuento</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["c_nom"])); ?>/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["s_nom"])); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&price=asc" class="filter <?php if (!empty($price) && $price === "asc") echo "active"; ?>">Menor precio</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["c_nom"])); ?>/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["s_nom"])); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&price=desc" class="filter <?php if (!empty($price) && $price === "desc") echo "active"; ?>">Mayor precio</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["c_nom"])); ?>/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["s_nom"])); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&featured=1" class="filter <?php if (!empty($featured) && $featured === "1") echo "active"; ?>">Destacados</a>
+                    <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["c_nom"])); ?>/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["s_nom"])); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&discount=1" class="filter <?php if (!empty($discount) && $discount === "1") echo "active"; ?>">Descuento</a>
                 </div>
                 <span class="icon-filter">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined">
@@ -108,8 +108,8 @@ $description = "Explora nuestras subcategorías en SK. Encuentra una amplia sele
                                             </svg>
                                         </span>
                                     </div>
-                                    <img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-                                                else echo $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <img src="<?php if (is_array($producto["imagen"])) echo BASE_URL . $producto["imagen"][0];
+                                                else echo BASE_URL . $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                                 <div class="producto-info">
                                     <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>

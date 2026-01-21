@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 s.nombre AS subcategoria_nombre
             FROM categorias AS c
             LEFT JOIN subcategorias AS s ON c.id = s.id_categoria
-            ORDER BY c.id
+            ORDER BY c.nombre, s.nombre
         ");
         $stmt->execute();
 

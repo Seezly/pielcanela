@@ -5,11 +5,11 @@
             <div class="accordion-content">
                 <p>¿Tienes preguntas o necesitas asesoramiento personalizado? Nuestro equipo está listo para ayudarte:</p>
 
-                <p>Dirección: Centro Comercial Galería La Francia, Planta Baja, Local 3, Barinas, Venezuela</p>
+                <p>Dirección: Socopó, Barinas, Venezuela</p>
 
-                <p>Instagram: <a href="https://instagram.com/pielcanela_.ca/" target="_blank" rel="noopener noreferrer">@pielcanela_.ca</a></p>
+                <p>Instagram: <a href="https://instagram.com/pielcanela_/" target="_blank" rel="noopener noreferrer">@pielcanela_</a></p>
 
-                <p>Atendemos de lunes a viernes, de 9:00 a.m. a 6:00 p.m.</p>
+                <p>Atendemos de lunes a viernes, de 8:30 a.m. a 6:00 p.m.</p>
             </div>
         </div>
         <div class="accordion-item">
@@ -17,7 +17,7 @@
             <div class="accordion-content">
                 <p>Mantente al día con nuestras últimas novedades, consejos de belleza y promociones exclusivas:</p>
 
-                <p>Instagram: <a href="https://instagram.com/pielcanela_.ca/" target="_blank" rel="noopener noreferrer">@pielcanela_.ca</a></p>
+                <p>Instagram: <a href="https://instagram.com/pielcanela_/" target="_blank" rel="noopener noreferrer">@pielcanela_</a></p>
 
                 <p>Únete a nuestra comunidad y descubre cómo realzar tu belleza con productos diseñados para ti.</p>
             </div>
@@ -25,7 +25,7 @@
         <div class="accordion-item">
             <button class="accordion-header">Información de la empresa</button>
             <div class="accordion-content">
-                <p>En Piel Canela, nos apasiona realzar la belleza natural de cada persona. Ubicados en Barinas, Venezuela, ofrecemos una amplia gama de productos de maquillaje y cuidado de la piel, cuidadosamente seleccionados para adaptarse a las necesidades únicas de cada cliente. Nuestro compromiso es brindarte soluciones efectivas para resaltar tu belleza con productos que realmente funcionan.</p>
+                <p>En Piel Canela, nos apasiona realzar la belleza natural de cada persona. Ubicados en Socopó, Barinas, Venezuela, ofrecemos una amplia gama de productos de maquillaje y cuidado de la piel, cuidadosamente seleccionados para adaptarse a las necesidades únicas de cada cliente. Nuestro compromiso es brindarte soluciones efectivas para resaltar tu belleza con productos que realmente funcionan.</p>
             </div>
         </div>
     </div>

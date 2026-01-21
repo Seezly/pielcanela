@@ -98,8 +98,8 @@ $description = "Explora nuestros productos en SK. Encuentra una amplia selecció
                                             </svg>
                                         </span>
                                     </div>
-                                    <img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-                                                else echo $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <img src="<?php if (is_array($producto["imagen"])) echo BASE_URL . $producto["imagen"][0];
+                                                else echo BASE_URL . $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                                 <div class="producto-info">
                                     <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>

@@ -784,7 +784,8 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        id
+                        id,
+                        csrf_token: '<?= $_SESSION['csrf_token'] ?>'
                     })
                 });
 

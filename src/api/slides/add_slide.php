@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             $fileTmpName = $_FILES['image']['tmp_name'];
         }
-        $rutaImagen = convertirImagenAWebP($fileTmpName, __DIR__ . '/../../public/img/');
+        $rutaImagen = convertirImagenAWebP($fileTmpName, __DIR__ . '/../../../public/img/');
     } else {
         echo json_encode(["status" => "error", "message" => "No se subió imagen."]);
         exit;
@@ -49,4 +49,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 } else {
     echo json_encode(["status" => "error", "message" => "Método no permitido."]);
 }
-?>

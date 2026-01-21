@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO productos (nombre, precio, descripcion, descuento, precioD, porcentajeD, sku, categoria, imagen, atributo_id, opciones, destacado, subcategoria) VALUES (:nombre, :precio, :descripcion, :descuento, :precioD, :porcentajeD, :sku, :categoria, :imagen, :atributo_id, :opciones, :destacado)");
+        $stmt = $pdo->prepare("INSERT INTO productos (nombre, precio, descripcion, descuento, precioD, porcentajeD, sku, categoria, imagen, atributo_id, opciones, destacado, subcategoria) VALUES (:nombre, :precio, :descripcion, :descuento, :precioD, :porcentajeD, :sku, :categoria, :imagen, :atributo_id, :opciones, :destacado, :subcategoria)");
         $stmt->execute([
             "nombre" => $nombre,
             "precio" => $precio,

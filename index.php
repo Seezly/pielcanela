@@ -21,23 +21,26 @@ require 'src/scripts/allVisits.php';
 		<!-- Hero -->
 		<?php include_once('./src/components/slider.php'); ?>
 
-                <!-- Categorías -->
+		<!-- Categorías -->
 
-                <section class="categorias">
-                        <?php
-                        $sql = $pdo->prepare("SELECT * FROM categorias ORDER BY destacado DESC, visitas DESC LIMIT 8");
-                        $sql->execute();
-                        $categorias = $sql->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-                        <div class="categorias-slider keen-slider">
-                                <?php foreach ($categorias as $categoria) { ?>
-                                        <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])) ?>?id=<?= $categoria["id"]; ?>" class="keen-slider__slide categoria-slide" style="background-image: url('<?= htmlspecialchars($categoria["imagen"], ENT_QUOTES, 'UTF-8'); ?>');">
-                                                <span class="overlay"></span>
-                                                <span class="categoria-nombre"><?= htmlspecialchars($categoria["nombre"], ENT_QUOTES, 'UTF-8'); ?></span>
-                                        </a>
-                                <?php } ?>
-                        </div>
-                </section>
+		<section class="categorias">
+			<?php
+			$sql = $pdo->prepare("SELECT * FROM categorias ORDER BY destacado DESC, visitas DESC LIMIT 8");
+			$sql->execute();
+			$categorias = $sql->fetchAll(PDO::FETCH_ASSOC);
+			?>
+			<div class="categorias-slider keen-slider">
+				<?php foreach ($categorias as $categoria) { ?>
+					<a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria["nombre"])) ?>?id=<?= $categoria["id"]; ?>" class="keen-slider__slide categoria-slide">
+						<!-- <span class="categoria-overlay"></span> -->
+						<div class="categoria-imagen">
+							<img src="<?= BASE_URL . htmlspecialchars($categoria["imagen"], ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($categoria["nombre"], ENT_QUOTES, 'UTF-8'); ?>" loading="lazy">
+						</div>
+						<span class="categoria-nombre"><?= htmlspecialchars($categoria["nombre"], ENT_QUOTES, 'UTF-8'); ?></span>
+					</a>
+				<?php } ?>
+			</div>
+		</section>
 
 		<!-- AD -->
 
@@ -54,7 +57,7 @@ require 'src/scripts/allVisits.php';
 			</div>
 			<div class="productos-list">
 				<?php
-                                $sql = $pdo->prepare("SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id ORDER BY p.destacado DESC, p.visitas DESC LIMIT 8");
+				$sql = $pdo->prepare("SELECT p.*, a.atributo AS atributo FROM productos AS p JOIN atributos AS a ON p.atributo_id = a.id ORDER BY p.destacado DESC, p.visitas DESC LIMIT 8");
 				$sql->execute();
 
 				$productos = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -78,8 +81,8 @@ require 'src/scripts/allVisits.php';
 									</svg>
 								</span>
 							</div>
-							<img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-										else echo $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+							<img src="<?php if (is_array($producto["imagen"])) echo BASE_URL . $producto["imagen"][0];
+										else echo BASE_URL . $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
 						</div>
 						<div class="producto-info">
 							<p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>
@@ -138,8 +141,8 @@ require 'src/scripts/allVisits.php';
 									</svg>
 								</span>
 							</div>
-							<img src="<?php if (is_array($producto["imagen"])) echo $producto["imagen"][0];
-										else echo $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+							<img src="<?php if (is_array($producto["imagen"])) echo BASE_URL . $producto["imagen"][0];
+										else echo BASE_URL . $producto["imagen"]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
 						</div>
 						<div class="producto-info">
 							<p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>

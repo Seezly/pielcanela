@@ -2,9 +2,9 @@
 require_once __DIR__ . '/../config/config.php';
 // Configuración de conexión
 $host = "localhost";
-$dbname = "pc_ecom";
-$username = "root";
-$password = "";
+$dbname = "c2780502_pcdb";
+$username = "c2780502_pcdb";
+$password = "ru03radoBE";
 
 try {
     // Crear una nueva conexión PDO
