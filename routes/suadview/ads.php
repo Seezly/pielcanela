@@ -593,7 +593,11 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-4">
                                                 <label class="form-label" for="dm-ecom-ad-1">URL AD #1</label>
                                                 <input type="text" class="form-control" id="dm-ecom-ad-1" name="dm-ecom-ad-1"
-                                                    value="<?= $ads[0]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                value="<?= $ads[0]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                <div class="form-check mt-2">
+                                                    <label class="form-check-label" for="urlVideo1">¿Es un vídeo?</label>
+                                                    <input type="checkbox" class="form-check-input" name="video" id="urlVideo1">
+                                                </div>
                                                 <input type="hidden" name="idAd1" value="1">
                                                 <input type="hidden" id="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                                             </div>
@@ -606,7 +610,11 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-4">
                                                 <label class="form-label" for="dm-ecom-ad-2">URL AD #2</label>
                                                 <input type="text" class="form-control" id="dm-ecom-ad-2" name="dm-ecom-ad-2"
-                                                    value="<?= $ads[1]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                value="<?= $ads[1]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                <div class="form-check mt-2">
+                                                    <label class="form-check-label" for="urlVideo2">¿Es un vídeo?</label>
+                                                    <input type="checkbox" class="form-check-input" name="video" id="urlVideo2">
+                                                </div>
                                                 <input type="hidden" name="idAd2" value="2">
                                             </div>
                                         </form>

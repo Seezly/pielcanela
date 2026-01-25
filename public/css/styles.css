@@ -903,6 +903,10 @@ nav ul a li {
     font-size: 0.95em;
 }
 
+.productos .producto .producto-info p {
+    font-weight: 600;
+}
+
 .productos .producto .producto-precio {
     display: flex;
     justify-content: flex-start;
@@ -1260,10 +1264,6 @@ PRODUCTO
 
     .search-bar form {
         width: 100%;
-    }
-
-    .arrow {
-        display: none;
     }
 
     #wabutton a {

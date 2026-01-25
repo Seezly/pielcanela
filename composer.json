@@ -1,0 +1,5 @@
+{
+    "require": {
+        "cloudmersive/cloudmersive_video_api_client": "^1.0"
+    }
+}
