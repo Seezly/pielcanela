@@ -10,10 +10,10 @@ $adsA = $stmtA->fetch(PDO::FETCH_ASSOC);
     <a href="<?= $adsA["url"]; ?>" data-id="<?= $adsA["id"] ?>" class="box-img">
         <?php if (pathinfo($adsA["imagen"], PATHINFO_EXTENSION) === 'webm') { ?>
             <video autoplay muted loop>
-                <source src="<?= BASE_URL . $adsA["imagen"]; ?>" type="video/webm">
+                <source src="<?=$adsA["imagen"]; ?>" type="video/webm">
             </video>
         <?php } else { ?>
-            <img src="<?= BASE_URL . $adsA["imagen"]; ?>" loading="lazy" alt="ad">
+            <img src="<?=$adsA["imagen"]; ?>" loading="lazy" alt="ad">
         <?php } ?>
     </a>
 </section>
