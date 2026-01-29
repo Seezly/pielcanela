@@ -3,8 +3,8 @@ require_once __DIR__ . '/../config/config.php';
 // Configuración de conexión
 $host = "localhost";
 $dbname = "c2780502_pcdb";
-$username = "c2780502_pcdb";
-$password = "ru03radoBE";
+$username = "root";
+$password = "";
 
 try {
     // Crear una nueva conexión PDO

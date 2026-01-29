@@ -714,13 +714,15 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 const urlAd1 = document.getElementById("dm-ecom-ad-1").value;
                 const idAd1 = document.querySelector("input[name=idAd1]").value;
                 const csrfToken = document.getElementById("csrf_token").value;
+                const video1 = document.getElementById("urlVideo1").checked;
 
                 let formData = new FormData();
                 formData.append("id", idAd1);
                 formData.append("url", urlAd1);
                 formData.append("csrf_token", csrfToken);
+                formData.append("is_video", video1);
 
-                formData.append("image[]", Dropzone.instances[0].files);
+                formData.append("image", Dropzone.instances[0].files[0]);
 
                 try {
                     let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php`, {
@@ -732,12 +734,11 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     alert(result.message);
 
                     if (result.status === "success") {
-                        form.reset();
                         Dropzone.instances[0].removeAllFiles(); // Eliminar imagen subida después de éxito
                         Dropzone.instances[1].removeAllFiles(); // Eliminar imagen subida después de éxito
                     }
                 } catch (error) {
-                    alert("Error al enviar la solicitud.");
+                    alert("Error al enviar la solicitud." + error);
                 }
             });
             submitButton2.addEventListener("click", async (e) => {
@@ -746,13 +747,15 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 const urlAd2 = document.getElementById("dm-ecom-ad-2").value;
                 const idAd2 = document.querySelector("input[name=idAd2]").value;
                 const csrfToken2 = document.getElementById("csrf_token").value;
+                const video2 = document.getElementById("urlVideo2").checked;
 
                 let formData = new FormData();
                 formData.append("id", idAd2);
                 formData.append("url", urlAd2);
                 formData.append("csrf_token", csrfToken2);
+                formData.append("is_video", video2);
 
-                formData.append("image[]", Dropzone.instances[1].files);
+                formData.append("image", Dropzone.instances[1].files[0]);
 
                 try {
                     let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php`, {
@@ -764,12 +767,11 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     alert(result.message);
 
                     if (result.status === "success") {
-                        form.reset();
                         Dropzone.instances[0].removeAllFiles(); // Eliminar imagen subida después de éxito
                         Dropzone.instances[1].removeAllFiles(); // Eliminar imagen subida después de éxito
                     }
                 } catch (error) {
-                    alert("Error al enviar la solicitud.");
+                    alert("Error al enviar la solicitud." + error);
                 }
             });
         });
