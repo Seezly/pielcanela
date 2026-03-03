@@ -31,6 +31,8 @@ if (!empty($id)) {
     $precio = $product['precio'];
     $descripcion = $product['descripcion'];
     $categoria = $product['categoria'];
+    $subcategoria = $product['subcategoria'];
+    $options = $product['opciones'];
     $categoria_nombre = $product['categoria_nombre'];
     $atributo = $product['atributo_id'];
     $atributo_nombre = $product['atributo_nombre'];
@@ -578,7 +580,7 @@ if (!empty($id)) {
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-options">Opciones</label>
                                             <input type="text" class="form-control" id="dm-ecom-product-options" name="dm-ecom-product-options"
-                                                value="<?php if (!empty($id)) echo $options; ?>" placeholder="Ej: S,M,L,XL - rojo,azul,verde" pattern="^[a-zA-Z0-9,]+$" required>
+                                                value="<?= empty($id) ? '' : ($options == '' ? 'no' : $options) ?>" placeholder="Ej: S,M,L,XL - rojo,azul,verde" pattern="^[a-zA-Z0-9,]+$" required>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
@@ -693,9 +695,12 @@ if (!empty($id)) {
             const precioInput = document.getElementById("dm-ecom-product-price");
             const opcionesInput = document.getElementById("dm-ecom-product-options");
             const subInput = document.getElementById("dm-ecom-product-category-type");
+            const catInput = document.getElementById("dm-ecom-product-category");
             const formAction = form.getAttribute("data-action");
             const id = document.querySelector("input[name='id']");
             const destacado = document.querySelector("#product-featured");
+            let images = "<?= $product['imagen'] ?>".split(',');
+            let myDropzone;
 
             Dropzone.autoDiscover = false;
 
@@ -704,19 +709,50 @@ if (!empty($id)) {
                 Dropzone.instances.forEach((dz) => dz.destroy());
             }
 
-            // Inicializar Dropzone correctamente
-            let myDropzone = new Dropzone(".dropzone", {
-                addRemoveLinks: true,
-                uploadMultiple: true,
-                parallelUploads: 100,
-                maxFiles: 100,
-                removedfile: function(file) {
-                    var _ref;
-                    return (_ref = file.previewElement) != null ?
-                        _ref.parentNode.removeChild(file.previewElement) :
-                        void 0;
-                },
-            });
+            if (!images.length >= 1) {
+                // Inicializar Dropzone correctamente
+                myDropzone = new Dropzone(".dropzone", {
+                    addRemoveLinks: true,
+                    uploadMultiple: true,
+                    parallelUploads: 100,
+                    maxFiles: 100,
+                    removedfile: function(file) {
+                        var _ref;
+                        return (_ref = file.previewElement) != null ?
+                            _ref.parentNode.removeChild(file.previewElement) :
+                            void 0;
+                    },
+                });
+            } else {
+                // Inicializar Dropzone correctamente
+                myDropzone = new Dropzone(".dropzone", {
+                    addRemoveLinks: true,
+                    uploadMultiple: true,
+                    parallelUploads: 100,
+                    maxFiles: 100,
+                    removedfile: function(file) {
+                        var _ref;
+                        return (_ref = file.previewElement) != null ?
+                            _ref.parentNode.removeChild(file.previewElement) :
+                            void 0;
+                    },
+                    init: function() {
+                        images.forEach((image) => {
+                            var mockFile = {
+                                name: image,
+                                size: 512
+                            };
+                            this.options.addedfile.call(this, mockFile, BASE_URL + image);
+                            this.options.thumbnail.call(this, mockFile, BASE_URL + image);
+                            mockFile.previewElement.classList.add('dz-success');
+                            mockFile.previewElement.classList.add('dz-complete');
+                            mockFile.previewElement.children[0].children[0].style.objectFit = 'cover';
+                            mockFile.previewElement.children[0].children[0].style.width = '100%';
+                            mockFile.previewElement.children[0].children[0].style.height = '100%';
+                        })
+                    }
+                });
+            }
 
             porcentajeDescuentoInput.setAttribute("disabled", "true");
 
@@ -852,6 +888,12 @@ if (!empty($id)) {
                         select.appendChild(option);
                     });
 
+                    if (id.value > 0) {
+                        catInput.value = "<?= $categoria ?>";
+                        const event = new Event('change');
+                        catInput.dispatchEvent(event);
+                    }
+
                 });
 
             fetch(`${BASE_URL}src/api/attributes/read_attributes.php`)
@@ -865,6 +907,10 @@ if (!empty($id)) {
                         option.textContent = attribute.atributo;
                         select.appendChild(option);
                     });
+
+                    if (id.value > 0) {
+                        document.getElementById("dm-ecom-product-attribute").value = "<?= $atributo ?>";
+                    }
 
                 });
 
@@ -886,6 +932,10 @@ if (!empty($id)) {
                             option.textContent = attribute.nombre;
                             subInput.appendChild(option);
                         });
+
+                        if (id.value > 0) {
+                            subInput.value = "<?= $subcategoria ?>";
+                        }
 
                     });
 

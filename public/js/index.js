@@ -180,8 +180,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                     arrowLeft.innerHTML = "❮";
                     arrowRight.innerHTML = "❯";
 
-                    sliderElement.appendChild(arrowLeft);
-                    sliderElement.appendChild(arrowRight);
+                    if (instance.slides.length > 1) {
+                        sliderElement.appendChild(arrowLeft);
+                        sliderElement.appendChild(arrowRight);
+                    }
 
                     arrowLeft.addEventListener("click", () => instance.prev());
                     arrowRight.addEventListener("click", () => instance.next());
@@ -198,7 +200,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     function nextTimeout() {
                         clearTimeout(timeout);
-                        if (mouseOver || slider.slides().length <= 1) return;
+                        if (mouseOver || slider.slides.length <= 1) return;
                         timeout = setTimeout(() => {
                             slider.next();
                         }, 3000);

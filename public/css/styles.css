@@ -705,7 +705,7 @@ nav ul a li {
 }
 
 .slider .box-img img {
-    object-fit: fill;
+    object-fit: cover;
     position: relative;
     z-index: 0;
 }

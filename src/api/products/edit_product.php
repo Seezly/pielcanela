@@ -71,12 +71,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         empty($categoria) ||
         strlen($descuento) === 0 ||  // Cambiar a strlen
         strlen($precioD) === 0 ||    // Cambiar a strlen
-        strlen($porcentajeD) === 0 || // Cambiar a strlen
-        empty($rutasImagenes)
+        strlen($porcentajeD) === 0   // Cambiar a strlen
     ) {
         echo json_encode(["status" => "error", "message" => "Todos los campos son obligatorios."]);
         echo $id, $nombre, $precio, $sku, $descripcion, $categoria, $descuento, $precioD, $porcentajeD, $rutasImagenes;
         exit;
+    }
+
+    if (!isset($rutasImagenes) || empty($rutasImagenes)) {
+        // Si no se subió una nueva imagen, obtener la ruta actual de la base de datos
+        $stmt = $pdo->prepare("SELECT imagen FROM productos WHERE id=:id");
+        $stmt->execute(["id" => $id]);
+        $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+        $rutasImagenes = $producto['imagen'];
     }
 
     try {

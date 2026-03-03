@@ -81,8 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 exit;
             }
 
+            $format = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+
             // Convertir el video a WebM
-            $convertResponse = convertFile($api_key, $client, $task_id);
+            $convertResponse = convertFile($api_key, $client, $format, $task_id);
 
             if (!$convertResponse) {
                 echo json_encode(["status" => "error", "message" => "Error al convertir el archivo de video."]);

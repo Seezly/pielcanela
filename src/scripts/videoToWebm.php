@@ -8,7 +8,8 @@ $api_key = 'api_production_3bd8b962183dbc045db6e1cee2fa0c937e5c3a09f605ab391e397
 
 $client = new \GuzzleHttp\Client();
 
-function initTask($api_key, $client) {
+function initTask($api_key, $client)
+{
     $headers = array(
         'Content-Type' => 'application/json',
         'Accept' => 'application/json',
@@ -16,41 +17,42 @@ function initTask($api_key, $client) {
     );
 
     try {
-    $response = $client->request(
-        'POST',
-        'https://api.freeconvert.com/v1/process/import/upload',
-        array(
-        'headers' => $headers,
-        )
-    );
+        $response = $client->request(
+            'POST',
+            'https://api.freeconvert.com/v1/process/import/upload',
+            array(
+                'headers' => $headers,
+            )
+        );
         return $response->getBody()->getContents();
-    }
-    catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
+    } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+        // handle exception or api errors.
         print_r($e->getMessage());
     }
 }
 
-function uploadFile($upload_url, $signature, $file_path, $file_name, $client, $api_key) {
+function uploadFile($upload_url, $signature, $file_path, $file_name, $client, $api_key)
+{
     $headers = [
         'Authorization' => 'Bearer ' . $api_key
     ];
 
     $options = [
-    'multipart' => [
-        [
-            'name' => 'file',
-            'contents' => Utils::tryFopen($file_path, 'r'),
-            'filename' => $file_name,
-            'headers'  => [
-                'Content-Type' => '<Content-type header>'
+        'multipart' => [
+            [
+                'name' => 'file',
+                'contents' => Utils::tryFopen($file_path, 'r'),
+                'filename' => $file_name,
+                'headers'  => [
+                    'Content-Type' => '<Content-type header>'
+                ]
+            ],
+            [
+                'name' => 'signature',
+                'contents' => $signature
             ]
-        ],
-        [
-            'name' => 'signature',
-            'contents' => $signature
         ]
-    ]];
+    ];
 
     try {
         $request = new Request(
@@ -66,14 +68,14 @@ function uploadFile($upload_url, $signature, $file_path, $file_name, $client, $a
         } else {
             return $response->getBody()->getContents();
         }
-    }
-    catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    } catch (\GuzzleHttp\Exception\BadResponseException $e) {
         // handle exception or api errors.
         print_r($e->getMessage());
     }
 }
 
-function convertFile($api_key, $client, $task_id) {
+function convertFile($api_key, $client, $format, $task_id)
+{
     $headers = [
         'Content-Type' => 'application/json',
         'Accept' => 'application/json',
@@ -83,10 +85,10 @@ function convertFile($api_key, $client, $task_id) {
     // Define array of request body.
     $request_body = array(
         'input' => $task_id,
-        'input_format' => 'mp4',
+        'input_format' => $format,
         'output_format' => 'webm',
     );
-    
+
     try {
         $request = new Request(
             'POST',
@@ -104,7 +106,8 @@ function convertFile($api_key, $client, $task_id) {
     }
 }
 
-function downloadFile($api_key, $client, $task_id) {
+function downloadFile($api_key, $client, $task_id)
+{
     $headers = array(
         'Accept' => 'application/json',
         'Authorization' => 'Bearer ' . $api_key,
@@ -120,13 +123,13 @@ function downloadFile($api_key, $client, $task_id) {
                 'https://api.freeconvert.com/v1/process/tasks/' . $task_id,
                 $headers
             );
-        
+
             $response = $client->sendAsync($request)->wait();
-        
+
             $data = json_decode($response->getBody()->getContents());
-        
+
             $status = $data->status;
-        
+
             if ($status === 'completed') {
                 $url =  $data->result->url;
 
@@ -135,7 +138,7 @@ function downloadFile($api_key, $client, $task_id) {
                     return "/public/videos/" . $name;
                 }
                 break;
-            } else if ($status === 'failed'){
+            } else if ($status === 'failed') {
                 echo json_encode(["status" => "error", "message" => "La conversión ha fallado. - $data->result->errorCode"]);
                 exit;
             } else {
