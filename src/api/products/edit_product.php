@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Si es un array de imágenes (múltiples imágenes)
         if (is_array($_FILES['image']['name'])) {
             $fileCount = count($_FILES['image']['name']);
+            $existingCount = count($_POST['existing_image']);
             for ($i = 0; $i < $fileCount; $i++) {
                 $fileTmpName = $_FILES['image']['tmp_name'][$i];
                 $fileName = $_FILES['image']['name'][$i];
@@ -27,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $imagenesSubidas[] = $rutaImagen;
             }
 
+            for ($i = 0; $i < $existingCount; $i++) {
+                $imagenesSubidas[] = $_POST['existing_image'][$i];
+            }
             // Unir todas las rutas con coma
             $rutasImagenes = implode(",", $imagenesSubidas);
         } elseif (!is_array($_FILES['image']['name'])) {

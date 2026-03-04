@@ -740,9 +740,11 @@ if (!empty($id)) {
                         images.forEach((image) => {
                             var mockFile = {
                                 name: image,
+                                accepted: true,
                                 size: 512
                             };
                             this.options.addedfile.call(this, mockFile, BASE_URL + image);
+                            this.files.push(mockFile);
                             this.options.thumbnail.call(this, mockFile, BASE_URL + image);
                             mockFile.previewElement.classList.add('dz-success');
                             mockFile.previewElement.classList.add('dz-complete');
@@ -839,7 +841,11 @@ if (!empty($id)) {
 
                 if (myDropzone.files.length > 0) {
                     myDropzone.files.forEach((file, index) => {
-                        formData.append("image[]", file);
+                        if (file instanceof File) {
+                            formData.append("image[]", file);
+                        } else if (file.accepted && file.name) {
+                            formData.append("existing_image[]", file.name);
+                        }
                     });
                 }
 
