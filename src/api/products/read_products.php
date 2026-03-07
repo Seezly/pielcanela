@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         // Consulta para obtener productos paginados
         $stmt = $pdo->prepare("SELECT p.id, p.sku, p.nombre, p.descripcion, c.nombre AS categoria, p.precio, p.descuento, p.porcentajeD, p.precioD, p.imagen, p.visitas 
                                FROM productos AS p 
-                               JOIN categorias AS c ON p.categoria = c.id
+                               LEFT JOIN categorias AS c ON p.categoria = c.id
                                LIMIT :limite OFFSET :offset");
 
         $stmt->bindParam(':limite', $limite, PDO::PARAM_INT);

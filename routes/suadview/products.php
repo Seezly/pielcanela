@@ -636,30 +636,67 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
         // Función para actualizar la paginación
         function actualizarPaginacion(totalPaginas, paginaActual) {
             let paginacion = document.querySelector(".pagination");
+            let window = 1;
+            let inicio = Math.max(1, paginaActual - window);
+            let final = Math.min(totalPaginas, paginaActual + window);
+
             paginacion.innerHTML = "";
+
+            if (paginaActual < 1) {
+                paginaActual = 1;
+            }
 
             // Botón "Prev"
             if (paginaActual > 1) {
                 paginacion.innerHTML += `
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)" data-pagina="${paginaActual - 1}">Prev</a>
-            </li>`;
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" data-pagina="${paginaActual - 1}">Prev</a>
+                </li>`;
+            }
+
+            if (inicio > 1) {
+                paginacion.innerHTML += `
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" data-pagina="1">1</a>
+                </li>`;
+
+                if (inicio > 2) {
+                    paginacion.innerHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0)">...</a>
+                    </li>`;
+                }
             }
 
             // Páginas intermedias
-            for (let i = 1; i <= totalPaginas; i++) {
+            for (let i = inicio; i <= final; i++) {
                 paginacion.innerHTML += `
-            <li class="page-item ${i === paginaActual ? "active" : ""}">
-                <a class="page-link" href="javascript:void(0)" data-pagina="${i}">${i}</a>
-            </li>`;
+                <li class="page-item ${i === paginaActual ? "active" : ""}">
+                    <a class="page-link" href="javascript:void(0)" data-pagina="${i}">${i}</a>
+                </li>`;
+            }
+
+            if (final < totalPaginas) {
+
+                if (final < totalPaginas - 1) {
+                    paginacion.innerHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0)">...</a>
+                    </li>`;
+                }
+
+                paginacion.innerHTML += `
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" data-pagina="${totalPaginas}">${totalPaginas}</a>
+                </li>`;
             }
 
             // Botón "Next"
             if (paginaActual < totalPaginas) {
                 paginacion.innerHTML += `
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)" data-pagina="${paginaActual + 1}">Next</a>
-            </li>`;
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" data-pagina="${paginaActual + 1}">Next</a>
+                </li>`;
             }
 
             // Añadir evento a los botones de paginación
