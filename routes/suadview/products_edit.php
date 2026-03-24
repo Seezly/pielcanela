@@ -709,7 +709,7 @@ if (!empty($id)) {
                 Dropzone.instances.forEach((dz) => dz.destroy());
             }
 
-            if (!images.length >= 1) {
+            if (images[0].length < 1) {
                 // Inicializar Dropzone correctamente
                 myDropzone = new Dropzone(".dropzone", {
                     addRemoveLinks: true,

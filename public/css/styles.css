@@ -1128,7 +1128,7 @@ PRODUCTO
 .product-gallery {
 	display: flex;
 	width: 50%;
-	height: 50vh;
+	height: 75vh;
 	flex-direction: column;
 }
 
@@ -1137,6 +1137,8 @@ PRODUCTO
 	margin-bottom: 1rem;
 	margin-left: auto;
 	margin-right: auto;
+	overflow: hidden;
+	height: 100vh;
 }
 
 .product-thumbnails {

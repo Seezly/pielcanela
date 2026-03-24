@@ -51,7 +51,7 @@ export default function searchProducts() {
 
 	searchForm.addEventListener("submit", function (e) {
 		e.preventDefault();
-		const query = searchInput.value;
+		const query = searchInput.value.replaceAll(/\W+/gi, "-").toLowerCase();
 		if (query.length > 0) {
 			window.location.href = `${BASE_URL}productos/${query}?name=${query}`;
 		}
