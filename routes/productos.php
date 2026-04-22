@@ -15,7 +15,7 @@ if (empty($name)) {
 require '../src/scripts/allVisits.php';
 
 $title = "Piel Canela | Productos";
-$description = "Explora nuestros productos en SK. Encuentra una amplia selección de productos de alta calidad para realzar tu belleza. ¡Compra ahora y descubre tu nuevo favorito!";
+$description = "Explora nuestros productos en Piel Canela. Encuentra una amplia selección de productos de alta calidad para realzar tu belleza. ¡Compra ahora y descubre tu nuevo favorito!";
 
 ?>
 

@@ -16,7 +16,7 @@ if (empty($id)) {
 require '../src/scripts/allVisits.php';
 
 $title = "Piel Canela | Categorías";
-$description = "Explora nuestras subcategorías en SK. Encuentra una amplia selección de productos de alta calidad para realzar tu belleza. ¡Compra ahora y descubre tu nuevo favorito!";
+$description = "Explora nuestras subcategorías en Piel Canela. Encuentra una amplia selección de productos de alta calidad para realzar tu belleza. ¡Compra ahora y descubre tu nuevo favorito!";
 
 ?>
 

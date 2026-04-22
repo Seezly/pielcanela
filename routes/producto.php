@@ -15,7 +15,7 @@ $visitasP = $pdo->prepare("UPDATE productos SET visitas = visitas + 1 WHERE id =
 $visitasP->execute([$id]);
 
 $title = "Piel Canela | Producto";
-$description = "Transforma tu rutina de belleza con SK. Este producto ofrece resultados visibles y de alta calidad. ¡Compra ahora y experimenta la diferencia!";
+$description = "Transforma tu rutina de belleza con Piel Canela. Este producto ofrece resultados visibles y de alta calidad. ¡Compra ahora y experimenta la diferencia!";
 ?>
 
 <!DOCTYPE html>
