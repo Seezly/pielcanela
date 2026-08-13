@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 session_start();
 require '../../scripts/conn.php'; // Conexión a la base de datos
 require '../../scripts/csrf.php';
+require '../../scripts/require_auth.php';
+require_admin_privileges();
 
 // Verifica si la solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

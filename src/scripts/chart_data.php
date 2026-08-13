@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 header('Content-Type: application/json');
+require 'require_auth.php';
+require_admin_privileges();
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     require("conn.php");
 

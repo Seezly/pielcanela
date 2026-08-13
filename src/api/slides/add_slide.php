@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 session_start();
 require '../../scripts/conn.php';
 require '../../scripts/csrf.php';
+require '../../scripts/require_auth.php';
+require_admin_privileges();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $token = $_POST['csrf_token'] ?? '';

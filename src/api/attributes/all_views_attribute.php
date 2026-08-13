@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../config/config.php';
 header('Content-Type: application/json');
 require '../../scripts/conn.php'; // Conexión a la base de datos
+require '../../scripts/require_auth.php';
+require_admin_privileges();
 
 // Verifica si la solicitud es GET
 if ($_SERVER["REQUEST_METHOD"] === "GET") {

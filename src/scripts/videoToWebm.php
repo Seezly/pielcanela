@@ -1,10 +1,11 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../config/config.php';
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
 
-$api_key = 'api_production_3bd8b962183dbc045db6e1cee2fa0c937e5c3a09f605ab391e3971452c7e7ef8.6977052f142a194b364737d3.697764295d83271de3b9945f';
+$api_key = FREECONVERT_API_KEY;
 
 $client = new \GuzzleHttp\Client();
 

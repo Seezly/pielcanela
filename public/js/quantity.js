@@ -17,7 +17,7 @@ export function addQuantity(container, productId) {
 					(existingProduct.price - existingProduct.priceD));
 			updateItem(existingProduct.id, existingProduct);
 		})
-		.catch(() => console.error("Error al actualizar cantidad:", error));
+		.catch((error) => console.error("Error al actualizar cantidad:", error));
 }
 
 export function deleteQuantity(container, productId) {
@@ -38,6 +38,6 @@ export function deleteQuantity(container, productId) {
 						(existingProduct.price - existingProduct.priceD));
 				updateItem(existingProduct.id, existingProduct);
 			})
-			.catch(() => console.error("Error al actualizar cantidad:", error));
+			.catch((error) => console.error("Error al actualizar cantidad:", error));
 	}
 }

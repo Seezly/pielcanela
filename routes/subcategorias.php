@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 require '../src/scripts/conn.php'; // Conexión a la base de datos
+require '../src/scripts/csrf.php'; // Inicia sesión temprano (evita "headers already sent")
 
 $id = $_GET['id'] ?? "";
 $id_s = $_GET['id_s'] ?? "";
@@ -8,8 +9,8 @@ $price = $_GET['price'] ?? "";
 $featured = $_GET['featured'] ?? "";
 $discount = $_GET['discount'] ?? "";
 
-if (empty($id)) {
-    header("Location: /");
+if (empty($id) || empty($id_s)) {
+    header("Location: " . BASE_URL);
     exit();
 }
 
@@ -46,10 +47,15 @@ $description = "Explora nuestras subcategorías en Piel Canela. Encuentra una am
 
         $categoria = $sql->fetchAll(PDO::FETCH_ASSOC);
 
+        if (empty($categoria)) {
+            header("Location: " . BASE_URL);
+            exit();
+        }
+
         ?>
 
         <section class="categoria-list">
-            <h2><?= htmlspecialchars($categoria[0]["c_nom"] . " > " . $categoria[0]["s_nom"] ?? "No existe la subcategoría que estás buscando", ENT_QUOTES, 'UTF-8'); ?></h2>
+            <h2><?= htmlspecialchars($categoria[0]["c_nom"] . " > " . $categoria[0]["s_nom"], ENT_QUOTES, 'UTF-8'); ?></h2>
             <div class="filter-icon">
                 <div class="filters">
                     <a href="<?= BASE_URL ?>categoria/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["c_nom"])); ?>/<?= preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($categoria[0]["s_nom"])); ?>?id=<?= $id; ?>&id_s=<?= $id_s; ?>&price=asc" class="filter <?php if (!empty($price) && $price === "asc") echo "active"; ?>">Menor precio</a>
@@ -64,7 +70,7 @@ $description = "Explora nuestras subcategorías en Piel Canela. Encuentra una am
                 </span>
             </div>
             <div class="productos">
-                <div id="productos" data-category="<?= htmlspecialchars($categoria[0]["id"], ENT_QUOTES, 'UTF-8'); ?>" data-subcategory="<?= htmlspecialchars($id_s, ENT_QUOTES, 'UTF-8'); ?>" class="productos-list">
+                <div id="productos" data-category="<?= htmlspecialchars($id, ENT_QUOTES, 'UTF-8'); ?>" data-subcategory="<?= htmlspecialchars($id_s, ENT_QUOTES, 'UTF-8'); ?>" class="productos-list">
                     <?php
 
                     $statement = "";
@@ -115,10 +121,10 @@ $description = "Explora nuestras subcategorías en Piel Canela. Encuentra una am
                                     <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>
                                 </div>
                                 <div class="producto-precio">
-                                    <p class="<?php if ($producto["descuento"] > 0) echo "midline"; ?>">$ <?= $producto["precio"]; ?></p>
+                                    <p class="<?php if ($producto["descuento"] > 0) echo "midline"; ?>">$ <?= htmlspecialchars($producto["precio"], ENT_QUOTES, 'UTF-8'); ?></p>
                                     <?php
                                     if ($producto["descuento"] > 0) {
-                                        echo "<p>$ {$producto['precioD']}</p>";
+                                        echo "<p>$ " . htmlspecialchars($producto['precioD'], ENT_QUOTES, 'UTF-8') . "</p>";
                                     }
                                     ?>
                                 </div>

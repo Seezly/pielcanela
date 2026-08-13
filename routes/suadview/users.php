@@ -811,7 +811,8 @@ if ($privilegios !== 'administrador' && $privilegios !== 'vendedor' && $privileg
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        id
+                        id,
+                        csrf_token: '<?= $_SESSION['csrf_token'] ?? '' ?>'
                     })
                 });
 

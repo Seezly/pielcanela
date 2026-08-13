@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../scripts/csrf.php';
+$csrf_token_modal = generate_csrf_token();
+?>
 <!-- Categorias menú -->
 
 <div class="menu-categories modal">
@@ -131,6 +135,7 @@
 
 <script>
     const BASE_URL = '<?= BASE_URL ?>';
+    const CSRF_TOKEN = '<?= $csrf_token_modal ?>';
 </script>
 
 <script type="module" src="<?= BASE_URL ?>public/js/index.js"></script>

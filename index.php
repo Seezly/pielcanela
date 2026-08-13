@@ -1,5 +1,6 @@
 <?php
 require 'src/scripts/conn.php'; // Conexión a la base de datos
+require 'src/scripts/csrf.php'; // Inicia sesión temprano (evita "headers already sent")
 
 require 'src/scripts/allVisits.php';
 

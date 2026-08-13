@@ -785,7 +785,8 @@ require __DIR__ . '/../../src/config/config.php';
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        id
+                        id,
+                        csrf_token: '<?= $_SESSION['csrf_token'] ?? '' ?>'
                     })
                 });
 

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 require '../src/scripts/conn.php'; // Conexión a la base de datos
+require '../src/scripts/csrf.php'; // Inicia sesión temprano (evita "headers already sent")
 
 $id = $_GET['id'] ?? "";
 if (!is_numeric($id)) {
@@ -64,10 +65,10 @@ $description = "Transforma tu rutina de belleza con Piel Canela. Este producto o
             <div class="product-details">
                 <h2><?= htmlspecialchars($producto[0]["nombre"], ENT_QUOTES, 'UTF-8'); ?></h2>
                 <div class="producto-precio">
-                    <p class="<?php if ($producto[0]["descuento"] > 0) echo "midline"; ?>">$ <?= $producto[0]["precio"]; ?></p>
+                    <p class="<?php if ($producto[0]["descuento"] > 0) echo "midline"; ?>">$ <?= htmlspecialchars($producto[0]["precio"], ENT_QUOTES, 'UTF-8'); ?></p>
                     <?php
                     if ($producto[0]["descuento"] > 0) {
-                        echo "<p class='discount'>$ {$producto[0]["precioD"]}</p>";
+                        echo "<p class='discount'>$ " . htmlspecialchars($producto[0]["precioD"], ENT_QUOTES, 'UTF-8') . "</p>";
                     }
                     ?>
                 </div>
@@ -76,8 +77,8 @@ $description = "Transforma tu rutina de belleza con Piel Canela. Este producto o
                         <div class="size-options" data-attribute="<?= $producto[0]["atributo"]; ?>">
                             <?php
                             foreach (explode(',', $producto[0]["opciones"]) as $opcion) { ?>
-                                <input type="radio" id="size-<?= $opcion; ?>" name="size" value="<?= $opcion; ?>">
-                                <label for="size-<?= $opcion; ?>"><?= ucfirst($opcion); ?></label>
+                                <input type="radio" id="size-<?= htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8'); ?>" name="size" value="<?= htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8'); ?>">
+                                <label for="size-<?= htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8'); ?>"><?= ucfirst(htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8')); ?></label>
                             <?php
                             } ?>
                         </div>
@@ -92,7 +93,7 @@ $description = "Transforma tu rutina de belleza con Piel Canela. Este producto o
                     <a href="#" class="btn" data-action="cart" data-id="<?= $producto[0]["id"]; ?>" data-sku="<?= $producto[0]["sku"]; ?>">Agregar al carrito</a>
                     <a href="#" class="btn comprarProducto" data-action="buy" data-id="<?= $producto[0]["id"]; ?>">Comprar ahora</a>
                 </div>
-                <p><?= $producto[0]["descripcion"]; ?></p>
+                <p><?= htmlspecialchars($producto[0]["descripcion"], ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
         </section>
 
@@ -132,10 +133,10 @@ $description = "Transforma tu rutina de belleza con Piel Canela. Este producto o
                             <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
                         <div class="producto-precio">
-                            <p class="<?php if ($producto["descuento"] > 0) echo "midline"; ?>">$ <?= $producto["precio"]; ?></p>
+                            <p class="<?php if ($producto["descuento"] > 0) echo "midline"; ?>">$ <?= htmlspecialchars($producto["precio"], ENT_QUOTES, 'UTF-8'); ?></p>
                             <?php
                             if ($producto["descuento"] > 0) {
-                                echo "<p>$ {$producto['precioD']}</p>";
+                                echo "<p>$ " . htmlspecialchars($producto['precioD'], ENT_QUOTES, 'UTF-8') . "</p>";
                             }
                             ?>
                         </div>

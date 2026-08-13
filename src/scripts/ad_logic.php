@@ -4,7 +4,10 @@ require_once __DIR__ . '/../config/config.php';
 session_start();
 require 'conn.php';
 require 'csrf.php';
+require 'require_auth.php';
 require 'videoToWebm.php';
+
+require_admin_privileges();
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

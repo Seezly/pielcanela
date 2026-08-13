@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 require '../src/scripts/conn.php'; // Conexión a la base de datos
+require '../src/scripts/csrf.php'; // Inicia sesión temprano (evita "headers already sent")
 
 $name = $_GET['name'] ?? "";
 $price = $_GET['price'] ?? "";

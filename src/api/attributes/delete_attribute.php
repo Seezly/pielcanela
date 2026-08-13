@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../../config/config.php';
 header('Content-Type: application/json');
 require '../../scripts/conn.php'; // Conexión a la base de datos
+require '../../scripts/csrf.php';
+require '../../scripts/require_auth.php';
+require_admin_privileges();
 
 // Verifica si la solicitud es POST
 if (
@@ -9,6 +12,11 @@ if (
 ) {
 
     $data = json_decode(file_get_contents("php://input"), true);
+    $token = $data["csrf_token"] ?? "";
+    if (!validate_csrf_token($token)) {
+        echo json_encode(["status" => "error", "message" => "Token CSRF inválido."]);
+        exit;
+    }
     $id = trim($data["id"] ?? "");
 
     if (empty($id)) {

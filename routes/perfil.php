@@ -1,4 +1,7 @@
-<?php require_once __DIR__ . '/../src/config/config.php'; ?>
+<?php
+require_once __DIR__ . '/../src/config/config.php';
+require_once __DIR__ . '/../src/scripts/csrf.php'; // Inicia sesión temprano (evita "headers already sent")
+?>
 <!DOCTYPE html>
 <html lang="es">
 

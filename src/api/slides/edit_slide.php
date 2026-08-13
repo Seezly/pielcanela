@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 session_start();
 require '../../scripts/conn.php';
 require '../../scripts/csrf.php';
+require '../../scripts/require_auth.php';
+require_admin_privileges();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $token = $_POST['csrf_token'] ?? '';
@@ -25,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             $fileTmpName = $_FILES['image']['tmp_name'];
         }
-        $rutaImagen = convertirImagenAWebP($fileTmpName, __DIR__ . '/../../public/img/');
+        $rutaImagen = convertirImagenAWebP($fileTmpName, __DIR__ . '/../../../public/img/');
     } else {
         $stmtImg = $pdo->prepare("SELECT imagen FROM slides WHERE id = :id");
         $stmtImg->execute(['id' => $id]);

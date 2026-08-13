@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 require '../src/scripts/conn.php'; // Conexión a la base de datos
+require '../src/scripts/csrf.php'; // Inicia sesión temprano (evita "headers already sent")
 
 $id = $_GET['id'] ?? "";
 $price = $_GET['price'] ?? "";
@@ -8,7 +9,7 @@ $featured = $_GET['featured'] ?? "";
 $discount = $_GET['discount'] ?? "";
 
 if (empty($id)) {
-    header("Location: /");
+    header("Location: " . BASE_URL);
     exit();
 }
 
@@ -98,14 +99,14 @@ $description = "Explora nuestras categorías en Piel Canela. Encuentra una ampli
                                         </svg>
                                     </span>
                                 </div>
-                                <img src="<?= BASE_URL . $producto["imagen"][0]; ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
+                                <img src="<?= BASE_URL . ($producto["imagen"][0] ?? ""); ?>" loading="lazy" alt="<?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?>">
                             </div>
                             <div class="producto-info">
                                 <p><?= htmlspecialchars($producto["nombre"], ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                             <div class="producto-precio">
-                                <p class="<?= ($producto["descuento"] > 0) ? "midline" : ""; ?>">$ <?= $producto["precio"]; ?></p>
-                                <?php if ($producto["descuento"] > 0) echo "<p>$ {$producto['precioD']}</p>"; ?>
+                                <p class="<?= ($producto["descuento"] > 0) ? "midline" : ""; ?>">$ <?= htmlspecialchars($producto["precio"], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php if ($producto["descuento"] > 0) echo "<p>$ " . htmlspecialchars($producto['precioD'], ENT_QUOTES, 'UTF-8') . "</p>"; ?>
                             </div>
                         </a>
                     <?php
