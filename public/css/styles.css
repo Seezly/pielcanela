@@ -1263,10 +1263,20 @@ PRODUCTO
 
 	.product {
 		flex-direction: column;
+		width: 90%;
+		padding-top: 2em;
 	}
 
 	.product-main {
 		width: 100%;
+		height: auto;
+		max-height: 55vh;
+	}
+
+	.product-main img {
+		height: auto;
+		max-height: 45vh;
+		object-fit: contain;
 	}
 
 	.product-img {

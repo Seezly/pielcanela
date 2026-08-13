@@ -57,7 +57,8 @@ export function generateWhatsAppMessage(cartItems, name, address, parcel) {
 	let total = 0;
 
 	cartItems.forEach((item) => {
-		mensaje += `🗝 *Código*: ${item.sku}\n💎 *Producto*: ${item.name}\n🔰 *${item.attribute}*: ${item.option}\n❓ *Cantidad*: ${item.quantity}\n💲 *Precio*: $${item.price}\n💰 *Subtotal*: $${item.subtotal}\n\n`;
+		const precioFinal = item.priceD > 0 ? item.priceD : item.price;
+		mensaje += `🗝 *Código*: ${item.sku}\n💎 *Producto*: ${item.name}\n🔰 *${item.attribute}*: ${item.option}\n❓ *Cantidad*: ${item.quantity}\n💲 *Precio*: $${precioFinal}\n💰 *Subtotal*: $${item.subtotal}\n\n`;
 		total += item.subtotal;
 	});
 
@@ -90,7 +91,12 @@ export async function addOrder(cartItems) {
 		formData.append(`id[]`, item);
 	});
 
-        let response = await fetch(`${BASE_URL}src/scripts/add_order.php`, {
+	formData.append(
+		"csrf_token",
+		typeof CSRF_TOKEN !== "undefined" ? CSRF_TOKEN : "",
+	);
+
+	let response = await fetch(`${BASE_URL}src/scripts/add_order.php`, {
 		method: "POST",
 		body: formData,
 	});

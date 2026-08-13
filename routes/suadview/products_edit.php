@@ -20,12 +20,17 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
 require '../../src/scripts/csrf.php';
 $csrf_token = generate_csrf_token();
 
-$id = $_GET['id'];
+$id = $_GET['id'] ?? '';
 
 if (!empty($id)) {
-    $stmt = $pdo->prepare("SELECT p.*, c.nombre AS categoria_nombre, a.atributo AS atributo_nombre FROM productos AS p JOIN categorias AS c ON p.categoria = c.id JOIN atributos AS a ON p.atributo_id = a.id WHERE p.id = :id");
+    $stmt = $pdo->prepare("SELECT p.*, c.nombre AS categoria_nombre, a.atributo AS atributo_nombre FROM productos AS p LEFT JOIN categorias AS c ON p.categoria = c.id LEFT JOIN atributos AS a ON p.atributo_id = a.id WHERE p.id = :id");
     $stmt->execute(['id' => $id]);
     $product = $stmt->fetch();
+
+    if (!$product) {
+        header("Location: products.php");
+        exit;
+    }
 
     $nombre = $product['nombre'];
     $precio = $product['precio'];
@@ -33,9 +38,9 @@ if (!empty($id)) {
     $categoria = $product['categoria'];
     $subcategoria = $product['subcategoria'];
     $options = $product['opciones'];
-    $categoria_nombre = $product['categoria_nombre'];
+    $categoria_nombre = $product['categoria_nombre'] ?? '';
     $atributo = $product['atributo_id'];
-    $atributo_nombre = $product['atributo_nombre'];
+    $atributo_nombre = $product['atributo_nombre'] ?? '';
     $descuento = $product['descuento'];
     $precioD = $product['precioD'];
     $porcentajeD = $product['porcentajeD'];
@@ -609,7 +614,7 @@ if (!empty($id)) {
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <label class="form-label" for="dm-ecom-product-price">Porcentaje de descuento</label>
-                                            <input type="number" class="form-control" id="dm-ecom-product-price" name="dm-ecom-product-price"
+                                            <input type="number" class="form-control" id="dm-ecom-product-percent" name="dm-ecom-product-percent"
                                                 value="<?php if (!empty($id)) echo $porcentajeD; ?>" placeholder="%" min="0" max="100" required>
                                         </div>
                                         <div class="col-md-6">
@@ -690,7 +695,7 @@ if (!empty($id)) {
             const form = document.querySelector("form");
             const submitButton = form.querySelector("button[type='submit']");
             const descuentoCheckbox = document.getElementById("dm-ecom-product-published");
-            const porcentajeDescuentoInput = document.querySelector("input[placeholder='%']");
+            const porcentajeDescuentoInput = document.getElementById("dm-ecom-product-percent");
             const precioFinalInput = document.querySelector("#finalPrice");
             const precioInput = document.getElementById("dm-ecom-product-price");
             const opcionesInput = document.getElementById("dm-ecom-product-options");
@@ -699,7 +704,7 @@ if (!empty($id)) {
             const formAction = form.getAttribute("data-action");
             const id = document.querySelector("input[name='id']");
             const destacado = document.querySelector("#product-featured");
-            let images = "<?= $product['imagen'] ?>".split(',');
+            let images = "<?= !empty($id) ? htmlspecialchars($product['imagen'], ENT_QUOTES, 'UTF-8') : '' ?>".split(',');
             let myDropzone;
 
             Dropzone.autoDiscover = false;
@@ -756,10 +761,16 @@ if (!empty($id)) {
                 });
             }
 
-            porcentajeDescuentoInput.setAttribute("disabled", "true");
-
-            if (precioInput.value && precioInput.value > 0) {
-                precioFinalInput.value = precioInput.value;
+            if (descuentoCheckbox.checked) {
+                porcentajeDescuentoInput.removeAttribute("disabled");
+                if (precioInput.value && precioInput.value > 0) {
+                    precioFinalInput.value = "<?= !empty($id) ? $precioD : '' ?>";
+                }
+            } else {
+                porcentajeDescuentoInput.setAttribute("disabled", "true");
+                if (precioInput.value && precioInput.value > 0) {
+                    precioFinalInput.value = precioInput.value;
+                }
             }
 
             // Evento para calcular el precio final si hay descuento

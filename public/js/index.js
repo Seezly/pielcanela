@@ -42,7 +42,7 @@ const readCategories = async () => {
 
 				// Link de la categoría (click navega)
 				const categoryLink = document.createElement("a");
-				categoryLink.href = `/categoria/${category.nombre
+				categoryLink.href = `${BASE_URL}categoria/${category.nombre
 					.replaceAll(" ", "-")
 					.toLowerCase()}?id=${category.id}`;
 				categoryLink.textContent = category.nombre;
@@ -91,7 +91,7 @@ const readCategories = async () => {
 					category.subcategorias.forEach((subcat) => {
 						const subItem = document.createElement("li");
 						const subLink = document.createElement("a");
-						subLink.href = `/categoria/${category.nombre
+						subLink.href = `${BASE_URL}categoria/${category.nombre
 							.replaceAll(" ", "-")
 							.toLowerCase()}/${subcat.nombre
 							.replaceAll(" ", "-")
@@ -160,8 +160,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const categoriesSlider = document.querySelector(".categorias-slider");
 	const loader = document.getElementById("loader");
 
-	if (document.querySelector("input[type=radio")) {
-		document.querySelector("input[type=radio").checked = true;
+	const firstRadio = document.querySelector("input[type=radio]");
+	if (firstRadio) {
+		firstRadio.checked = true;
 	}
 
 	if (sliderElement) {
@@ -340,12 +341,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 		isLoading = true; // Evita llamadas múltiples mientras se carga
 		page++;
 
+		const params = new URLSearchParams(window.location.search);
+		let filters = "";
+		["price", "featured", "discount"].forEach((key) => {
+			const value = params.get(key);
+			if (value) filters += `&${key}=${encodeURIComponent(value)}`;
+		});
+
 		if (window.location.search.includes("id_s")) {
 			try {
 				const response = await fetch(
 					`${BASE_URL}src/scripts/load_more_products_specific.php?id=${document
 						.getElementById("productos")
-						.getAttribute("data-subcategory")}&page=${page}`,
+						.getAttribute("data-subcategory")}&page=${page}${filters}`,
 				);
 
 				if (response.ok) {
@@ -362,7 +370,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 				const response = await fetch(
 					`${BASE_URL}src/scripts/load_more_products.php?id=${document
 						.getElementById("productos")
-						.getAttribute("data-category")}&page=${page}`,
+						.getAttribute("data-category")}&page=${page}${filters}`,
 				);
 
 				if (response.ok) {
@@ -550,25 +558,40 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 						const modal = document.querySelector(".product-modal");
 						if (modal) {
+							const precioContenedor = modal.querySelector(
+								".producto-precio",
+							);
+
 							modal.querySelector("h2").textContent =
 								data.data.nombre;
-							if (data.data.descuento > 0) {
-								const descuento = document.createElement("p");
-								descuento.classList.add("discount");
-								modal
-									.querySelector(".producto-precio p")
-									.classList.add("midline");
-								modal.querySelector(
-									".producto-precio p",
-								).textContent = `$${data.data.precio}`;
-								descuento.textContent = `$${data.data.precioD}`;
-								modal
-									.querySelector(".producto-precio")
-									.append(descuento);
-							}
-							modal.querySelector(
-								".producto-precio p",
+
+							// Limpiar estado previo del modal
+							precioContenedor
+								.querySelectorAll(".discount")
+								.forEach((el) => el.remove());
+							precioContenedor
+								.querySelector("p")
+								.classList.remove("midline");
+							precioContenedor.querySelector(
+								"p",
 							).textContent = `$${data.data.precio}`;
+
+							if (data.data.descuento > 0) {
+								const descuento =
+									document.createElement("p");
+								descuento.classList.add("discount");
+								precioContenedor
+									.querySelector("p")
+									.classList.add("midline");
+								descuento.textContent = `$${data.data.precioD}`;
+								precioContenedor.append(descuento);
+							}
+
+							modal
+								.querySelector(".quantity input")
+								.setAttribute("value", 1);
+							modal
+								.querySelector(".quantity input").value = 1;
 							modal.querySelector(
 								".product-cta + p",
 							).textContent = data.data.descripcion;
@@ -641,15 +664,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 									console.log(input);
 
-									if (!image) {
-										console.error(
-											"No se encontró la imagen del producto para comprar.",
-											image,
-										);
-										return;
-									}
+								if (!image) {
+									console.error(
+										"No se encontró la imagen del producto para comprar.",
+										image,
+									);
+									return;
+								}
 
-									productImage.src = image;
+								productImage.src =
+									BASE_URL + image.replace(/^\//, "");
 								});
 							});
 					})
@@ -744,14 +768,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	// Manejo de compra de un solo producto
+	let productId = null;
+	let opcion = null;
+
 	document.querySelectorAll(".btn[data-action=buy]").forEach((button) => {
 		button.addEventListener("click", (e) => {
 			e.preventDefault();
 			e.stopPropagation();
-			const productId = button.getAttribute("data-id");
-			const opcion = document.querySelector(
+			productId = button.getAttribute("data-id");
+			const opcionRadio = document.querySelector(
 				"input[type=radio]:checked",
-			).value;
+			);
+			opcion = opcionRadio ? opcionRadio.value : null;
 
 			if (!productId) {
 				console.error(
@@ -843,6 +871,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 					);
 				});
 		} else if (modal.dataset.checkout === "product") {
+			if (!productId || !opcion) {
+				alert(
+					"Selecciona primero el producto que deseas comprar.",
+				);
+				return;
+			}
+
 			getProductById(
 				productId,
 				opcion,

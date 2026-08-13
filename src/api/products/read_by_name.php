@@ -6,9 +6,15 @@ require '../../scripts/conn.php'; // Conexión a la base de datos
 // Verifica si la solicitud es GET
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     try {
+        $nombre = trim($_GET["name"] ?? "");
+        if ($nombre === "") {
+            echo json_encode(["status" => "success", "message" => "Productos listados correctamente.", "data" => []]);
+            exit;
+        }
+
         // Prepara la consulta para evitar inyecciones SQL
-        $stmt = $pdo->prepare("SELECT * FROM productos WHERE nombre LIKE :nombre");
-        $stmt->bindValue(":nombre", "%" . $_GET["name"] . "%");
+        $stmt = $pdo->prepare("SELECT id, sku, nombre, descripcion, precio, precioD, descuento, imagen FROM productos WHERE nombre LIKE :nombre ORDER BY visitas DESC LIMIT 8");
+        $stmt->bindValue(":nombre", "%" . $nombre . "%");
         $stmt->execute();
 
         $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);

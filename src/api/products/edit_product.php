@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 session_start();
 require '../../scripts/conn.php'; // Conexión a la base de datos
 require '../../scripts/csrf.php';
+require '../../scripts/require_auth.php';
+require_admin_privileges();
 
 // Verifica si la solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -54,6 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sku = trim($_POST["sku"] ?? "");
     $descripcion = trim($_POST["descripcion"] ?? "");
     $categoria = trim($_POST["categoria"] ?? "");
+    $subcategoria = trim($_POST["subcategoria"] ?? "");
+    $atributo = trim($_POST["atributo"] ?? "");
+    $opciones = trim($_POST["opciones"] ?? "");
     $descuento = trim($_POST["descuento"] ?? "");
     $precioD = trim($_POST["precioD"] ?? "");
     $porcentajeD = trim($_POST["porcentajeD"] ?? "");
@@ -73,14 +78,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         empty($sku) ||
         empty($descripcion) ||
         empty($categoria) ||
+        empty($subcategoria) ||
+        empty($atributo) ||
         strlen($descuento) === 0 ||  // Cambiar a strlen
         strlen($precioD) === 0 ||    // Cambiar a strlen
         strlen($porcentajeD) === 0   // Cambiar a strlen
     ) {
         echo json_encode(["status" => "error", "message" => "Todos los campos son obligatorios."]);
-        echo $id, $nombre, $precio, $sku, $descripcion, $categoria, $descuento, $precioD, $porcentajeD, $rutasImagenes;
         exit;
     }
+
+    if ((int) $atributo !== 4 && empty($opciones)) {
+        echo json_encode(["status" => "error", "message" => "Las opciones son obligatorias."]);
+        exit;
+    }
+
+    $opciones = (int) $atributo === 4 ? "" : strtolower($opciones);
 
     if (!isset($rutasImagenes) || empty($rutasImagenes)) {
         // Si no se subió una nueva imagen, obtener la ruta actual de la base de datos
@@ -91,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $pdo->prepare("UPDATE productos SET nombre=:nombre, precio=:precio, descripcion=:descripcion, descuento=:descuento, precioD=:precioD, porcentajeD=:porcentajeD, sku=:sku, imagen=:imagen, destacado=:destacado WHERE id=:id");
+        $stmt = $pdo->prepare("UPDATE productos SET nombre=:nombre, precio=:precio, descripcion=:descripcion, descuento=:descuento, precioD=:precioD, porcentajeD=:porcentajeD, sku=:sku, imagen=:imagen, destacado=:destacado, categoria=:categoria, subcategoria=:subcategoria, atributo_id=:atributo, opciones=:opciones WHERE id=:id");
         $stmt->execute([
             "nombre" => $nombre,
             "precio" => $precio,
@@ -102,7 +115,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "sku" => $sku,
             "imagen" => $rutasImagenes,
             "id" => $id,
-            "destacado" => $destacado
+            "destacado" => $destacado,
+            "categoria" => $categoria,
+            "subcategoria" => $subcategoria,
+            "atributo" => $atributo,
+            "opciones" => $opciones
         ]);
 
         echo json_encode(["status" => "success", "message" => "Producto editado correctamente.", "destacado" => $destacado]);
