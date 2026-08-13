@@ -1,2 +1,5 @@
 #Ignore all files in vendor directory
 vendor/
+
+# Local DB credentials (keep the server's own copy in production)
+src/scripts/conn.php
