@@ -708,12 +708,17 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
             });
         }
 
-        async function loadProducts(page = 1) {
+        let currentSearch = '';
+        let currentPage = 1;
+
+        async function loadProducts(page = 1, search = currentSearch) {
             try {
-                const response = await fetch(`${BASE_URL}src/api/products/read_products.php?pagina=${page}`);
+                const url = `${BASE_URL}src/api/products/read_products.php?pagina=${page}${search ? `&buscar=${encodeURIComponent(search)}` : ''}`;
+                const response = await fetch(url);
                 const result = await response.json();
 
                 if (result.status === "success") {
+                    currentPage = result.paginaActual;
                     const tableBody = document.querySelector("table tbody");
                     tableBody.innerHTML = ""; // Limpiar contenido previo
 
@@ -788,25 +793,7 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
                     if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
                         console.log("Eliminar producto con ID:", id);
                         await deleteProduct(id);
-                        loadProducts(); // Recargar categorías después de eliminar
-                    }
-                });
-            });
-
-            const searchInput = document.getElementById("dm-ecom-products-search");
-            const tableRows = document.querySelectorAll(".table tbody tr");
-
-            searchInput.addEventListener("input", function() {
-                const searchText = searchInput.value.trim().toLowerCase();
-
-                tableRows.forEach((row) => {
-                    const productId = row.querySelector("td:nth-child(1) a")?.textContent.trim().toLowerCase();
-                    const productName = row.querySelector("td:nth-child(2) a")?.textContent.trim().toLowerCase();
-
-                    if (productId.includes(searchText) || productName.includes(searchText)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
+                        loadProducts(currentPage, currentSearch); // Recargar productos después de eliminar
                     }
                 });
             });
@@ -848,8 +835,19 @@ require '../../src/scripts/conn.php'; // Conexión a la base de datos
             }
         }
 
-        // Cargar categorías al inicio
+        // Cargar productos al inicio
         document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("dm-ecom-products-search");
+
+            let searchTimeout;
+            searchInput.addEventListener("input", function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentSearch = searchInput.value.trim();
+                    loadProducts(1, currentSearch);
+                }, 300);
+            });
+
             loadProducts();
         });
     </script>
