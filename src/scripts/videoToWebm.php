@@ -26,9 +26,9 @@ function initTask($api_key, $client)
             )
         );
         return $response->getBody()->getContents();
-    } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-        // handle exception or api errors.
-        print_r($e->getMessage());
+    } catch (\Throwable $e) {
+        error_log("freeconvert initTask error: " . $e->getMessage());
+        return null;
     }
 }
 
@@ -65,13 +65,14 @@ function uploadFile($upload_url, $signature, $file_path, $file_name, $client, $a
         $response = $client->sendAsync($request, $options)->wait();
 
         if ($response->getStatusCode() != 200) {
-            throw new Exception("Error uploading file: " . $response->getBody()->getContents());
+            error_log("freeconvert uploadFile error: " . $response->getBody()->getContents());
+            return null;
         } else {
             return $response->getBody()->getContents();
         }
-    } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-        // handle exception or api errors.
-        print_r($e->getMessage());
+    } catch (\Throwable $e) {
+        error_log("freeconvert uploadFile error: " . $e->getMessage());
+        return null;
     }
 }
 
@@ -101,9 +102,9 @@ function convertFile($api_key, $client, $format, $task_id)
         $response = $client->sendAsync($request)->wait();
 
         return $response->getBody()->getContents();
-    } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-        // handle exception or api errors.
-        print_r($e->getMessage());
+    } catch (\Throwable $e) {
+        error_log("freeconvert convertFile error: " . $e->getMessage());
+        return null;
     }
 }
 
@@ -146,9 +147,10 @@ function downloadFile($api_key, $client, $task_id)
                 sleep(30);
                 $attempt++;
             }
-        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-            // handle exception or api errors.
-            print_r($e->getMessage());
+        } catch (\Throwable $e) {
+            error_log("freeconvert downloadFile error: " . $e->getMessage());
+            return null;
         }
     }
+    return null;
 }
