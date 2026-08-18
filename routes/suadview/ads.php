@@ -514,7 +514,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><?= $ads[0]["visitas"] ?></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view1"><?= ($ads[0]["visitas"] ?? 0) ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
                                     Clics en ad #1
                                 </p>
@@ -526,7 +526,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             class="block block-rounded block-link-shadow text-center h-100 mb-0"
                             href="javascript:void(0)">
                             <div class="block-content py-5">
-                                <div class="fs-3 fw-semibold text-danger mb-1" id="view"><?= $ads[1]["visitas"] ?></div>
+                                <div class="fs-3 fw-semibold text-danger mb-1" id="view2"><?= ($ads[1]["visitas"] ?? 0) ?></div>
                                 <p class="fw-semibold fs-sm text-danger text-uppercase mb-0">
                                     Clics en ad #2
                                 </p>
@@ -556,7 +556,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <div class="col-md-10 col-lg-8">
                                                         <!-- Dropzone (functionality is auto initialized by the plugin itself in js/plugins/dropzone/dropzone.min.js) -->
                                                         <!-- For more info and examples you can check out http://www.dropzonejs.com/#usage -->
-                                                        <form class="dropzone ads" id="ad1Form" action="#">
+                                                        <form class="dropzone ads" id="dzAd1Form" action="#">
                                                             <p class="dz-message">Arrastra la imagen o haz click</p>
                                                         </form>
                                                     </div>
@@ -576,7 +576,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <div class="col-md-10 col-lg-8">
                                                         <!-- Dropzone (functionality is auto initialized by the plugin itself in js/plugins/dropzone/dropzone.min.js) -->
                                                         <!-- For more info and examples you can check out http://www.dropzonejs.com/#usage -->
-                                                        <form class="dropzone ads" id="ad2Form" action="#">
+                                                        <form class="dropzone ads" id="dzAd2Form" action="#">
                                                             <p class="dz-message">Arrastra la imagen o haz click</p>
                                                         </form>
                                                     </div>
@@ -593,7 +593,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-4">
                                                 <label class="form-label" for="dm-ecom-ad-1">URL AD #1</label>
                                                 <input type="text" class="form-control" id="dm-ecom-ad-1" name="dm-ecom-ad-1"
-                                                value="<?= $ads[0]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                value="<?= ($ads[0]["url"] ?? '') ?>" placeholder="https:/.com/categoria/producto">
                                                 <div class="form-check mt-2">
                                                     <label class="form-check-label" for="urlVideo1">¿Es un vídeo?</label>
                                                     <input type="checkbox" class="form-check-input" name="video" id="urlVideo1">
@@ -610,7 +610,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-4">
                                                 <label class="form-label" for="dm-ecom-ad-2">URL AD #2</label>
                                                 <input type="text" class="form-control" id="dm-ecom-ad-2" name="dm-ecom-ad-2"
-                                                value="<?= $ads[1]["url"]; ?>" placeholder="https:/.com/categoria/producto">
+                                                value="<?= ($ads[1]["url"] ?? '') ?>" placeholder="https:/.com/categoria/producto">
                                                 <div class="form-check mt-2">
                                                     <label class="form-check-label" for="urlVideo2">¿Es un vídeo?</label>
                                                     <input type="checkbox" class="form-check-input" name="video" id="urlVideo2">
@@ -703,8 +703,6 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
             });
 
-            const ad1Form = document.getElementById("ad1Form");
-            const ad2Form = document.getElementById("ad2Form");
             const submitButton1 = document.querySelector("#adSubmit1");
             const submitButton2 = document.querySelector("#adSubmit2");
 
@@ -722,7 +720,9 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 formData.append("csrf_token", csrfToken);
                 formData.append("is_video", video1);
 
-                formData.append("image", Dropzone.instances[0].files[0]);
+                if (Dropzone.instances[0].files.length > 0) {
+                    formData.append("image", Dropzone.instances[0].files[0]);
+                }
 
                 try {
                     let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php`, {
@@ -730,8 +730,19 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         body: formData
                     });
 
-                    let result = await response.json();
-                    alert(result.message);
+                    let text = await response.text();
+                    let result;
+                    try {
+                        result = text ? JSON.parse(text) : {};
+                    } catch (e) {
+                        alert(`Respuesta inválida del servidor (HTTP ${response.status}):\n${text.slice(0, 300) || "(respuesta vacía)"}`);
+                        return;
+                    }
+                    if (text === "") {
+                        alert(`Respuesta vacía del servidor (HTTP ${response.status}).`);
+                        return;
+                    }
+                    alert(result.message || "Sin mensaje del servidor.");
 
                     if (result.status === "success") {
                         Dropzone.instances[0].removeAllFiles(); // Eliminar imagen subida después de éxito
@@ -755,7 +766,9 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 formData.append("csrf_token", csrfToken2);
                 formData.append("is_video", video2);
 
-                formData.append("image", Dropzone.instances[1].files[0]);
+                if (Dropzone.instances[1].files.length > 0) {
+                    formData.append("image", Dropzone.instances[1].files[0]);
+                }
 
                 try {
                     let response = await fetch(`${BASE_URL}src/scripts/ad_logic.php`, {
@@ -763,8 +776,19 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         body: formData
                     });
 
-                    let result = await response.json();
-                    alert(result.message);
+                    let text = await response.text();
+                    let result;
+                    try {
+                        result = text ? JSON.parse(text) : {};
+                    } catch (e) {
+                        alert(`Respuesta inválida del servidor (HTTP ${response.status}):\n${text.slice(0, 300) || "(respuesta vacía)"}`);
+                        return;
+                    }
+                    if (text === "") {
+                        alert(`Respuesta vacía del servidor (HTTP ${response.status}).`);
+                        return;
+                    }
+                    alert(result.message || "Sin mensaje del servidor.");
 
                     if (result.status === "success") {
                         Dropzone.instances[0].removeAllFiles(); // Eliminar imagen subida después de éxito
